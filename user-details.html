@@ -2,18 +2,19 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Detalles del Usuario - Dashboard PAC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Usuario - PAC Manager</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body>
+  <body class="bg-light">
     <nav class="sidebar">
       <div class="logo-section">
         <img src="img/laiw_color.png" alt="LAIW Logo" />
@@ -93,23 +94,19 @@
         </div>
       </nav>
       <div class="content-wrapper">
-        <h2>Juan Pérez</h2>
-        <p class="text-muted">Perfil del agricultor</p>
+        <h2 id="user-name">Nombre Usuario</h2>
+        <p class="text-muted" id="user-desc">Perfil del agricultor</p>
 
         <div class="card mt-3">
           <div class="card-header">Perfil</div>
           <div class="card-body">
-            <p>
-              Juan es un agricultor experimentado en cultivos de secano y
-              regadío en Badajoz. Participa en la PAC desde 2015 con una
-              trayectoria destacada en sostenibilidad.
-            </p>
+            <p id="user-profile-text">Cargando descripción...</p>
           </div>
         </div>
 
         <div class="row mt-4">
           <div class="col-md-6">
-            <div class="card">
+            <div class="card" id="pac-card">
               <a
                 href="pac-details.html"
                 class="card-header"
@@ -119,15 +116,27 @@
               </a>
               <div class="card-body">
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item"><strong>ID:</strong> PAC 123</li>
                   <li class="list-group-item">
-                    <strong>Campaña:</strong> 2025
+                    <strong>ID:</strong> <span id="pac-id"></span>
+                  </li>
+                  <li class="list-group-item">
+                    <strong>Campaña:</strong> <span id="pac-campaña"></span>
                   </li>
                   <li class="list-group-item">
                     <strong>Estado:</strong>
-                    <span class="badge bg-success rounded-pill">Ready</span>
+                    <span
+                      class="badge rounded-pill"
+                      id="pac-estado-badge"
+                    ></span>
                   </li>
                 </ul>
+              </div>
+            </div>
+            <div class="card" id="new-pac-card" style="display: none">
+              <div class="card-header">PAC</div>
+              <div class="card-body">
+                <p class="text-muted">No hay PAC asociada a este usuario.</p>
+                <a href="#" class="btn btn-primary">Crear nueva PAC</a>
               </div>
             </div>
           </div>
@@ -138,10 +147,10 @@
               <div class="card-body">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    <strong>Email:</strong> juan.perez@agro.com
+                    <strong>Email:</strong> <span id="user-email"></span>
                   </li>
                   <li class="list-group-item">
-                    <strong>Teléfono:</strong> +34 600 123 456
+                    <strong>Teléfono:</strong> <span id="user-phone"></span>
                   </li>
                 </ul>
               </div>
@@ -152,15 +161,7 @@
         <div class="card mt-4">
           <div class="card-header">Documentos Asociados</div>
           <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <a href="#">Declaración de superficies 2025</a>
-              </li>
-              <li class="list-group-item">
-                <a href="#">Justificante de titularidad</a>
-              </li>
-              <li class="list-group-item"><a href="#">Plano SIGPAC</a></li>
-            </ul>
+            <ul class="list-group list-group-flush" id="document-list"></ul>
           </div>
         </div>
 
@@ -169,5 +170,105 @@
         >
       </div>
     </div>
+
+    <script>
+      const users = {
+        user1: {
+          nombre: "Juan Pérez",
+          email: "juan.perez@agro.com",
+          telefono: "+34 600 123 456",
+          descripcion: "Perfil del agricultor",
+          texto:
+            "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015 con una trayectoria destacada en sostenibilidad.",
+          pac: {
+            id: "PAC 123",
+            campaña: "2025",
+            estado: "Ready",
+          },
+          documentos: [
+            "Declaración de superficies 2025",
+            "Justificante de titularidad",
+            "Plano SIGPAC",
+          ],
+        },
+        user2: {
+          nombre: "María Gómez",
+          email: "maria.gomez@campo.org",
+          telefono: "+34 600 654 321",
+          descripcion: "Ganadera familiar en Castilla y León",
+          texto:
+            "María tiene una explotación familiar centrada en ganadería extensiva.",
+          pac: {
+            id: "PAC 456",
+            campaña: "2025",
+            estado: "En revisión",
+          },
+          documentos: [
+            "Certificado de explotaciones ganaderas",
+            "Solicitud PAC 2025",
+          ],
+        },
+        user3: {
+          nombre: "Luis Martínez",
+          email: "luis.martinez@granja.net",
+          telefono: "+34 600 789 123",
+          descripcion: "Olivicultor extremeño",
+          texto:
+            "Luis cultiva olivar tradicional y se ha acogido a prácticas eco-regionales.",
+          pac: null,
+          documentos: ["Plan de gestión sostenible", "Informe técnico PAC"],
+        },
+      };
+
+      function getEstadoBadgeClass(estado) {
+        switch (estado.toLowerCase()) {
+          case "ready":
+            return "bg-success";
+          case "aceptada":
+            return "bg-primary";
+          case "en revisión":
+            return "bg-warning text-dark";
+          default:
+            return "bg-secondary";
+        }
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+      const user = users[userId];
+
+      if (user) {
+        document.getElementById("user-name").textContent = user.nombre;
+        document.getElementById("user-desc").textContent = user.descripcion;
+        document.getElementById("user-profile-text").textContent = user.texto;
+        document.getElementById("user-email").textContent = user.email;
+        document.getElementById("user-phone").textContent = user.telefono;
+
+        if (user.pac) {
+          document.getElementById("pac-id").textContent = user.pac.id;
+          document.getElementById("pac-campaña").textContent = user.pac.campaña;
+
+          const badge = document.getElementById("pac-estado-badge");
+          badge.textContent = user.pac.estado;
+          badge.className =
+            "badge rounded-pill " + getEstadoBadgeClass(user.pac.estado);
+        } else {
+          document.getElementById("pac-card").style.display = "none";
+          document.getElementById("new-pac-card").style.display = "flex";
+        }
+
+        const docList = document.getElementById("document-list");
+        docList.innerHTML = "";
+        user.documentos.forEach((doc) => {
+          const li = document.createElement("li");
+          li.className = "list-group-item";
+          li.innerHTML = `<a href="#">${doc}</a>`;
+          docList.appendChild(li);
+        });
+      } else {
+        document.querySelector(".content-wrapper").innerHTML =
+          "<h2>Usuario no encontrado</h2>";
+      }
+    </script>
   </body>
 </html>
