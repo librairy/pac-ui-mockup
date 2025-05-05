@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Detalles del Usuario - Dashboard PAC</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="sidebar">
+      <div class="logo-section">
+        <img src="img/laiw_color.png" alt="LAIW Logo" />
+        <!-- <span class="link-text">LAIW</span> -->
+      </div>
+      <ul class="nav flex-column flex-grow-1">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="index.html">
+            <i class="fas fa-home"></i>
+            <span class="link-text">Inicio</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fas fa-file-alt"></i>
+            <span class="link-text">PAC</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fas fa-bullhorn"></i>
+            <span class="link-text">Acciones</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="users.html">
+            <i class="fas fa-users"></i>
+            <span class="link-text">Usuarios</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="nav flex-column mt-auto mb-3">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fas fa-cog"></i>
+            <span class="link-text">Configuración</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <nav class="top-nav">
+        <div class="d-flex align-items-center">
+          <span class="navbar-brand">CAMPAÑA</span>
+          <select
+            class="form-select form-select-sm ms-2 year-select"
+            aria-label="Year selection"
+          >
+            <option value="2025" selected>2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+          </select>
+        </div>
+        <form class="d-flex search-form flex-grow-1 mx-3" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Copilot Search..."
+            aria-label="Search"
+          />
+        </form>
+        <div class="nav-icons d-flex align-items-center">
+          <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+          <a href="#" title="User Profile"
+            ><i class="fas fa-user-circle"></i
+          ></a>
+        </div>
+      </nav>
+      <div class="content-wrapper">
+        <h2>Juan Pérez</h2>
+        <p class="text-muted">Perfil del agricultor</p>
+
+        <div class="card mt-3">
+          <div class="card-header">Perfil</div>
+          <div class="card-body">
+            <p>
+              Juan es un agricultor experimentado en cultivos de secano y
+              regadío en Badajoz. Participa en la PAC desde 2015 con una
+              trayectoria destacada en sostenibilidad.
+            </p>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="card">
+              <a
+                href="pac-details.html"
+                class="card-header"
+                style="text-decoration: none; color: inherit"
+              >
+                PAC
+              </a>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>ID:</strong> PAC 123</li>
+                  <li class="list-group-item">
+                    <strong>Campaña:</strong> 2025
+                  </li>
+                  <li class="list-group-item">
+                    <strong>Estado:</strong>
+                    <span class="badge bg-success rounded-pill">Ready</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">Contacto</div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <strong>Email:</strong> juan.perez@agro.com
+                  </li>
+                  <li class="list-group-item">
+                    <strong>Teléfono:</strong> +34 600 123 456
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-header">Documentos Asociados</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <a href="#">Declaración de superficies 2025</a>
+              </li>
+              <li class="list-group-item">
+                <a href="#">Justificante de titularidad</a>
+              </li>
+              <li class="list-group-item"><a href="#">Plano SIGPAC</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="users.html" class="btn btn-secondary mt-4"
+          ><i class="fas fa-arrow-left"></i> Volver a usuarios</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
