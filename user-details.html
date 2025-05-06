@@ -1,397 +1,326 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalles del Usuario - PAC Manager</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body class="bg-light">
-    <nav class="sidebar">
-      <div class="logo-section">
-        <img src="img/laiw_color.png" alt="LAIW Logo" />
-        <!-- <span class="link-text">LAIW</span> -->
-      </div>
-      <ul class="nav flex-column flex-grow-1">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="index.html">
-            <i class="fas fa-home"></i>
-            <span class="link-text">Inicio</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-file-alt"></i>
-            <span class="link-text">PAC</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-bullhorn"></i>
-            <span class="link-text">Acciones</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="users.html">
-            <i class="fas fa-users"></i>
-            <span class="link-text">Usuarios</span>
-          </a>
-        </li>
-      </ul>
-      <ul class="nav flex-column mt-auto mb-3">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-cog"></i>
-            <span class="link-text">Configuración</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <nav class="top-nav">
-        <div class="d-flex align-items-center">
-          <span class="navbar-brand">CAMPAÑA</span>
-          <select
-            class="form-select form-select-sm ms-2 year-select"
-            aria-label="Year selection"
-          >
-            <option value="2025" selected>2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-            <option value="2018">2018</option>
-            <option value="2017">2017</option>
-            <option value="2016">2016</option>
-            <option value="2015">2015</option>
-          </select>
-        </div>
-        <form class="d-flex search-form flex-grow-1 mx-3" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Copilot Search..."
-            aria-label="Search"
-          />
-        </form>
-        <div class="nav-icons d-flex align-items-center">
-          <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
-          <a href="#" title="User Profile"
-            ><i class="fas fa-user-circle"></i
-          ></a>
-        </div>
-      </nav>
-      <div class="content-wrapper">
-        <h2 id="user-name">Nombre Usuario</h2>
-        <p class="text-muted" id="user-desc">Perfil del agricultor</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalles del Usuario - PAC Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-        <div class="card mt-3">
-          <div class="card-header">Perfil</div>
-          <div class="card-body">
-            <p id="user-profile-text">Cargando descripción...</p>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <div class="card" id="pac-card">
-              <a
-                href="pac-details.html"
-                class="card-header"
-                style="text-decoration: none; color: inherit"
-              >
-                PAC
-              </a>
-              <div class="card-body">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <strong>ID:</strong> <span id="pac-id"></span>
-                  </li>
-                  <li class="list-group-item">
-                    <strong>Campaña:</strong> <span id="pac-campaña"></span>
-                  </li>
-                  <li class="list-group-item">
-                    <strong>Estado:</strong>
-                    <span
-                      class="badge rounded-pill"
-                      id="pac-estado-badge"
-                    ></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="card" id="new-pac-card" style="display: none">
-              <div class="card-header">PAC</div>
-              <div class="card-body">
-                <p class="text-muted">No hay PAC asociada a este usuario.</p>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#crearPacModal"
-                >
-                  <i class="fas fa-plus"></i> Crear nueva PAC
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">Contacto</div>
-              <div class="card-body">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <strong>Email:</strong> <span id="user-email"></span>
-                  </li>
-                  <li class="list-group-item">
-                    <strong>Teléfono:</strong> <span id="user-phone"></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mt-4">
-          <div class="card-header">Documentos Asociados</div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush" id="document-list"></ul>
-          </div>
-        </div>
-
-        <a href="users.html" class="btn btn-secondary mt-4"
-          ><i class="fas fa-arrow-left"></i> Volver a usuarios</a
-        >
-      </div>
+<body class="bg-light">
+  <nav class="sidebar">
+    <div class="logo-section">
+      <img src="img/laiw_color.png" alt="LAIW Logo" />
+      <!-- <span class="link-text">LAIW</span> -->
     </div>
+    <ul class="nav flex-column flex-grow-1">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="index.html">
+          <i class="fas fa-home"></i>
+          <span class="link-text">Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-file-alt"></i>
+          <span class="link-text">PAC</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-bullhorn"></i>
+          <span class="link-text">Acciones</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="users.html">
+          <i class="fas fa-users"></i>
+          <span class="link-text">Usuarios</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav flex-column mt-auto mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-cog"></i>
+          <span class="link-text">Configuración</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="crearPacModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="crearPacModalLabel">Crear nueva PAC</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
+  <!-- Main Content -->
+  <div class="main-content">
+    <nav class="top-nav">
+      <div class="d-flex align-items-center">
+        <span class="navbar-brand">CAMPAÑA</span>
+        <select class="form-select form-select-sm ms-2 year-select" aria-label="Year selection">
+          <option value="2025" selected>2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+          <option value="2016">2016</option>
+          <option value="2015">2015</option>
+        </select>
+      </div>
+      <form class="d-flex search-form flex-grow-1 mx-3" role="search">
+        <input class="form-control me-2" type="search" placeholder="Copilot Search..." aria-label="Search" />
+      </form>
+      <div class="nav-icons d-flex align-items-center">
+        <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+        <a href="#" title="User Profile"><i class="fas fa-user-circle"></i></a>
+      </div>
+    </nav>
+    <div class="content-wrapper">
+      <h2 id="user-name">Nombre Usuario</h2>
+      <p class="text-muted" id="user-desc">Perfil del agricultor</p>
+
+      <div class="card mt-3">
+        <div class="card-header">Perfil</div>
+        <div class="card-body">
+          <p id="user-profile-text">Cargando descripción...</p>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card" id="pac-card">
+            <a href="pac-details.html" class="card-header" style="text-decoration: none; color: inherit">
+              PAC
+            </a>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <strong>ID:</strong> <span id="pac-id"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Campaña:</strong> <span id="pac-campaña"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Estado:</strong>
+                  <span class="badge rounded-pill" id="pac-estado-badge"></span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="modal-body">
-            <form id="crearPacForm">
-              <div class="mb-3">
-                <label class="form-label">Selecciona el método:</label>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="metodo"
-                    id="desdeCero"
-                    value="cero"
-                    checked
-                  />
-                  <label class="form-check-label" for="desdeCero"
-                    >Crear desde cero</label
-                  >
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="metodo"
-                    id="desdeDocs"
-                    value="docs"
-                  />
-                  <label class="form-check-label" for="desdeDocs"
-                    >Crear a partir de documentos</label
-                  >
-                  <div
-                    class="mb-3"
-                    id="documentosOpciones"
-                    style="display: none"
-                  >
-                    <label class="form-label">Selecciona documentos:</label>
-                    <div id="checkboxDocs" class="form-check">
-                      <!-- Checkboxes generados por JS -->
-                    </div>
+          <div class="card" id="new-pac-card" style="display: none">
+            <div class="card-header">PAC</div>
+            <div class="card-body">
+              <p class="text-muted">No hay PAC asociada a este usuario.</p>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearPacModal">
+                <i class="fas fa-plus"></i> Crear nueva PAC
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">Contacto</div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <strong>Email:</strong> <span id="user-email"></span>
+                </li>
+                <li class="list-group-item">
+                  <strong>Teléfono:</strong> <span id="user-phone"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header">Documentos Asociados</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush" id="document-list"></ul>
+        </div>
+      </div>
+
+      <a href="users.html" class="btn btn-secondary mt-4"><i class="fas fa-arrow-left"></i> Volver a usuarios</a>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="crearPacModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearPacModalLabel">Crear nueva PAC</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="crearPacForm">
+            <div class="mb-3">
+              <label class="form-label">Selecciona el método:</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="metodo" id="desdeCero" value="cero" checked />
+                <label class="form-check-label" for="desdeCero">Crear desde cero</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="metodo" id="desdeDocs" value="docs" />
+                <label class="form-check-label" for="desdeDocs">Crear a partir de documentos</label>
+                <div class="mb-3" id="documentosOpciones" style="display: none">
+                  <label class="form-label">Selecciona documentos:</label>
+                  <div id="checkboxDocs" class="form-check">
+                    <!-- Checkboxes generados por JS -->
                   </div>
                 </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="metodo"
-                    id="desdeSGA"
-                    value="sga"
-                  />
-                  <label class="form-check-label" for="desdeSGA"
-                    >Obtener de SGA</label
-                  >
-                </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="submit" form="crearPacForm" class="btn btn-primary">
-              Crear PAC
-            </button>
-          </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="metodo" id="desdeSGA" value="sga" />
+                <label class="form-check-label" for="desdeSGA">Obtener de SGA</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" form="crearPacForm" class="btn btn-primary">
+            Crear PAC
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script>
-      const users = {
-        user1: {
-          nombre: "Juan Pérez",
-          email: "juan.perez@agro.com",
-          telefono: "+34 600 123 456",
-          descripcion: "Perfil del agricultor",
-          texto:
-            "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015 con una trayectoria destacada en sostenibilidad.",
-          pac: {
-            id: "PAC 123",
-            campaña: "2025",
-            estado: "Ready",
-          },
-          documentos: [
-            "Declaración de superficies 2025",
-            "Justificante de titularidad",
-            "Plano SIGPAC",
-          ],
+  <script>
+    const users = {
+      user1: {
+        nombre: "Juan Pérez",
+        email: "juan.perez@agro.com",
+        telefono: "+34 600 123 456",
+        descripcion: "Perfil del agricultor",
+        texto:
+          "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015 con una trayectoria destacada en sostenibilidad.",
+        pac: {
+          id: "PAC 123",
+          campaña: "2025",
+          estado: "Ready",
         },
-        user2: {
-          nombre: "María Gómez",
-          email: "maria.gomez@campo.org",
-          telefono: "+34 600 654 321",
-          descripcion: "Ganadera familiar en Castilla y León",
-          texto:
-            "María tiene una explotación familiar centrada en ganadería extensiva.",
-          pac: {
-            id: "PAC 456",
-            campaña: "2025",
-            estado: "En revisión",
-          },
-          documentos: [
-            "Certificado de explotaciones ganaderas",
-            "Solicitud PAC 2025",
-          ],
+        documentos: [
+          "Declaración de superficies 2025",
+          "Justificante de titularidad",
+          "Plano SIGPAC",
+        ],
+      },
+      user2: {
+        nombre: "María Gómez",
+        email: "maria.gomez@campo.org",
+        telefono: "+34 600 654 321",
+        descripcion: "Ganadera familiar en Castilla y León",
+        texto:
+          "María tiene una explotación familiar centrada en ganadería extensiva.",
+        pac: {
+          id: "PAC 456",
+          campaña: "2025",
+          estado: "En revisión",
         },
-        user3: {
-          nombre: "Luis Martínez",
-          email: "luis.martinez@granja.net",
-          telefono: "+34 600 789 123",
-          descripcion: "Olivicultor extremeño",
-          texto:
-            "Luis cultiva olivar tradicional y se ha acogido a prácticas eco-regionales.",
-          pac: null,
-          documentos: ["Plan de gestión sostenible", "Informe técnico PAC"],
-        },
-      };
+        documentos: [
+          "Certificado de explotaciones ganaderas",
+          "Solicitud PAC 2025",
+        ],
+      },
+      user3: {
+        nombre: "Luis Martínez",
+        email: "luis.martinez@granja.net",
+        telefono: "+34 600 789 123",
+        descripcion: "Olivicultor extremeño",
+        texto:
+          "Luis cultiva olivar tradicional y se ha acogido a prácticas eco-regionales.",
+        pac: null,
+        documentos: ["Plan de gestión sostenible", "Informe técnico PAC"],
+      },
+    };
 
-      function getEstadoBadgeClass(estado) {
-        switch (estado.toLowerCase()) {
-          case "ready":
-            return "bg-success";
-          case "aceptada":
-            return "bg-primary";
-          case "en revisión":
-            return "bg-warning text-dark";
-          default:
-            return "bg-secondary";
-        }
+    function getEstadoBadgeClass(estado) {
+      switch (estado.toLowerCase()) {
+        case "ready":
+          return "bg-success";
+        case "aceptada":
+          return "bg-primary";
+        case "en revisión":
+          return "bg-warning text-dark";
+        default:
+          return "bg-secondary";
       }
+    }
 
-      const params = new URLSearchParams(window.location.search);
-      const userId = params.get("id");
-      const user = users[userId];
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("id");
+    const user = users[userId];
 
-      if (user) {
-        document.getElementById("user-name").textContent = user.nombre;
-        document.getElementById("user-desc").textContent = user.descripcion;
-        document.getElementById("user-profile-text").textContent = user.texto;
-        document.getElementById("user-email").textContent = user.email;
-        document.getElementById("user-phone").textContent = user.telefono;
+    if (user) {
+      document.getElementById("user-name").textContent = user.nombre;
+      document.getElementById("user-desc").textContent = user.descripcion;
+      document.getElementById("user-profile-text").textContent = user.texto;
+      document.getElementById("user-email").textContent = user.email;
+      document.getElementById("user-phone").textContent = user.telefono;
 
-        if (user.pac) {
-          document.getElementById("pac-id").textContent = user.pac.id;
-          document.getElementById("pac-campaña").textContent = user.pac.campaña;
+      if (user.pac) {
+        document.getElementById("pac-id").textContent = user.pac.id;
+        document.getElementById("pac-campaña").textContent = user.pac.campaña;
 
-          const badge = document.getElementById("pac-estado-badge");
-          badge.textContent = user.pac.estado;
-          badge.className =
-            "badge rounded-pill " + getEstadoBadgeClass(user.pac.estado);
-        } else {
-          document.getElementById("pac-card").style.display = "none";
-          document.getElementById("new-pac-card").style.display = "flex";
-        }
-
-        const docList = document.getElementById("document-list");
-        docList.innerHTML = "";
-        user.documentos.forEach((doc) => {
-          const li = document.createElement("li");
-          li.className = "list-group-item";
-          li.innerHTML = `<a href="#">${doc}</a>`;
-          docList.appendChild(li);
-        });
+        const badge = document.getElementById("pac-estado-badge");
+        badge.textContent = user.pac.estado;
+        badge.className =
+          "badge rounded-pill " + getEstadoBadgeClass(user.pac.estado);
       } else {
-        document.querySelector(".content-wrapper").innerHTML =
-          "<h2>Usuario no encontrado</h2>";
+        document.getElementById("pac-card").style.display = "none";
+        document.getElementById("new-pac-card").style.display = "flex";
       }
-    </script>
-    <script>
-      // Mostrar checkboxes si se selecciona "a partir de documentos"
-      document.querySelectorAll('input[name="metodo"]').forEach((radio) => {
-        radio.addEventListener("change", () => {
-          const docsVisible = document.getElementById("desdeDocs").checked;
-          document.getElementById("documentosOpciones").style.display =
-            docsVisible ? "block" : "none";
-        });
-      });
 
-      // Rellenar checkboxes desde los documentos del usuario actual
-      if (user && user.documentos) {
-        const checkboxContainer = document.getElementById("checkboxDocs");
-        checkboxContainer.innerHTML = "";
-        user.documentos.forEach((doc, index) => {
-          const div = document.createElement("div");
-          div.className = "form-check";
-          div.innerHTML = `
+      const docList = document.getElementById("document-list");
+      docList.innerHTML = "";
+      user.documentos.forEach((doc) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerHTML = `<a href="#">${doc}</a>`;
+        docList.appendChild(li);
+      });
+    } else {
+      document.querySelector(".content-wrapper").innerHTML =
+        "<h2>Usuario no encontrado</h2>";
+    }
+  </script>
+  <script>
+    // Mostrar checkboxes si se selecciona "a partir de documentos"
+    document.querySelectorAll('input[name="metodo"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        const docsVisible = document.getElementById("desdeDocs").checked;
+        document.getElementById("documentosOpciones").style.display =
+          docsVisible ? "block" : "none";
+      });
+    });
+
+    // Rellenar checkboxes desde los documentos del usuario actual
+    if (user && user.documentos) {
+      const checkboxContainer = document.getElementById("checkboxDocs");
+      checkboxContainer.innerHTML = "";
+      user.documentos.forEach((doc, index) => {
+        const div = document.createElement("div");
+        div.className = "form-check";
+        div.innerHTML = `
             <input class="form-check-input" type="checkbox" value="${doc}" id="doc${index}">
             <label class="form-check-label" for="doc${index}">${doc}</label>
           `;
-          checkboxContainer.appendChild(div);
-        });
-      }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+        checkboxContainer.appendChild(div);
+      });
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
