@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8" />
@@ -24,9 +24,9 @@
       /* light gray border */
       border-radius: 0.5rem;
       /* rounded corners */
-      padding: 1.5rem;
+      padding: 1.5rem !important;
       /* padding */
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.5rem !important;
       /* margin bottom */
     }
 
@@ -82,13 +82,17 @@
       /* blue ring on focus */
     }
 
-    input[type="checkbox"] {
+    input[type="checkbox"],
+    input[type="radio"] {
+      /* Añadido radio para consistencia */
       margin-right: 0.5rem;
       border-radius: 0.25rem;
       border-color: #d1d5db;
     }
 
-    input[type="checkbox"]:focus {
+    input[type="checkbox"]:focus,
+    input[type="radio"]:focus {
+      /* Añadido radio para consistencia */
       outline: none;
       box-shadow: 0 0 0 3px rgb(59 130 246 / 0.5);
       /* blue ring on focus */
@@ -100,20 +104,31 @@
       /* Responsive grid */
     }
 
-    button {
-      padding: 0.75rem 1.5rem;
-      background-color: #2563eb;
-      /* blue background */
-      color: white;
-      font-weight: 600;
-      border-radius: 0.375rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
+    /* Estilos para el panel de historial y campos modificados */
+    .campo-modificado-historial {
+      border-color: #30751b !important;
+      /* Tailwind amber-400 */
+      background-color: #c7fec791 !important;
+      /* Tailwind amber-100 */
+      box-shadow: 0 0 0 2px #30751b !important;
     }
 
-    button:hover {
-      background-color: #1d4ed8;
-      /* darker blue on hover */
+    #historyPanel::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #historyPanel::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    #historyPanel::-webkit-scrollbar-thumb {
+      background: #c7c7c7;
+      border-radius: 10px;
+    }
+
+    #historyPanel::-webkit-scrollbar-thumb:hover {
+      background: #a3a3a3;
     }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -125,7 +140,6 @@
   <nav class="sidebar">
     <div class="logo-section">
       <img src="img/laiw_color.png" alt="LAIW Logo" />
-      <!-- <span class="link-text">LAIW</span> -->
     </div>
     <ul class="nav flex-column flex-grow-1">
       <li class="nav-item">
@@ -182,9 +196,15 @@
 
     <div class="content-wrapper">
       <div class="container-fluid">
-        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">
-          Solicitud Única PAC 2025 (Editable)
-        </h1>
+        <div class="flex justify-center items-center mb-8 relative">
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
+            Solicitud Única PAC 2025 (Editable)
+          </h1>
+          <button id="historyButton" title="Ver Historial"
+            class="ml-4 p-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-history"></i>
+          </button>
+        </div>
 
         <form id="pac-form">
           <fieldset>
@@ -925,60 +945,75 @@
             </h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 mb-6">
               <div class="flex items-center">
-                <input type="checkbox" id="dr_andalucia" /><label for="dr_andalucia" class="ml-2 mb-0">Andalucía</label>
+                <input type="checkbox" id="dr_andalucia" name="dr_andalucia" /><label for="dr_andalucia"
+                  class="ml-2 mb-0">Andalucía</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_aragon" /><label for="dr_aragon" class="ml-2 mb-0">Aragón</label>
+                <input type="checkbox" id="dr_aragon" name="dr_aragon" /><label for="dr_aragon"
+                  class="ml-2 mb-0">Aragón</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_asturias" /><label for="dr_asturias" class="ml-2 mb-0">Asturias</label>
+                <input type="checkbox" id="dr_asturias" name="dr_asturias" /><label for="dr_asturias"
+                  class="ml-2 mb-0">Asturias</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_baleares" /><label for="dr_baleares" class="ml-2 mb-0">Islas
+                <input type="checkbox" id="dr_baleares" name="dr_baleares" /><label for="dr_baleares"
+                  class="ml-2 mb-0">Islas
                   Baleares</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_canarias" /><label for="dr_canarias" class="ml-2 mb-0">Canarias</label>
+                <input type="checkbox" id="dr_canarias" name="dr_canarias" /><label for="dr_canarias"
+                  class="ml-2 mb-0">Canarias</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_cantabria" /><label for="dr_cantabria" class="ml-2 mb-0">Cantabria</label>
+                <input type="checkbox" id="dr_cantabria" name="dr_cantabria" /><label for="dr_cantabria"
+                  class="ml-2 mb-0">Cantabria</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_castilla_mancha" /><label for="dr_castilla_mancha"
-                  class="ml-2 mb-0">Castilla La Mancha</label>
+                <input type="checkbox" id="dr_castilla_mancha" name="dr_castilla_mancha" /><label
+                  for="dr_castilla_mancha" class="ml-2 mb-0">Castilla La Mancha</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_castilla_leon" /><label for="dr_castilla_leon" class="ml-2 mb-0">Castilla
+                <input type="checkbox" id="dr_castilla_leon" name="dr_castilla_leon" /><label for="dr_castilla_leon"
+                  class="ml-2 mb-0">Castilla
                   y León</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_cataluna" /><label for="dr_cataluna" class="ml-2 mb-0">Cataluña</label>
+                <input type="checkbox" id="dr_cataluna" name="dr_cataluna" /><label for="dr_cataluna"
+                  class="ml-2 mb-0">Cataluña</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_extremadura" checked /><label for="dr_extremadura"
+                <input type="checkbox" id="dr_extremadura" name="dr_extremadura" checked /><label for="dr_extremadura"
                   class="ml-2 mb-0">Extremadura</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_galicia" /><label for="dr_galicia" class="ml-2 mb-0">Galicia</label>
+                <input type="checkbox" id="dr_galicia" name="dr_galicia" /><label for="dr_galicia"
+                  class="ml-2 mb-0">Galicia</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_madrid" /><label for="dr_madrid" class="ml-2 mb-0">Madrid</label>
+                <input type="checkbox" id="dr_madrid" name="dr_madrid" /><label for="dr_madrid"
+                  class="ml-2 mb-0">Madrid</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_murcia" /><label for="dr_murcia" class="ml-2 mb-0">Murcia</label>
+                <input type="checkbox" id="dr_murcia" name="dr_murcia" /><label for="dr_murcia"
+                  class="ml-2 mb-0">Murcia</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_navarra" /><label for="dr_navarra" class="ml-2 mb-0">Navarra</label>
+                <input type="checkbox" id="dr_navarra" name="dr_navarra" /><label for="dr_navarra"
+                  class="ml-2 mb-0">Navarra</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_pais_vasco" /><label for="dr_pais_vasco" class="ml-2 mb-0">País
+                <input type="checkbox" id="dr_pais_vasco" name="dr_pais_vasco" /><label for="dr_pais_vasco"
+                  class="ml-2 mb-0">País
                   Vasco</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_rioja" /><label for="dr_rioja" class="ml-2 mb-0">La Rioja</label>
+                <input type="checkbox" id="dr_rioja" name="dr_rioja" /><label for="dr_rioja" class="ml-2 mb-0">La
+                  Rioja</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="dr_valenciana" /><label for="dr_valenciana" class="ml-2 mb-0">C.
+                <input type="checkbox" id="dr_valenciana" name="dr_valenciana" /><label for="dr_valenciana"
+                  class="ml-2 mb-0">C.
                   Valenciana</label>
               </div>
             </div>
@@ -991,7 +1026,8 @@
               necesario basados en la página 4 del PDF)
             </p>
             <div class="flex items-center">
-              <input type="checkbox" id="dr_ex_prod_integrada_frutales_hueso_2019" checked />
+              <input type="checkbox" id="dr_ex_prod_integrada_frutales_hueso_2019"
+                name="dr_ex_prod_integrada_frutales_hueso_2019" checked />
               <label for="dr_ex_prod_integrada_frutales_hueso_2019" class="ml-2 mb-0">Operación 10.1.1. Producción
                 Integrada de frutales de hueso.
                 Convocatoria 2019</label>
@@ -1006,25 +1042,25 @@
             </p>
             <div class="space-y-2">
               <div class="flex items-center">
-                <input type="checkbox" id="declara_datos_verdaderos" checked />
+                <input type="checkbox" id="declara_datos_verdaderos" name="declara_datos_verdaderos" checked />
                 <label for="declara_datos_verdaderos" class="ml-2 mb-0">Declara que todos los datos contenidos en esta
                   solicitud...
                   son verdaderos.</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="declara_conoce_sigpac" checked />
+                <input type="checkbox" id="declara_conoce_sigpac" name="declara_conoce_sigpac" checked />
                 <label for="declara_conoce_sigpac" class="ml-2 mb-0">Declara que conoce los usos y delimitaciones que
                   figuran en
                   la base de datos SIGPAC...</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="autoriza_consulta_aeat" checked />
+                <input type="checkbox" id="autoriza_consulta_aeat" name="autoriza_consulta_aeat" checked />
                 <label for="autoriza_consulta_aeat" class="ml-2 mb-0">Autoriza consulta de datos de estar al corriente
                   con
                   AEAT/Agencia Tributaria Autonómica.</label>
               </div>
               <div class="flex items-center">
-                <input type="checkbox" id="autoriza_consulta_tgss" checked />
+                <input type="checkbox" id="autoriza_consulta_tgss" name="autoriza_consulta_tgss" checked />
                 <label for="autoriza_consulta_tgss" class="ml-2 mb-0">Autoriza consulta de datos de estar al corriente
                   con
                   TGSS.</label>
@@ -1072,78 +1108,99 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-200" id="tabla-recintos-body">
                   <tr>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="06" class="text-sm p-1 w-12" />
+                      <input type="text" value="06" class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="44" class="text-sm p-1 w-12" />
+                      <input type="text" value="44" class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="26" class="text-sm p-1 w-12" />
+                      <input type="text" value="26" class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="16" class="text-sm p-1 w-12" />
+                      <input type="text" value="16" class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="2" class="text-sm p-1 w-12" />
+                      <input type="text" value="2" class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24" />
+                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24 recinto-campo"
+                        name="recinto_producto_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="number" step="0.01" value="2.35" class="text-sm p-1 w-20" />
+                      <input type="number" step="0.01" value="2.35" class="text-sm p-1 w-20 recinto-campo"
+                        name="recinto_sup_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="FY" class="text-sm p-1 w-12" />
+                      <input type="text" value="FY" class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_0" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32" />
+                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32 recinto-campo"
+                        name="recinto_ayudas_0" />
                     </td>
                   </tr>
                   <tr>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="06" class="text-sm p-1 w-12" />
+                      <input type="text" value="06" class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="44" class="text-sm p-1 w-12" />
+                      <input type="text" value="44" class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="26" class="text-sm p-1 w-12" />
+                      <input type="text" value="26" class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="16" class="text-sm p-1 w-12" />
+                      <input type="text" value="16" class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="0" class="text-sm p-1 w-12" />
+                      <input type="text" value="0" class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24" />
+                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24 recinto-campo"
+                        name="recinto_producto_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="number" step="0.01" value="2.97" class="text-sm p-1 w-20" />
+                      <input type="number" step="0.01" value="2.97" class="text-sm p-1 w-20 recinto-campo"
+                        name="recinto_sup_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="FY" class="text-sm p-1 w-12" />
+                      <input type="text" value="FY" class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_1" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32" />
+                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32 recinto-campo"
+                        name="recinto_ayudas_1" />
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <button type="button" class="mt-4 bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm">
+            <button type="button" id="addRecintoButton"
+              class="mt-4 bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm">
               Añadir Recinto
             </button>
           </fieldset>
 
           <div class="mt-10 text-center">
-            <button type="submit">Guardar Cambios</button>
+            <button type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Guardar
+              Cambios</button>
           </div>
         </form>
       </div>
+    </div>
+  </div>
+
+  <div id="historyPanel"
+    class="fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 p-6 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-gray-700">Historial de Cambios</h2>
+      <button id="closeHistoryPanel" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+    <div id="historyList" class="space-y-4">
     </div>
   </div>
 
@@ -1162,8 +1219,9 @@
       }
     }
 
-    // Initial call to set the correct state on page load
-    document.addEventListener("DOMContentLoaded", toggleResidencia);
+    // Initial call to set the correct state on page load for residencia details
+    // Ensure it's called after DOM is loaded if this script is in <head>
+    // document.addEventListener("DOMContentLoaded", toggleResidencia); // Ya se llama abajo
 
     // Add event listener for form submission (optional)
     document
@@ -1173,16 +1231,254 @@
         alert(
           "Formulario guardado (simulación). En una aplicación real, aquí se enviarían los datos."
         );
-        // Here you would typically gather form data and send it to a server
-        // const formData = new FormData(event.target);
-        // const data = Object.fromEntries(formData.entries());
-        // console.log(data);
       });
 
-    // Basic functionality to add a row to the Recintos table (example)
-    // More complex logic would be needed for full functionality
-    // This is a simplified example
-    // ... (JS for adding/removing rows would go here) ...
+    // --- HISTORIAL SCRIPT ---
+    document.addEventListener("DOMContentLoaded", () => {
+      toggleResidencia(); // Llama aquí para asegurar que se ejecuta al cargar.
+
+      const historyButton = document.getElementById("historyButton");
+      const historyPanel = document.getElementById("historyPanel");
+      const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
+      const historyListContainer = document.getElementById("historyList");
+      const pacForm = document.getElementById("pac-form");
+
+      // --- Datos de ejemplo para el historial ---
+      const formHistory = [
+        {
+          date: "2025-05-10 14:30",
+          description: "Actualización de dirección de notificación en base a nuevos documentos subidos.",
+          user: "Asistente",
+          formData: {
+            ...getBaseFormData(), // Importante
+            not_nombre_via: "Calle Vieja",
+            not_numero: "5",
+            not_cp: "06701",
+            not_localidad: "Villanueva de la Serena",
+            not_provincia: "Badajoz",
+          },
+          changedFields: ["not_nombre_via", "not_numero", "not_cp", "not_localidad", "not_provincia"]
+        },
+        {
+          date: "2025-05-03 10:15",
+          description: "Actualización datos de contacto y dirección.",
+          user: "Ana Pérez",
+          formData: {
+            sol_telefono: "924856097",
+            sol_movil: "649092919",
+            sol_email: "ana.perez@example.com",
+            not_nombre_via: "Calle Nueva",
+            not_numero: "10",
+            // Mantener el resto de valores como estaban en la versión anterior (o inicial si es el primer cambio)
+            // Copiamos de la base para mantener consistencia, luego sobreescribimos.
+            ...getBaseFormData(), // Importante para tener todos los campos
+            // Sobreescribimos los que cambiaron
+            sol_telefono: "924856097",
+            sol_movil: "649092919",
+            sol_email: "ana.perez@example.com",
+            not_nombre_via: "Calle Nueva",
+            not_numero: "10",
+          },
+          changedFields: ["sol_telefono", "sol_movil", "sol_email", "not_nombre_via", "not_numero"]
+        },
+        {
+          date: "2025-04-28 16:30",
+          description: "Modificación de IBAN y ayudas solicitadas.",
+          user: "Carlos López",
+          formData: {
+            ...getBaseFormData(), // Importante
+            iban: "ES5021000000000000000001",
+            ayuda_jovenes: true,
+            ayuda_abrs: true, // Este ya estaba true, pero lo incluimos si fue parte del "guardado"
+          },
+          changedFields: ["iban", "ayuda_jovenes"]
+        },
+        {
+          date: "2025-04-20 09:00",
+          description: "Creación inicial del formulario.",
+          user: "Sistema",
+          formData: getBaseFormData(), // Estado inicial del formulario
+          changedFields: []
+        },
+      ];
+
+      function getBaseFormData() {
+        // Esta función debería idealmente leer los valores actuales del formulario
+        // O, para este mockup, devolver un objeto con todos los valores por defecto del HTML.
+        // Es VITAL que esta función devuelva un objeto con TODOS los campos y sus valores iniciales.
+        return {
+          campana: "2025", num_solicitud: "367389", estado_actual: "Finalizada", fecha_registro: "", num_registro: "2024000000154555",
+          ambito_grabacion: "AGROAL GESTIÓN INTEGRAL, S.L.U.", tipo_registro: "", codigo_regepa: "1106030141", cod_explotacion: "",
+          comunidad_autonoma: "Extremadura", num_expediente: "11039695",
+          sol_cif_nif: "B06258511", sol_nombre_razon: "FRUTICOLA CASTELNOVO SL", sol_apellido1: "", sol_apellido2: "", sol_fecha_nac: "",
+          sol_genero: "", sol_estado_civil: "", sol_telefono: "924856096", sol_movil: "649092918", sol_email: "torrado@tany.es",
+          sol_titularidad_compartida: false, com_sms: false, com_email: true,
+          not_tipo_via: "Carretera", not_nombre_via: "NAC 430", not_numero: "115", not_bloque: "", not_portal: "", not_escalera: "",
+          not_planta: "", not_puerta: "IZ", not_km: "115", not_provincia: "Badajoz", not_municipio: "Villanueva de la Serena",
+          not_cp: "06700", not_localidad: "VILLANUEVA DE LA SERENA", not_apartado: "", not_oficina: "",
+          res_igual_not: true, // Este controla la visibilidad de otra sección
+          // Campos de dirección residencia (se rellenarán si res_igual_not es false, pero deben existir en el modelo)
+          res_tipo_via: "Carretera", res_nombre_via: "NAC 430", res_numero: "115", res_bloque: "", res_portal: "", res_escalera: "",
+          res_planta: "", res_puerta: "IZ", res_km: "115", res_provincia: "Badajoz", res_municipio: "Villanueva de la Serena",
+          res_cp: "06700", res_localidad: "VILLANUEVA DE LA SERENA",
+          iban: "ES6221002027690200037255", entidad: "2100", sucursal: "2027", dc: "69", num_cuenta: "0200037255",
+          fiscal_incorpora: false, fiscal_forma_juridica: "Otras personas jurídicas", fiscal_cif_integradora: "", fiscal_ingresos_integradora_2023: null, // usar null o "" para números vacíos
+          fiscal_ingresos_agrarios_2023: 13624150.7, fiscal_ingresos_agrarios_2022: 15564544.25, fiscal_ingresos_agrarios_2021: 13665204.58,
+          fiscal_ingresos_totales_2023: 7069803.74, fiscal_costes_laborales: null,
+          rep_cif_nif: "76226750N", rep_nombre: "ATANASIO", rep_apellido1: "NARANJO", rep_apellido2: "HIDALGO", rep_fecha_nac: "1956-07-22",
+          rep_genero: "Hombre", rep_telefono: "", rep_movil: "", rep_email: "",
+          responsabilidad_tipo: "juridica", // Radio button
+          resp_gerente_titular: "no", resp_gerente_familiar: "no", resp_comparte_familiar: "no", resp_comparte_conyuge: "no",
+          resp_gerente_conyuge: "no", resp_grupo_empresarial: "no",
+          gerente_nif: "76226750N", gerente_nombre: "ATANASIO", gerente_apellido1: "NARANJO", gerente_apellido2: "HIDALGO",
+          gerente_fecha_nac: "1956-07-22", gerente_genero: "Hombre", gerente_email: "", gerente_telefono: "", gerente_movil: "",
+          gerente_jornadas: "-50%", gerente_ano_inicio: 1997, gerente_formacion: "Cursos de formación agraria",
+          gerente_cursos_perfeccionamiento: "no", gerente_cif_matriz: "", gerente_razon_matriz: "",
+          ayuda_abrs: true, ayuda_redistributiva: true, ayuda_jovenes: false,
+          ayuda_proteinas: false, ayuda_arroz: false, ayuda_remolacha: false, ayuda_tomate: false, ayuda_frutos_secos: false,
+          ayuda_uva_pasa: false, ayuda_olivar: false, ayuda_algodon: false,
+          ayuda_gan_vacuno_carne: false, ayuda_gan_terneros_nacimiento: false, ayuda_gan_terneros_sostenible: false,
+          ayuda_gan_leche_vaca: false, ayuda_gan_ovino_caprino_carne: false, ayuda_gan_leche_oveja_cabra: false,
+          ayuda_gan_ovino_caprino_sin_pastos: false,
+          eco_pastoreo_siega_biodiversidad: false, eco_pastoreo_extensivo: false, eco_siega_sostenible: false, eco_islas_biodiversidad: false,
+          eco_rotaciones_siembra_directa: true, eco_rotacion_mejorantes: true, eco_siembra_directa: false,
+          eco_cubiertas_lenosos: true, eco_cubierta_vegetal: true, eco_cubierta_inerte: false,
+          eco_espacios_biodiversidad: false, eco_espacios_biodiversidad_sub: false,
+          eco_lamina_nivelacion: false, eco_lamina_siembra_seco: false, eco_lamina_secas: false, eco_lamina_caballones: false,
+          dr_andalucia: false, dr_aragon: false, dr_asturias: false, dr_baleares: false, dr_canarias: false, dr_cantabria: false,
+          dr_castilla_mancha: false, dr_castilla_leon: false, dr_cataluna: false, dr_extremadura: true, dr_galicia: false,
+          dr_madrid: false, dr_murcia: false, dr_navarra: false, dr_pais_vasco: false, dr_rioja: false, dr_valenciana: false,
+          dr_ex_prod_integrada_frutales_hueso_2019: true,
+          declara_datos_verdaderos: true, declara_conoce_sigpac: true, autoriza_consulta_aeat: true, autoriza_consulta_tgss: true,
+          // Para la tabla de recintos, necesitaríamos una estructura más compleja, ej: un array de objetos.
+          // recintos: [
+          //   { recinto_prov_0: "06", recinto_mun_0: "44", ... },
+          //   { recinto_prov_1: "06", recinto_mun_1: "44", ... }
+          // ]
+          // Por simplicidad, no lo implementamos completamente aquí, pero es para tenerlo en cuenta.
+        };
+      }
+
+
+      function toggleHistoryPanel() {
+        historyPanel.classList.toggle("translate-x-full");
+      }
+
+      function populateHistoryList() {
+        historyListContainer.innerHTML = "";
+        if (formHistory.length === 0) {
+          historyListContainer.innerHTML = '<p class="text-gray-500">No hay historial de cambios.</p>';
+          return;
+        }
+
+        formHistory.forEach((entry) => {
+          const entryDiv = document.createElement("div");
+          entryDiv.className = "p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150";
+
+          let userDisplayHTML = '';
+          if (entry.user.toLowerCase() === "sistema") {
+            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Sistema">
+                                 <i class="fas fa-desktop fa-fw mr-2 text-blue-500"></i> Sistema
+                               </span>`;
+          } else if (entry.user.toLowerCase() === "asistente") {
+            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Asistente">
+                                 <i class="fas fa-robot fa-fw mr-2 text-purple-500"></i> Asistente
+                               </span>`;
+          } else {
+            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="${entry.user}">
+                                 <i class="fas fa-user fa-fw mr-2 text-gray-400"></i> ${entry.user}
+                               </span>`;
+          }
+
+          entryDiv.innerHTML = `
+            <p class="font-semibold text-sm text-blue-600">${new Date(entry.date).toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+            <p class="text-sm text-gray-700 mt-1">${entry.description}</p>
+            ${userDisplayHTML}
+          `;
+          entryDiv.addEventListener("click", () => {
+            applyHistoryEntry(entry);
+            toggleHistoryPanel();
+          });
+          historyListContainer.appendChild(entryDiv);
+        });
+      }
+
+      function clearFormHighlights() {
+        const highlightedFields = pacForm.querySelectorAll(".campo-modificado-historial");
+        highlightedFields.forEach(field => {
+          field.classList.remove("campo-modificado-historial");
+        });
+      }
+
+      function applyHistoryEntry(historyEntry, highlight = true) {
+        clearFormHighlights();
+        const formDataFromHistory = historyEntry.formData;
+
+        for (const fieldId in formDataFromHistory) {
+          if (formDataFromHistory.hasOwnProperty(fieldId)) { // Buena práctica
+            const field = pacForm.elements[fieldId];
+            if (field) {
+              // Si hay múltiples campos con el mismo nombre (ej. radio buttons)
+              if (field.length && field[0] && (field[0].type === "radio")) {
+                for (let i = 0; i < field.length; i++) {
+                  if (field[i].value === formDataFromHistory[fieldId]) {
+                    field[i].checked = true;
+                  } else {
+                    field[i].checked = false;
+                  }
+                }
+              } else if (field.type === "checkbox") {
+                field.checked = formDataFromHistory[fieldId];
+              } else {
+                field.value = formDataFromHistory[fieldId];
+              }
+            }
+          }
+        }
+
+        if (highlight && historyEntry.changedFields && historyEntry.changedFields.length > 0) {
+          historyEntry.changedFields.forEach(fieldId => {
+            const field = pacForm.elements[fieldId];
+            if (field) {
+              // Si es un grupo de radio buttons, destacar el contenedor o el label general sería más complejo
+              // Por ahora, destacamos el input individual (aunque visualmente solo uno estará checked)
+              if (field.length && field[0] && (field[0].type === "radio")) {
+                // No es trivial destacar el radio "correcto" si solo tenemos el name
+                // Se podría buscar el que tiene el valor del historial y destacarlo
+                for (let i = 0; i < field.length; i++) {
+                  if (field[i].value === formDataFromHistory[fieldId]) {
+                    field[i].classList.add("campo-modificado-historial");
+                  }
+                }
+              } else {
+                field.classList.add("campo-modificado-historial");
+              }
+            }
+          });
+        }
+
+        if (formDataFromHistory.hasOwnProperty('res_igual_not')) {
+          toggleResidencia();
+        }
+      }
+
+      // Al principio, se carga el último cambio del historial
+      if (formHistory.length > 0) {
+        const latestEntry = formHistory[0];
+        applyHistoryEntry(latestEntry, false); // No resaltar al cargar
+      }
+
+      if (historyButton) {
+        historyButton.addEventListener("click", () => {
+          populateHistoryList();
+          toggleHistoryPanel();
+        });
+      }
+
+      if (closeHistoryPanelButton) {
+        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel);
+      }
+    });
   </script>
 </body>
 
