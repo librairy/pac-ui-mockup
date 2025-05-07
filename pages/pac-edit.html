@@ -154,6 +154,38 @@
     label.campo-validacion-aviso {
       color: rgb(13, 202, 240) !important;
     }
+
+    /*Tipico boton de generar por IA, con anillo con degradado. Al pulsar, todo el boton tiene ese degradado    */
+
+    .ai-button-background {
+      background: linear-gradient(to right, #4f46e5, #3b82f6);
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ai-button-background:hover {
+      background: linear-gradient(to right, #3b82f6, #4f46e5);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    .ai-button {
+      background: gray;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.25rem 0.75rem;
+    }
+
+    .ai-button:focus {
+      background: linear-gradient(to right, #3b82f6, #4f46e5);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+      color: white;
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -224,14 +256,22 @@
           <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
             Solicitud Única PAC 2025 (Editable)
           </h1>
-          <button id="validationsButton" title="Ver Validaciones"
-            class="ml-4 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
-            <i class="fas fa-check-circle"></i>
-          </button>
-          <button id="historyButton" title="Ver Historial"
-            class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
-            <i class="fas fa-history"></i>
-          </button>
+          <div id="formActions" class="absolute right-0 flex items-center">
+            <div class="ai-button-background">
+              <button id="aiGenerationButton" title="Cumplimentar con IA"
+                class="ai-button bg-gray-200 text-gray-700 rounded-full">
+                <i class="fas fa-star"></i>
+              </button>
+            </div>
+            <button id="validationsButton" title="Ver Validaciones"
+              class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <i class="fas fa-check-circle"></i>
+            </button>
+            <button id="historyButton" title="Ver Historial"
+              class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <i class="fas fa-history"></i>
+            </button>
+          </div>
         </div>
 
         <form id="pac-form">
