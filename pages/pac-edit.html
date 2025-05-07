@@ -186,6 +186,72 @@
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
       color: white;
     }
+
+    /* Nuevos estilos para la navegación y secciones del formulario */
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    #form-navigation .nav-link {
+      padding: 0.35rem 0.75rem;
+      /* Aumentado el padding vertical */
+      border-radius: 0.375rem;
+      /* md radius */
+      text-decoration: none;
+      color: #374151;
+      /* gray-700 */
+      display: block;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    #form-navigation .nav-link:hover {
+      background-color: #e5e7eb;
+      /* gray-200 */
+      color: #2563eb;
+      /* blue-600 */
+    }
+
+    #form-navigation .nav-link.active-nav-link {
+      background-color: #3b82f6;
+      /* blue-500 */
+      color: white;
+      font-weight: 600;
+    }
+
+    #form-navigation .nav-link.active-nav-link:hover {
+      background-color: #2563eb;
+      /* blue-600 */
+    }
+
+
+    #form-navigation h3,
+    #form-navigation .section-group-header {
+      color: #111827;
+      /* gray-900 */
+      font-weight: 600;
+      /* semibold */
+      margin-bottom: 0.5rem;
+      /* mb-2 */
+      margin-top: 1rem;
+      /* mt-4 for groups */
+    }
+
+    #form-navigation h3:first-child {
+      margin-top: 0;
+    }
+
+    #form-navigation ul ul {
+      margin-left: 1rem;
+      /* ml-4 */
+      border-left: 1px solid #d1d5db;
+      /* gray-300 */
+      padding-left: 1rem;
+      /* pl-4 */
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -251,12 +317,13 @@
     </nav>
 
     <div class="content-wrapper">
-      <div class="container-fluid">
-        <div class="flex justify-center items-center mb-8 relative">
-          <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
-            Solicitud Única PAC 2025 (Editable)
+      <div class="container-fluid px-0 sm:px-4">
+
+        <div class="flex justify-between items-center p-4 relative">
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center lg:text-left"> Solicitud Única PAC 2025
+            (Editable)
           </h1>
-          <div id="formActions" class="absolute right-0 flex items-center">
+          <div id="formActions" class="absolute right-0 top-0 bottom-0 flex items-center pr-4">
             <div class="ai-button-background">
               <button id="aiGenerationButton" title="Cumplimentar con IA"
                 class="ai-button bg-gray-200 text-gray-700 rounded-full">
@@ -274,988 +341,1213 @@
           </div>
         </div>
 
-        <form id="pac-form">
-          <fieldset>
-            <legend>Datos Identificativos</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="campana">Campaña</label>
-                <input type="text" id="campana" name="campana" value="2025" class="bg-gray-200" readonly />
-              </div>
-              <div>
-                <label for="num_solicitud">Número Solicitud</label>
-                <input type="text" id="num_solicitud" name="num_solicitud" value="367389" class="bg-gray-200"
-                  readonly />
-              </div>
-              <div>
-                <label for="estado_actual">Estado actual</label>
-                <input type="text" id="estado_actual" name="estado_actual" value="Finalizada" class="bg-gray-200"
-                  readonly />
-              </div>
-              <div>
-                <label for="fecha_registro">Fecha Registro</label>
-                <input type="text" id="fecha_registro" name="fecha_registro" value="" placeholder="Ej: 17/06/2024" />
-              </div>
-              <div>
-                <label for="num_registro">Número Registro</label>
-                <input type="text" id="num_registro" name="num_registro" value="2024000000154555" />
-              </div>
-              <div>
-                <label for="ambito_grabacion">Ámbito de Grabación</label>
-                <input type="text" id="ambito_grabacion" name="ambito_grabacion"
-                  value="AGROAL GESTIÓN INTEGRAL, S.L.U." />
-              </div>
-              <div>
-                <label for="tipo_registro">Tipo de registro</label>
-                <input type="text" id="tipo_registro" name="tipo_registro" value="" />
-              </div>
-              <div>
-                <label for="codigo_regepa">Código REGEPA</label>
-                <input type="text" id="codigo_regepa" name="codigo_regepa" value="1106030141" />
-              </div>
-              <div>
-                <label for="cod_explotacion">Cód. Explotación</label>
-                <input type="text" id="cod_explotacion" name="cod_explotacion" value="" />
-              </div>
-              <div>
-                <label for="comunidad_autonoma">Comunidad Autónoma</label>
-                <input type="text" id="comunidad_autonoma" name="comunidad_autonoma" value="Extremadura" />
-              </div>
-              <div>
-                <label for="num_expediente">Número Expediente</label>
-                <input type="text" id="num_expediente" name="num_expediente" value="11039695" />
-              </div>
-            </div>
-          </fieldset>
+        <div class="flex flex-col lg:flex-row">
+          <aside id="form-navigation"
+            class="w-full lg:w-1/4 xl:w-1/5 p-4 border-t lg:border-t-0 lg:border-b-0 lg:border-r bg-gray-50 lg:min-h-screen">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Secciones Solicitud</h3>
+            <ul class="space-y-1">
+              <li><span class="section-group-header text-lg">Solicitud Única</span></li>
+              <li><a href="#" class="nav-link active-nav-link" data-section="datos-generales">Datos Generales</a></li>
+              <li><a href="#" class="nav-link" data-section="datos-adicionales">Datos Adicionales</a></li>
+              <li><a href="#" class="nav-link" data-section="recordatorios-reglamentacion">Recordatorios
+                  Reglamentación</a></li>
+              <li><a href="#" class="nav-link" data-section="documentacion">Documentación</a></li>
+              <li><a href="#" class="nav-link" data-section="derechos">Derechos</a></li>
+              <li><a href="#" class="nav-link" data-section="figuras-calidad">Figuras de Calidad</a></li>
+              <li>
+                <span class="section-group-header">Datos de Recintos</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="recintos">Recintos</a></li>
+                  <li><a href="#" class="nav-link" data-section="lineas-ayuda-recintos">Líneas de Ayuda / Recintos</a>
+                  </li>
+                  <li><a href="#" class="nav-link" data-section="detalle-variedades">Detalle Variedades</a></li>
+                  <li><a href="#" class="nav-link" data-section="datos-adicionales-recintos">Datos Adicionales de
+                      Recintos</a></li>
+                  <li><a href="#" class="nav-link" data-section="productos-horticolas-frutales">Productos Hortícolas y
+                      otros Frutales</a></li>
+                  <li><a href="#" class="nav-link" data-section="recintos-explotaciones-ganaderas">Recintos -
+                      Explotaciones Ganaderas</a></li>
+                  <li><a href="#" class="nav-link" data-section="documentos-asociados-recinto">Documentos asociados por
+                      Recinto</a></li>
+                  <li><a href="#" class="nav-link" data-section="aprovechamientos">Aprovechamientos</a></li>
+                  <li><a href="#" class="nav-link" data-section="lineas-ayuda-aprovechamiento">Líneas Ayuda /
+                      Aprovechamiento</a></li>
+                </ul>
+              </li>
+              <li><a href="#" class="nav-link" data-section="explotaciones-ganaderas">Explotaciones Ganaderas</a></li>
+              <li><a href="#" class="nav-link" data-section="socios">Socios</a></li>
+              <li><a href="#" class="nav-link" data-section="declaracion-responsable-agricultor-activo">Declaración
+                  Responsable (Agricultor Activo)</a></li>
+              <li><a href="#" class="nav-link" data-section="encuesta-responsable-explotacion">Encuesta Responsable
+                  Explotación</a></li>
+              <li>
+                <span class="section-group-header">OPFH - EEPP</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="opfh">OPFH</a></li>
+                </ul>
+              </li>
+              <li>
+                <span class="section-group-header">Datos Específicos PDR</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link"
+                      data-section="solicitante-explotacion-pdr">Solicitante/Explotación</a></li>
+                  <li><a href="#" class="nav-link" data-section="datos-especificos-aprovechamientos-pdr">Datos
+                      Específicos Aprovechamientos</a></li>
+                </ul>
+              </li>
+              <li><a href="#" class="nav-link" data-section="datos-edificios-instalaciones">Datos de Edificios e
+                  Instalaciones</a></li>
+              <li><a href="#" class="nav-link" data-section="cumplimiento-bcams-ecorregimenes">Cumplimiento de BCAMs y
+                  Ecorregímenes</a></li>
+              <li><a href="#" class="nav-link" data-section="resumen-solicitud">Resumen de la solicitud</a></li>
+              <li>
+                <span class="section-group-header">Información Complementaria</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="impreso-justificante-registro">Impreso y Justificante
+                      Registro</a></li>
+                  <li><a href="#" class="nav-link" data-section="solicitudes-relacionadas">Solicitudes Relacionadas</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </aside>
 
-          <fieldset>
-            <legend>Datos Personales del Solicitante</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="sol_cif_nif">CIF/NIF</label>
-                <input type="text" id="sol_cif_nif" name="sol_cif_nif" value="B06258511" required />
-              </div>
-              <div>
-                <label for="sol_nombre_razon">Nombre / Razón Social</label>
-                <input type="text" id="sol_nombre_razon" name="sol_nombre_razon" value="FRUTICOLA CASTELNOVO SL"
-                  required />
-              </div>
-              <div>
-                <label for="sol_apellido1">Primer Apellido</label>
-                <input type="text" id="sol_apellido1" name="sol_apellido1" value="" />
-              </div>
-              <div>
-                <label for="sol_apellido2">Segundo Apellido</label>
-                <input type="text" id="sol_apellido2" name="sol_apellido2" value="" />
-              </div>
-              <div>
-                <label for="sol_fecha_nac">F. Nacimiento</label>
-                <input type="date" id="sol_fecha_nac" name="sol_fecha_nac" value="" />
-              </div>
-              <div>
-                <label for="sol_genero">Género</label>
-                <select id="sol_genero" name="sol_genero">
-                  <option value="">Seleccionar...</option>
-                  <option value="Hombre">Hombre</option>
-                  <option value="Mujer">Mujer</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </div>
-              <div>
-                <label for="sol_estado_civil">Estado Civil</label>
-                <input type="text" id="sol_estado_civil" name="sol_estado_civil" value="" />
-              </div>
-              <div>
-                <label for="sol_telefono">Teléfono</label>
-                <input type="tel" id="sol_telefono" name="sol_telefono" value="924856096" />
-              </div>
-              <div>
-                <label for="sol_movil">Móvil</label>
-                <input type="tel" id="sol_movil" name="sol_movil" value="649092918" />
-              </div>
-              <div>
-                <label for="sol_email">Email</label>
-                <input type="email" id="sol_email" name="sol_email" value="torrado@tany.es" />
-              </div>
-              <div class="col-span-full flex items-center">
-                <input type="checkbox" id="sol_titularidad_compartida" name="sol_titularidad_compartida" />
-                <label for="sol_titularidad_compartida" class="ml-2 mb-0">Titularidad compartida</label>
-              </div>
-            </div>
-          </fieldset>
+          <main class="w-full lg:w-3/4 xl:w-4/5 p-4 lg:pl-8">
+            <form id="pac-form">
+              <div id="section-datos-generales" class="form-section active">
+                <fieldset>
+                  <legend>Datos Identificativos</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="campana">Campaña</label>
+                      <input type="text" id="campana" name="campana" value="2025" class="bg-gray-200" readonly />
+                    </div>
+                    <div>
+                      <label for="num_solicitud">Número Solicitud</label>
+                      <input type="text" id="num_solicitud" name="num_solicitud" value="367389" class="bg-gray-200"
+                        readonly />
+                    </div>
+                    <div>
+                      <label for="estado_actual">Estado actual</label>
+                      <input type="text" id="estado_actual" name="estado_actual" value="Finalizada" class="bg-gray-200"
+                        readonly />
+                    </div>
+                    <div>
+                      <label for="fecha_registro">Fecha Registro</label>
+                      <input type="text" id="fecha_registro" name="fecha_registro" value=""
+                        placeholder="Ej: 17/06/2024" />
+                    </div>
+                    <div>
+                      <label for="num_registro">Número Registro</label>
+                      <input type="text" id="num_registro" name="num_registro" value="2024000000154555" />
+                    </div>
+                    <div>
+                      <label for="ambito_grabacion">Ámbito de Grabación</label>
+                      <input type="text" id="ambito_grabacion" name="ambito_grabacion"
+                        value="AGROAL GESTIÓN INTEGRAL, S.L.U." />
+                    </div>
+                    <div>
+                      <label for="tipo_registro">Tipo de registro</label>
+                      <input type="text" id="tipo_registro" name="tipo_registro" value="" />
+                    </div>
+                    <div>
+                      <label for="codigo_regepa">Código REGEPA</label>
+                      <input type="text" id="codigo_regepa" name="codigo_regepa" value="1106030141" />
+                    </div>
+                    <div>
+                      <label for="cod_explotacion">Cód. Explotación</label>
+                      <input type="text" id="cod_explotacion" name="cod_explotacion" value="" />
+                    </div>
+                    <div>
+                      <label for="comunidad_autonoma">Comunidad Autónoma</label>
+                      <input type="text" id="comunidad_autonoma" name="comunidad_autonoma" value="Extremadura" />
+                    </div>
+                    <div>
+                      <label for="num_expediente">Número Expediente</label>
+                      <input type="text" id="num_expediente" name="num_expediente" value="11039695" />
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Comunicación Correo Electrónico / SMS</legend>
-            <div class="space-y-2">
-              <div class="flex items-center">
-                <input type="checkbox" id="com_sms" name="com_sms" />
-                <label for="com_sms" class="ml-2 mb-0">Autorización a la Administración para enviar información
-                  mediante SMS.</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="com_email" name="com_email" checked />
-                <label for="com_email" class="ml-2 mb-0">Autorización a la Administración para enviar información
-                  mediante correo electrónico.</label>
-              </div>
-              <p class="text-sm text-gray-600">
-                Para el envío de SMS/email se utilizarán los datos al respecto
-                consignados en los datos personales del solicitante en la
-                solicitud.
-              </p>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Datos Personales del Solicitante</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="sol_cif_nif">CIF/NIF</label>
+                      <input type="text" id="sol_cif_nif" name="sol_cif_nif" value="B06258511" required />
+                    </div>
+                    <div>
+                      <label for="sol_nombre_razon">Nombre / Razón Social</label>
+                      <input type="text" id="sol_nombre_razon" name="sol_nombre_razon" value="FRUTICOLA CASTELNOVO SL"
+                        required />
+                    </div>
+                    <div>
+                      <label for="sol_apellido1">Primer Apellido</label>
+                      <input type="text" id="sol_apellido1" name="sol_apellido1" value="" />
+                    </div>
+                    <div>
+                      <label for="sol_apellido2">Segundo Apellido</label>
+                      <input type="text" id="sol_apellido2" name="sol_apellido2" value="" />
+                    </div>
+                    <div>
+                      <label for="sol_fecha_nac">F. Nacimiento</label>
+                      <input type="date" id="sol_fecha_nac" name="sol_fecha_nac" value="" />
+                    </div>
+                    <div>
+                      <label for="sol_genero">Género</label>
+                      <select id="sol_genero" name="sol_genero">
+                        <option value="">Seleccionar...</option>
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="sol_estado_civil">Estado Civil</label>
+                      <input type="text" id="sol_estado_civil" name="sol_estado_civil" value="" />
+                    </div>
+                    <div>
+                      <label for="sol_telefono">Teléfono</label>
+                      <input type="tel" id="sol_telefono" name="sol_telefono" value="924856096" />
+                    </div>
+                    <div>
+                      <label for="sol_movil">Móvil</label>
+                      <input type="tel" id="sol_movil" name="sol_movil" value="649092918" />
+                    </div>
+                    <div>
+                      <label for="sol_email">Email</label>
+                      <input type="email" id="sol_email" name="sol_email" value="torrado@tany.es" />
+                    </div>
+                    <div class="col-span-full flex items-center">
+                      <input type="checkbox" id="sol_titularidad_compartida" name="sol_titularidad_compartida" />
+                      <label for="sol_titularidad_compartida" class="ml-2 mb-0">Titularidad compartida</label>
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Dirección Notificación</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="not_tipo_via">Tipo vía</label>
-                <input type="text" id="not_tipo_via" name="not_tipo_via" value="Carretera" />
-              </div>
-              <div>
-                <label for="not_nombre_via">Nombre vía</label>
-                <input type="text" id="not_nombre_via" name="not_nombre_via" value="NAC 430" />
-              </div>
-              <div>
-                <label for="not_numero">Número</label>
-                <input type="text" id="not_numero" name="not_numero" value="115" />
-              </div>
-              <div>
-                <label for="not_bloque">Bloque</label>
-                <input type="text" id="not_bloque" name="not_bloque" value="" />
-              </div>
-              <div>
-                <label for="not_portal">Portal</label>
-                <input type="text" id="not_portal" name="not_portal" value="" />
-              </div>
-              <div>
-                <label for="not_escalera">Escalera</label>
-                <input type="text" id="not_escalera" name="not_escalera" value="" />
-              </div>
-              <div>
-                <label for="not_planta">Planta</label>
-                <input type="text" id="not_planta" name="not_planta" value="" />
-              </div>
-              <div>
-                <label for="not_puerta">Puerta</label>
-                <input type="text" id="not_puerta" name="not_puerta" value="IZ" />
-              </div>
-              <div>
-                <label for="not_km">Km</label>
-                <input type="text" id="not_km" name="not_km" value="115" />
-              </div>
-              <div>
-                <label for="not_provincia">Provincia</label>
-                <input type="text" id="not_provincia" name="not_provincia" value="Badajoz" />
-              </div>
-              <div>
-                <label for="not_municipio">Municipio</label>
-                <input type="text" id="not_municipio" name="not_municipio" value="Villanueva de la Serena" />
-              </div>
-              <div>
-                <label for="not_cp">Código Postal</label>
-                <input type="text" id="not_cp" name="not_cp" value="06700" />
-              </div>
-              <div>
-                <label for="not_localidad">Localidad</label>
-                <input type="text" id="not_localidad" name="not_localidad" value="VILLANUEVA DE LA SERENA" />
-              </div>
-              <div>
-                <label for="not_apartado">Apartado de Correos</label>
-                <input type="text" id="not_apartado" name="not_apartado" value="" />
-              </div>
-              <div>
-                <label for="not_oficina">Oficina de Correos</label>
-                <input type="text" id="not_oficina" name="not_oficina" value="" />
-              </div>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Comunicación Correo Electrónico / SMS</legend>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="com_sms" name="com_sms" />
+                      <label for="com_sms" class="ml-2 mb-0">Autorización a la Administración para enviar información
+                        mediante SMS.</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="com_email" name="com_email" checked />
+                      <label for="com_email" class="ml-2 mb-0">Autorización a la Administración para enviar información
+                        mediante correo electrónico.</label>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Para el envío de SMS/email se utilizarán los datos al respecto
+                      consignados en los datos personales del solicitante en la
+                      solicitud.
+                    </p>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Dirección Residencia</legend>
-            <div class="mb-4 flex items-center">
-              <input type="checkbox" id="res_igual_not" name="res_igual_not" checked onchange="toggleResidencia()" />
-              <label for="res_igual_not" class="ml-2 mb-0">Domicilio de residencia igual al de notificación.</label>
-            </div>
-            <div id="residencia-details" class="grid grid-cols-form gap-4 hidden">
-              <div>
-                <label for="res_tipo_via">Tipo vía</label>
-                <input type="text" id="res_tipo_via" name="res_tipo_via" value="Carretera" />
-              </div>
-              <div>
-                <label for="res_nombre_via">Nombre vía</label>
-                <input type="text" id="res_nombre_via" name="res_nombre_via" value="NAC 430" />
-              </div>
-              <div>
-                <label for="res_numero">Número</label>
-                <input type="text" id="res_numero" name="res_numero" value="115" />
-              </div>
-              <div>
-                <label for="res_bloque">Bloque</label>
-                <input type="text" id="res_bloque" name="res_bloque" value="" />
-              </div>
-              <div>
-                <label for="res_portal">Portal</label>
-                <input type="text" id="res_portal" name="res_portal" value="" />
-              </div>
-              <div>
-                <label for="res_escalera">Escalera</label>
-                <input type="text" id="res_escalera" name="res_escalera" value="" />
-              </div>
-              <div>
-                <label for="res_planta">Planta</label>
-                <input type="text" id="res_planta" name="res_planta" value="" />
-              </div>
-              <div>
-                <label for="res_puerta">Puerta</label>
-                <input type="text" id="res_puerta" name="res_puerta" value="IZ" />
-              </div>
-              <div>
-                <label for="res_km">Km</label>
-                <input type="text" id="res_km" name="res_km" value="115" />
-              </div>
-              <div>
-                <label for="res_provincia">Provincia</label>
-                <input type="text" id="res_provincia" name="res_provincia" value="Badajoz" />
-              </div>
-              <div>
-                <label for="res_municipio">Municipio</label>
-                <input type="text" id="res_municipio" name="res_municipio" value="Villanueva de la Serena" />
-              </div>
-              <div>
-                <label for="res_cp">Código Postal</label>
-                <input type="text" id="res_cp" name="res_cp" value="06700" />
-              </div>
-              <div>
-                <label for="res_localidad">Localidad</label>
-                <input type="text" id="res_localidad" name="res_localidad" value="VILLANUEVA DE LA SERENA" />
-              </div>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Dirección Notificación</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="not_tipo_via">Tipo vía</label>
+                      <input type="text" id="not_tipo_via" name="not_tipo_via" value="Carretera" />
+                    </div>
+                    <div>
+                      <label for="not_nombre_via">Nombre vía</label>
+                      <input type="text" id="not_nombre_via" name="not_nombre_via" value="NAC 430" />
+                    </div>
+                    <div>
+                      <label for="not_numero">Número</label>
+                      <input type="text" id="not_numero" name="not_numero" value="115" />
+                    </div>
+                    <div>
+                      <label for="not_bloque">Bloque</label>
+                      <input type="text" id="not_bloque" name="not_bloque" value="" />
+                    </div>
+                    <div>
+                      <label for="not_portal">Portal</label>
+                      <input type="text" id="not_portal" name="not_portal" value="" />
+                    </div>
+                    <div>
+                      <label for="not_escalera">Escalera</label>
+                      <input type="text" id="not_escalera" name="not_escalera" value="" />
+                    </div>
+                    <div>
+                      <label for="not_planta">Planta</label>
+                      <input type="text" id="not_planta" name="not_planta" value="" />
+                    </div>
+                    <div>
+                      <label for="not_puerta">Puerta</label>
+                      <input type="text" id="not_puerta" name="not_puerta" value="IZ" />
+                    </div>
+                    <div>
+                      <label for="not_km">Km</label>
+                      <input type="text" id="not_km" name="not_km" value="115" />
+                    </div>
+                    <div>
+                      <label for="not_provincia">Provincia</label>
+                      <input type="text" id="not_provincia" name="not_provincia" value="Badajoz" />
+                    </div>
+                    <div>
+                      <label for="not_municipio">Municipio</label>
+                      <input type="text" id="not_municipio" name="not_municipio" value="Villanueva de la Serena" />
+                    </div>
+                    <div>
+                      <label for="not_cp">Código Postal</label>
+                      <input type="text" id="not_cp" name="not_cp" value="06700" />
+                    </div>
+                    <div>
+                      <label for="not_localidad">Localidad</label>
+                      <input type="text" id="not_localidad" name="not_localidad" value="VILLANUEVA DE LA SERENA" />
+                    </div>
+                    <div>
+                      <label for="not_apartado">Apartado de Correos</label>
+                      <input type="text" id="not_apartado" name="not_apartado" value="" />
+                    </div>
+                    <div>
+                      <label for="not_oficina">Oficina de Correos</label>
+                      <input type="text" id="not_oficina" name="not_oficina" value="" />
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Datos Bancarios</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="iban">IBAN</label>
-                <input type="text" id="iban" name="iban" value="ES6221002027690200037255" placeholder="ESXX..."
-                  required />
-              </div>
-              <div>
-                <label for="entidad">Entidad</label>
-                <input type="text" id="entidad" name="entidad" value="2100" class="w-1/4 inline-block mr-2" />
-                <label for="sucursal" class="inline-block mr-2">Sucursal</label>
-                <input type="text" id="sucursal" name="sucursal" value="2027" class="w-1/4 inline-block mr-2" />
-                <label for="dc" class="inline-block mr-2">DC</label>
-                <input type="text" id="dc" name="dc" value="69" class="w-1/6 inline-block" />
-              </div>
-              <div>
-                <label for="num_cuenta">Número de Cuenta</label>
-                <input type="text" id="num_cuenta" name="num_cuenta" value="0200037255" />
-              </div>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Dirección Residencia</legend>
+                  <div class="mb-4 flex items-center">
+                    <input type="checkbox" id="res_igual_not" name="res_igual_not" checked
+                      onchange="toggleResidencia()" />
+                    <label for="res_igual_not" class="ml-2 mb-0">Domicilio de residencia igual al de
+                      notificación.</label>
+                  </div>
+                  <div id="residencia-details" class="grid grid-cols-form gap-4 hidden">
+                    <div>
+                      <label for="res_tipo_via">Tipo vía</label>
+                      <input type="text" id="res_tipo_via" name="res_tipo_via" value="Carretera" />
+                    </div>
+                    <div>
+                      <label for="res_nombre_via">Nombre vía</label>
+                      <input type="text" id="res_nombre_via" name="res_nombre_via" value="NAC 430" />
+                    </div>
+                    <div>
+                      <label for="res_numero">Número</label>
+                      <input type="text" id="res_numero" name="res_numero" value="115" />
+                    </div>
+                    <div>
+                      <label for="res_bloque">Bloque</label>
+                      <input type="text" id="res_bloque" name="res_bloque" value="" />
+                    </div>
+                    <div>
+                      <label for="res_portal">Portal</label>
+                      <input type="text" id="res_portal" name="res_portal" value="" />
+                    </div>
+                    <div>
+                      <label for="res_escalera">Escalera</label>
+                      <input type="text" id="res_escalera" name="res_escalera" value="" />
+                    </div>
+                    <div>
+                      <label for="res_planta">Planta</label>
+                      <input type="text" id="res_planta" name="res_planta" value="" />
+                    </div>
+                    <div>
+                      <label for="res_puerta">Puerta</label>
+                      <input type="text" id="res_puerta" name="res_puerta" value="IZ" />
+                    </div>
+                    <div>
+                      <label for="res_km">Km</label>
+                      <input type="text" id="res_km" name="res_km" value="115" />
+                    </div>
+                    <div>
+                      <label for="res_provincia">Provincia</label>
+                      <input type="text" id="res_provincia" name="res_provincia" value="Badajoz" />
+                    </div>
+                    <div>
+                      <label for="res_municipio">Municipio</label>
+                      <input type="text" id="res_municipio" name="res_municipio" value="Villanueva de la Serena" />
+                    </div>
+                    <div>
+                      <label for="res_cp">Código Postal</label>
+                      <input type="text" id="res_cp" name="res_cp" value="06700" />
+                    </div>
+                    <div>
+                      <label for="res_localidad">Localidad</label>
+                      <input type="text" id="res_localidad" name="res_localidad" value="VILLANUEVA DE LA SERENA" />
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Datos Fiscales del Solicitante</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div class="flex items-center">
-                <input type="checkbox" id="fiscal_incorpora" name="fiscal_incorpora" />
-                <label for="fiscal_incorpora" class="ml-2 mb-0">Solicitante que se incorpora a la actividad
-                  agraria</label>
-              </div>
-              <div>
-                <label for="fiscal_forma_juridica">Forma Jurídica</label>
-                <input type="text" id="fiscal_forma_juridica" name="fiscal_forma_juridica"
-                  value="Otras personas jurídicas" />
-              </div>
-              <div>
-                <label for="fiscal_cif_integradora">CIF/NIF Integradora de Ganado</label>
-                <input type="text" id="fiscal_cif_integradora" name="fiscal_cif_integradora" value="" />
-              </div>
-              <div>
-                <label for="fiscal_ingresos_integradora_2023">Ingresos Agrarios Integradora Ejercicio 2023</label>
-                <input type="number" step="0.01" id="fiscal_ingresos_integradora_2023"
-                  name="fiscal_ingresos_integradora_2023" value="" />
-              </div>
-              <div>
-                <label for="fiscal_ingresos_agrarios_2023">Ingresos Agrarios Ejercicio 2023</label>
-                <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2023" name="fiscal_ingresos_agrarios_2023"
-                  value="13624150.7" />
-              </div>
-              <div>
-                <label for="fiscal_ingresos_agrarios_2022">Ingresos Agrarios Ejercicio 2022</label>
-                <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2022" name="fiscal_ingresos_agrarios_2022"
-                  value="15564544.25" />
-              </div>
-              <div>
-                <label for="fiscal_ingresos_agrarios_2021">Ingresos Agrarios Ejercicio 2021</label>
-                <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2021" name="fiscal_ingresos_agrarios_2021"
-                  value="13665204.58" />
-              </div>
-              <div>
-                <label for="fiscal_ingresos_totales_2023">Ingresos totales 2023</label>
-                <input type="number" step="0.01" id="fiscal_ingresos_totales_2023" name="fiscal_ingresos_totales_2023"
-                  value="7069803.74" />
-              </div>
-              <div>
-                <label for="fiscal_costes_laborales">Costes laborales realmente pagados</label>
-                <input type="number" step="0.01" id="fiscal_costes_laborales" name="fiscal_costes_laborales" value="" />
-              </div>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Datos Bancarios</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="iban">IBAN</label>
+                      <input type="text" id="iban" name="iban" value="ES6221002027690200037255" placeholder="ESXX..."
+                        required />
+                    </div>
+                    <div>
+                      <label for="entidad">Entidad</label>
+                      <input type="text" id="entidad" name="entidad" value="2100" class="w-1/4 inline-block mr-2" />
+                      <label for="sucursal" class="inline-block mr-2">Sucursal</label>
+                      <input type="text" id="sucursal" name="sucursal" value="2027" class="w-1/4 inline-block mr-2" />
+                      <label for="dc" class="inline-block mr-2">DC</label>
+                      <input type="text" id="dc" name="dc" value="69" class="w-1/6 inline-block" />
+                    </div>
+                    <div>
+                      <label for="num_cuenta">Número de Cuenta</label>
+                      <input type="text" id="num_cuenta" name="num_cuenta" value="0200037255" />
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Representante</legend>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="rep_cif_nif">CIF/NIF</label>
-                <input type="text" id="rep_cif_nif" name="rep_cif_nif" value="76226750N" />
-              </div>
-              <div>
-                <label for="rep_nombre">Nombre</label>
-                <input type="text" id="rep_nombre" name="rep_nombre" value="ATANASIO" />
-              </div>
-              <div>
-                <label for="rep_apellido1">Primer Apellido</label>
-                <input type="text" id="rep_apellido1" name="rep_apellido1" value="NARANJO" />
-              </div>
-              <div>
-                <label for="rep_apellido2">Segundo Apellido</label>
-                <input type="text" id="rep_apellido2" name="rep_apellido2" value="HIDALGO" />
-              </div>
-              <div>
-                <label for="rep_fecha_nac">F. Nacimiento</label>
-                <input type="date" id="rep_fecha_nac" name="rep_fecha_nac" value="1956-07-22" />
-              </div>
-              <div>
-                <label for="rep_genero">Género</label>
-                <select id="rep_genero" name="rep_genero">
-                  <option value="">Seleccionar...</option>
-                  <option value="Hombre" selected>Hombre</option>
-                  <option value="Mujer">Mujer</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </div>
-              <div>
-                <label for="rep_telefono">Teléfono</label>
-                <input type="tel" id="rep_telefono" name="rep_telefono" value="" />
-              </div>
-              <div>
-                <label for="rep_movil">Móvil</label>
-                <input type="tel" id="rep_movil" name="rep_movil" value="" />
-              </div>
-              <div>
-                <label for="rep_email">Email</label>
-                <input type="email" id="rep_email" name="rep_email" value="" />
-              </div>
-            </div>
-          </fieldset>
+                <fieldset>
+                  <legend>Datos Fiscales del Solicitante</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="fiscal_incorpora" name="fiscal_incorpora" />
+                      <label for="fiscal_incorpora" class="ml-2 mb-0">Solicitante que se incorpora a la actividad
+                        agraria</label>
+                    </div>
+                    <div>
+                      <label for="fiscal_forma_juridica">Forma Jurídica</label>
+                      <input type="text" id="fiscal_forma_juridica" name="fiscal_forma_juridica"
+                        value="Otras personas jurídicas" />
+                    </div>
+                    <div>
+                      <label for="fiscal_cif_integradora">CIF/NIF Integradora de Ganado</label>
+                      <input type="text" id="fiscal_cif_integradora" name="fiscal_cif_integradora" value="" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_integradora_2023">Ingresos Agrarios Integradora Ejercicio 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_integradora_2023"
+                        name="fiscal_ingresos_integradora_2023" value="" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2023">Ingresos Agrarios Ejercicio 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2023"
+                        name="fiscal_ingresos_agrarios_2023" value="13624150.7" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2022">Ingresos Agrarios Ejercicio 2022</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2022"
+                        name="fiscal_ingresos_agrarios_2022" value="15564544.25" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2021">Ingresos Agrarios Ejercicio 2021</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2021"
+                        name="fiscal_ingresos_agrarios_2021" value="13665204.58" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_totales_2023">Ingresos totales 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_totales_2023"
+                        name="fiscal_ingresos_totales_2023" value="7069803.74" />
+                    </div>
+                    <div>
+                      <label for="fiscal_costes_laborales">Costes laborales realmente pagados</label>
+                      <input type="number" step="0.01" id="fiscal_costes_laborales" name="fiscal_costes_laborales"
+                        value="" />
+                    </div>
+                  </div>
+                </fieldset>
 
-          <fieldset>
-            <legend>Responsabilidad Jurídica de la Explotación</legend>
-            <p class="mb-4">
-              La responsabilidad jurídica y económica de la explotación recae
-              en:
-            </p>
-            <div class="mb-4 space-y-2">
-              <div class="flex items-center">
-                <input type="radio" id="resp_persona_fisica" name="responsabilidad_tipo" value="fisica" class="mr-2" />
-                <label for="resp_persona_fisica" class="mb-0">Una persona física</label>
-              </div>
-              <div class="flex items-center">
-                <input type="radio" id="resp_persona_juridica" name="responsabilidad_tipo" value="juridica" class="mr-2"
-                  checked />
-                <label for="resp_persona_juridica" class="mb-0">Una persona jurídica o entidad sin personalidad
-                  jurídica</label>
-              </div>
-            </div>
+                <fieldset>
+                  <legend>Representante</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="rep_cif_nif">CIF/NIF</label>
+                      <input type="text" id="rep_cif_nif" name="rep_cif_nif" value="76226750N" />
+                    </div>
+                    <div>
+                      <label for="rep_nombre">Nombre</label>
+                      <input type="text" id="rep_nombre" name="rep_nombre" value="ATANASIO" />
+                    </div>
+                    <div>
+                      <label for="rep_apellido1">Primer Apellido</label>
+                      <input type="text" id="rep_apellido1" name="rep_apellido1" value="NARANJO" />
+                    </div>
+                    <div>
+                      <label for="rep_apellido2">Segundo Apellido</label>
+                      <input type="text" id="rep_apellido2" name="rep_apellido2" value="HIDALGO" />
+                    </div>
+                    <div>
+                      <label for="rep_fecha_nac">F. Nacimiento</label>
+                      <input type="date" id="rep_fecha_nac" name="rep_fecha_nac" value="1956-07-22" />
+                    </div>
+                    <div>
+                      <label for="rep_genero">Género</label>
+                      <select id="rep_genero" name="rep_genero">
+                        <option value="">Seleccionar...</option>
+                        <option value="Hombre" selected>Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="rep_telefono">Teléfono</label>
+                      <input type="tel" id="rep_telefono" name="rep_telefono" value="" />
+                    </div>
+                    <div>
+                      <label for="rep_movil">Móvil</label>
+                      <input type="tel" id="rep_movil" name="rep_movil" value="" />
+                    </div>
+                    <div>
+                      <label for="rep_email">Email</label>
+                      <input type="email" id="rep_email" name="rep_email" value="" />
+                    </div>
+                  </div>
+                </fieldset>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div class="flex items-center">
-                <label for="resp_gerente_titular" class="mr-2 mb-0">¿Es el titular también el gerente de la
-                  explotación?</label>
-                <select id="resp_gerente_titular" name="resp_gerente_titular">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div class="flex items-center">
-                <label for="resp_gerente_familiar" class="mr-2 mb-0">¿Es el gerente de la explotación un miembro de la
-                  familia
-                  del titular?</label>
-                <select id="resp_gerente_familiar" name="resp_gerente_familiar">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div class="flex items-center">
-                <label for="resp_comparte_familiar" class="mr-2 mb-0">¿El gerente de la explotación comparte
-                  responsabilidad de
-                  la gestión con un familiar?</label>
-                <select id="resp_comparte_familiar" name="resp_comparte_familiar">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div class="flex items-center">
-                <label for="resp_comparte_conyuge" class="mr-2 mb-0">¿Con el cónyuge del titular?</label>
-                <select id="resp_comparte_conyuge" name="resp_comparte_conyuge">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div class="flex items-center">
-                <label for="resp_gerente_conyuge" class="mr-2 mb-0">¿Es el gerente de la explotación el cónyuge del
-                  titular?</label>
-                <select id="resp_gerente_conyuge" name="resp_gerente_conyuge">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div class="flex items-center">
-                <label for="resp_grupo_empresarial" class="mr-2 mb-0">¿La explotación agrícola forma parte de un grupo
-                  empresarial?</label>
-                <select id="resp_grupo_empresarial" name="resp_grupo_empresarial">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-            </div>
+                <fieldset>
+                  <legend>Responsabilidad Jurídica de la Explotación</legend>
+                  <p class="mb-4">
+                    La responsabilidad jurídica y económica de la explotación recae
+                    en:
+                  </p>
+                  <div class="mb-4 space-y-2">
+                    <div class="flex items-center">
+                      <input type="radio" id="resp_persona_fisica" name="responsabilidad_tipo" value="fisica"
+                        class="mr-2" />
+                      <label for="resp_persona_fisica" class="mb-0">Una persona física</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="radio" id="resp_persona_juridica" name="responsabilidad_tipo" value="juridica"
+                        class="mr-2" checked />
+                      <label for="resp_persona_juridica" class="mb-0">Una persona jurídica o entidad sin personalidad
+                        jurídica</label>
+                    </div>
+                  </div>
 
-            <h3 class="text-lg font-semibold mb-3 mt-6 text-gray-700">
-              Datos del Gerente
-            </h3>
-            <div class="grid grid-cols-form gap-4">
-              <div>
-                <label for="gerente_nif">NIF gerente Explotación</label>
-                <input type="text" id="gerente_nif" name="gerente_nif" value="76226750N" />
-              </div>
-              <div>
-                <label for="gerente_nombre">Nombre / Razón Social</label>
-                <input type="text" id="gerente_nombre" name="gerente_nombre" value="ATANASIO" />
-              </div>
-              <div>
-                <label for="gerente_apellido1">Primer Apellido</label>
-                <input type="text" id="gerente_apellido1" name="gerente_apellido1" value="NARANJO" />
-              </div>
-              <div>
-                <label for="gerente_apellido2">Segundo Apellido</label>
-                <input type="text" id="gerente_apellido2" name="gerente_apellido2" value="HIDALGO" />
-              </div>
-              <div>
-                <label for="gerente_fecha_nac">F. Nacimiento</label>
-                <input type="date" id="gerente_fecha_nac" name="gerente_fecha_nac" value="1956-07-22" />
-              </div>
-              <div>
-                <label for="gerente_genero">Género</label>
-                <select id="gerente_genero" name="gerente_genero">
-                  <option value="">Seleccionar...</option>
-                  <option value="Hombre" selected>Hombre</option>
-                  <option value="Mujer">Mujer</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </div>
-              <div>
-                <label for="gerente_email">Email</label>
-                <input type="email" id="gerente_email" name="gerente_email" value="" />
-              </div>
-              <div>
-                <label for="gerente_telefono">Teléfono</label>
-                <input type="tel" id="gerente_telefono" name="gerente_telefono" value="" />
-              </div>
-              <div>
-                <label for="gerente_movil">Móvil</label>
-                <input type="tel" id="gerente_movil" name="gerente_movil" value="" />
-              </div>
-              <div>
-                <label for="gerente_jornadas">Porcentaje de jornadas Anuales de trabajo agrario en la
-                  explotación</label>
-                <input type="text" id="gerente_jornadas" name="gerente_jornadas" value="-50%" />
-              </div>
-              <div>
-                <label for="gerente_ano_inicio">Año en que empezó a trabajar como gerente de
-                  explotación</label>
-                <input type="number" id="gerente_ano_inicio" name="gerente_ano_inicio" value="1997" />
-              </div>
-              <div>
-                <label for="gerente_formacion">Formación agraria del gerente de explotación</label>
-                <input type="text" id="gerente_formacion" name="gerente_formacion"
-                  value="Cursos de formación agraria" />
-              </div>
-              <div class="flex items-center">
-                <label for="gerente_cursos_perfeccionamiento" class="mr-2 mb-0">Cursos de perfeccionamiento realizados
-                  durante los últimos
-                  doce meses</label>
-                <select id="gerente_cursos_perfeccionamiento" name="gerente_cursos_perfeccionamiento">
-                  <option value="si">Sí</option>
-                  <option value="no" selected>No</option>
-                </select>
-              </div>
-              <div>
-                <label for="gerente_cif_matriz">CIF/NIF Empresa Matriz</label>
-                <input type="text" id="gerente_cif_matriz" name="gerente_cif_matriz" value="" />
-              </div>
-              <div>
-                <label for="gerente_razon_matriz">Razón Social Empresa Matriz</label>
-                <input type="text" id="gerente_razon_matriz" name="gerente_razon_matriz" value="" />
-              </div>
-            </div>
-          </fieldset>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex items-center">
+                      <label for="resp_gerente_titular" class="mr-2 mb-0">¿Es el titular también el gerente de la
+                        explotación?</label>
+                      <select id="resp_gerente_titular" name="resp_gerente_titular">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_gerente_familiar" class="mr-2 mb-0">¿Es el gerente de la explotación un miembro
+                        de la
+                        familia
+                        del titular?</label>
+                      <select id="resp_gerente_familiar" name="resp_gerente_familiar">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_comparte_familiar" class="mr-2 mb-0">¿El gerente de la explotación comparte
+                        responsabilidad de
+                        la gestión con un familiar?</label>
+                      <select id="resp_comparte_familiar" name="resp_comparte_familiar">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_comparte_conyuge" class="mr-2 mb-0">¿Con el cónyuge del titular?</label>
+                      <select id="resp_comparte_conyuge" name="resp_comparte_conyuge">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_gerente_conyuge" class="mr-2 mb-0">¿Es el gerente de la explotación el cónyuge
+                        del
+                        titular?</label>
+                      <select id="resp_gerente_conyuge" name="resp_gerente_conyuge">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_grupo_empresarial" class="mr-2 mb-0">¿La explotación agrícola forma parte de un
+                        grupo
+                        empresarial?</label>
+                      <select id="resp_grupo_empresarial" name="resp_grupo_empresarial">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                  </div>
 
-          <fieldset>
-            <legend>Solicita</legend>
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Solicitud Única
-            </h3>
-            <div class="space-y-2 mb-6">
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_abrs" name="ayuda_abrs" checked />
-                <label for="ayuda_abrs" class="ml-2 mb-0">Ayuda básica a la renta para la sostenibilidad
-                  (ABRS)</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_redistributiva" name="ayuda_redistributiva" checked />
-                <label for="ayuda_redistributiva" class="ml-2 mb-0">Ayuda complementaria redistributiva</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_jovenes" name="ayuda_jovenes" />
-                <label for="ayuda_jovenes" class="ml-2 mb-0">Ayuda complementaria para jóvenes agricultores y
-                  agricultoras</label>
-              </div>
-            </div>
+                  <h3 class="text-lg font-semibold mb-3 mt-6 text-gray-700">
+                    Datos del Gerente
+                  </h3>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="gerente_nif">NIF gerente Explotación</label>
+                      <input type="text" id="gerente_nif" name="gerente_nif" value="76226750N" />
+                    </div>
+                    <div>
+                      <label for="gerente_nombre">Nombre / Razón Social</label>
+                      <input type="text" id="gerente_nombre" name="gerente_nombre" value="ATANASIO" />
+                    </div>
+                    <div>
+                      <label for="gerente_apellido1">Primer Apellido</label>
+                      <input type="text" id="gerente_apellido1" name="gerente_apellido1" value="NARANJO" />
+                    </div>
+                    <div>
+                      <label for="gerente_apellido2">Segundo Apellido</label>
+                      <input type="text" id="gerente_apellido2" name="gerente_apellido2" value="HIDALGO" />
+                    </div>
+                    <div>
+                      <label for="gerente_fecha_nac">F. Nacimiento</label>
+                      <input type="date" id="gerente_fecha_nac" name="gerente_fecha_nac" value="1956-07-22" />
+                    </div>
+                    <div>
+                      <label for="gerente_genero">Género</label>
+                      <select id="gerente_genero" name="gerente_genero">
+                        <option value="">Seleccionar...</option>
+                        <option value="Hombre" selected>Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="gerente_email">Email</label>
+                      <input type="email" id="gerente_email" name="gerente_email" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_telefono">Teléfono</label>
+                      <input type="tel" id="gerente_telefono" name="gerente_telefono" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_movil">Móvil</label>
+                      <input type="tel" id="gerente_movil" name="gerente_movil" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_jornadas">Porcentaje de jornadas Anuales de trabajo agrario en la
+                        explotación</label>
+                      <input type="text" id="gerente_jornadas" name="gerente_jornadas" value="-50%" />
+                    </div>
+                    <div>
+                      <label for="gerente_ano_inicio">Año en que empezó a trabajar como gerente de
+                        explotación</label>
+                      <input type="number" id="gerente_ano_inicio" name="gerente_ano_inicio" value="1997" />
+                    </div>
+                    <div>
+                      <label for="gerente_formacion">Formación agraria del gerente de explotación</label>
+                      <input type="text" id="gerente_formacion" name="gerente_formacion"
+                        value="Cursos de formación agraria" />
+                    </div>
+                    <div class="flex items-center">
+                      <label for="gerente_cursos_perfeccionamiento" class="mr-2 mb-0">Cursos de perfeccionamiento
+                        realizados
+                        durante los últimos
+                        doce meses</label>
+                      <select id="gerente_cursos_perfeccionamiento" name="gerente_cursos_perfeccionamiento">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="gerente_cif_matriz">CIF/NIF Empresa Matriz</label>
+                      <input type="text" id="gerente_cif_matriz" name="gerente_cif_matriz" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_razon_matriz">Razón Social Empresa Matriz</label>
+                      <input type="text" id="gerente_razon_matriz" name="gerente_razon_matriz" value="" />
+                    </div>
+                  </div>
+                </fieldset>
 
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Ayudas Asociadas Agrícolas
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_proteinas" name="ayuda_proteinas" /><label for="ayuda_proteinas"
-                  class="ml-2 mb-0">Ayuda a la producción sostenible de proteínas de origen
-                  vegetal</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_arroz" name="ayuda_arroz" /><label for="ayuda_arroz"
-                  class="ml-2 mb-0">Ayuda a la producción sostenible de arroz</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_remolacha" name="ayuda_remolacha" /><label for="ayuda_remolacha"
-                  class="ml-2 mb-0">Ayuda a la producción sostenible de remolacha
-                  azucarera</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_tomate" name="ayuda_tomate" /><label for="ayuda_tomate"
-                  class="ml-2 mb-0">Ayuda a la producción sostenible de tomate para
-                  transformación</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_frutos_secos" name="ayuda_frutos_secos" /><label
-                  for="ayuda_frutos_secos" class="ml-2 mb-0">Ayuda a los productores de frutos secos en áreas con riesgo
-                  de desertificación</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_uva_pasa" name="ayuda_uva_pasa" /><label for="ayuda_uva_pasa"
-                  class="ml-2 mb-0">Ayuda a la producción tradicional de uva pasa</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_olivar" name="ayuda_olivar" /><label for="ayuda_olivar"
-                  class="ml-2 mb-0">Ayuda al olivar con dificultades específicas y alto valor
-                  medioambiental</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_algodon" name="ayuda_algodon" /><label for="ayuda_algodon"
-                  class="ml-2 mb-0">Pago específico al cultivo del algodón</label>
-              </div>
-            </div>
+                <fieldset>
+                  <legend>Solicita</legend>
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Solicitud Única
+                  </h3>
+                  <div class="space-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_abrs" name="ayuda_abrs" checked />
+                      <label for="ayuda_abrs" class="ml-2 mb-0">Ayuda básica a la renta para la sostenibilidad
+                        (ABRS)</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_redistributiva" name="ayuda_redistributiva" checked />
+                      <label for="ayuda_redistributiva" class="ml-2 mb-0">Ayuda complementaria redistributiva</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_jovenes" name="ayuda_jovenes" />
+                      <label for="ayuda_jovenes" class="ml-2 mb-0">Ayuda complementaria para jóvenes agricultores y
+                        agricultoras</label>
+                    </div>
+                  </div>
 
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Ayudas Asociadas de Ganadería
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_vacuno_carne" name="ayuda_gan_vacuno_carne" /><label
-                  for="ayuda_gan_vacuno_carne" class="ml-2 mb-0">Ayuda para los ganaderos extensivos de vacuno de
-                  carne</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_terneros_nacimiento" name="ayuda_gan_terneros_nacimiento" /><label
-                  for="ayuda_gan_terneros_nacimiento" class="ml-2 mb-0">Ayuda para el engorde de terneros en la
-                  explotación de
-                  nacimiento</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_terneros_sostenible" name="ayuda_gan_terneros_sostenible" /><label
-                  for="ayuda_gan_terneros_sostenible" class="ml-2 mb-0">Ayuda para el engorde sostenible de
-                  terneros</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_leche_vaca" name="ayuda_gan_leche_vaca" /><label
-                  for="ayuda_gan_leche_vaca" class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
-                  vaca</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_ovino_caprino_carne" name="ayuda_gan_ovino_caprino_carne" /><label
-                  for="ayuda_gan_ovino_caprino_carne" class="ml-2 mb-0">Ayuda para los ganaderos extensivos y
-                  semiextensivos de
-                  ovino y caprino de carne</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="ayuda_gan_leche_oveja_cabra" name="ayuda_gan_leche_oveja_cabra" /><label
-                  for="ayuda_gan_leche_oveja_cabra" class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
-                  oveja y
-                  cabra</label>
-              </div>
-              <div class="flex items-center col-span-full">
-                <input type="checkbox" id="ayuda_gan_ovino_caprino_sin_pastos"
-                  name="ayuda_gan_ovino_caprino_sin_pastos" /><label for="ayuda_gan_ovino_caprino_sin_pastos"
-                  class="ml-2 mb-0">Ayuda para los ganaderos extensivos y semiextensivos de
-                  ovino y caprino sin pastos a su disposición y que pastorean
-                  superficies de rastrojeras, barbechos y restos
-                  hortícolas</label>
-              </div>
-            </div>
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Ayudas Asociadas Agrícolas
+                  </h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_proteinas" name="ayuda_proteinas" /><label for="ayuda_proteinas"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de proteínas de origen
+                        vegetal</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_arroz" name="ayuda_arroz" /><label for="ayuda_arroz"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de arroz</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_remolacha" name="ayuda_remolacha" /><label for="ayuda_remolacha"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de remolacha
+                        azucarera</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_tomate" name="ayuda_tomate" /><label for="ayuda_tomate"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de tomate para
+                        transformación</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_frutos_secos" name="ayuda_frutos_secos" /><label
+                        for="ayuda_frutos_secos" class="ml-2 mb-0">Ayuda a los productores de frutos secos en áreas con
+                        riesgo
+                        de desertificación</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_uva_pasa" name="ayuda_uva_pasa" /><label for="ayuda_uva_pasa"
+                        class="ml-2 mb-0">Ayuda a la producción tradicional de uva pasa</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_olivar" name="ayuda_olivar" /><label for="ayuda_olivar"
+                        class="ml-2 mb-0">Ayuda al olivar con dificultades específicas y alto valor
+                        medioambiental</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_algodon" name="ayuda_algodon" /><label for="ayuda_algodon"
+                        class="ml-2 mb-0">Pago específico al cultivo del algodón</label>
+                    </div>
+                  </div>
 
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Eco Regímenes
-            </h3>
-            <div class="space-y-2 mb-6">
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_pastoreo_siega_biodiversidad" name="eco_pastoreo_siega_biodiversidad" />
-                <label for="eco_pastoreo_siega_biodiversidad" class="ml-2 mb-0">Agricultura de carbono y agroecología:
-                  Pastoreo extensivo,
-                  siega y biodiversidad en las superficies de Pastos (Húmedos
-                  o Mediterráneos)</label>
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Ayudas Asociadas de Ganadería
+                  </h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_vacuno_carne" name="ayuda_gan_vacuno_carne" /><label
+                        for="ayuda_gan_vacuno_carne" class="ml-2 mb-0">Ayuda para los ganaderos extensivos de vacuno de
+                        carne</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_terneros_nacimiento"
+                        name="ayuda_gan_terneros_nacimiento" /><label for="ayuda_gan_terneros_nacimiento"
+                        class="ml-2 mb-0">Ayuda para el engorde de terneros en la
+                        explotación de
+                        nacimiento</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_terneros_sostenible"
+                        name="ayuda_gan_terneros_sostenible" /><label for="ayuda_gan_terneros_sostenible"
+                        class="ml-2 mb-0">Ayuda para el engorde sostenible de
+                        terneros</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_leche_vaca" name="ayuda_gan_leche_vaca" /><label
+                        for="ayuda_gan_leche_vaca" class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
+                        vaca</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_ovino_caprino_carne"
+                        name="ayuda_gan_ovino_caprino_carne" /><label for="ayuda_gan_ovino_caprino_carne"
+                        class="ml-2 mb-0">Ayuda para los ganaderos extensivos y
+                        semiextensivos de
+                        ovino y caprino de carne</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_leche_oveja_cabra"
+                        name="ayuda_gan_leche_oveja_cabra" /><label for="ayuda_gan_leche_oveja_cabra"
+                        class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
+                        oveja y
+                        cabra</label>
+                    </div>
+                    <div class="flex items-center col-span-full">
+                      <input type="checkbox" id="ayuda_gan_ovino_caprino_sin_pastos"
+                        name="ayuda_gan_ovino_caprino_sin_pastos" /><label for="ayuda_gan_ovino_caprino_sin_pastos"
+                        class="ml-2 mb-0">Ayuda para los ganaderos extensivos y semiextensivos de
+                        ovino y caprino sin pastos a su disposición y que pastorean
+                        superficies de rastrojeras, barbechos y restos
+                        hortícolas</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Eco Regímenes
+                  </h3>
+                  <div class="space-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_pastoreo_siega_biodiversidad"
+                        name="eco_pastoreo_siega_biodiversidad" />
+                      <label for="eco_pastoreo_siega_biodiversidad" class="ml-2 mb-0">Agricultura de carbono y
+                        agroecología:
+                        Pastoreo extensivo,
+                        siega y biodiversidad en las superficies de Pastos (Húmedos
+                        o Mediterráneos)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_pastoreo_extensivo" name="eco_pastoreo_extensivo" /><label
+                        for="eco_pastoreo_extensivo" class="ml-2 mb-0">Pastoreo extensivo</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_siega_sostenible" name="eco_siega_sostenible" /><label
+                        for="eco_siega_sostenible" class="ml-2 mb-0">Siega sostenible</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_islas_biodiversidad" name="eco_islas_biodiversidad" /><label
+                        for="eco_islas_biodiversidad" class="ml-2 mb-0">Islas de biodiversidad en pastos</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_rotaciones_siembra_directa" name="eco_rotaciones_siembra_directa"
+                        checked />
+                      <label for="eco_rotaciones_siembra_directa" class="ml-2 mb-0">Agricultura de carbono y
+                        agroecología:
+                        Rotaciones y siembra
+                        directa en tierras de cultivo (de secano, de secano húmedo o
+                        de regadío)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_rotacion_mejorantes" name="eco_rotacion_mejorantes"
+                        checked /><label for="eco_rotacion_mejorantes" class="ml-2 mb-0">Rotación de cultivos con
+                        especies mejorantes</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_siembra_directa" name="eco_siembra_directa" /><label
+                        for="eco_siembra_directa" class="ml-2 mb-0">Siembra directa</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_cubiertas_lenosos" name="eco_cubiertas_lenosos" checked />
+                      <label for="eco_cubiertas_lenosos" class="ml-2 mb-0">Agricultura de carbono: Cubiertas vegetales y
+                        cubiertas
+                        inertes en cultivos leñosos (en terrenos llanos, en terrenos
+                        de pendiente media o en terrenos de elevada
+                        pendiente)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_cubierta_vegetal" name="eco_cubierta_vegetal" checked /><label
+                        for="eco_cubierta_vegetal" class="ml-2 mb-0">Cubierta vegetal espontánea o sembrada</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_cubierta_inerte" name="eco_cubierta_inerte" /><label
+                        for="eco_cubierta_inerte" class="ml-2 mb-0">Cubierta inerte de restos de poda</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_espacios_biodiversidad" name="eco_espacios_biodiversidad" />
+                      <label for="eco_espacios_biodiversidad" class="ml-2 mb-0">Agroecología: Espacios de biodiversidad
+                        en
+                        tierras de
+                        cultivo y cultivos permanentes</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_espacios_biodiversidad_sub"
+                        name="eco_espacios_biodiversidad_sub" /><label for="eco_espacios_biodiversidad_sub"
+                        class="ml-2 mb-0">Espacios de biodiversidad</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_nivelacion" name="eco_lamina_nivelacion" /><label
+                        for="eco_lamina_nivelacion" class="ml-2 mb-0">Gestión sostenible de la lámina de agua:
+                        Nivelación
+                        anual
+                        del terreno...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_siembra_seco" name="eco_lamina_siembra_seco" /><label
+                        for="eco_lamina_siembra_seco" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Siembra
+                        en
+                        seco...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_secas" name="eco_lamina_secas" /><label
+                        for="eco_lamina_secas" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Secas
+                        intermitentes...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_caballones" name="eco_lamina_caballones" /><label
+                        for="eco_lamina_caballones" class="ml-2 mb-0">Gestión sostenible de la lámina de agua:
+                        Construcción de
+                        caballones...</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Solicitas de Desarrollo Rural dentro Sistema Integrado (FEADER)
+                  </h3>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_andalucia" name="dr_andalucia" /><label for="dr_andalucia"
+                        class="ml-2 mb-0">Andalucía</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_aragon" name="dr_aragon" /><label for="dr_aragon"
+                        class="ml-2 mb-0">Aragón</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_asturias" name="dr_asturias" /><label for="dr_asturias"
+                        class="ml-2 mb-0">Asturias</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_baleares" name="dr_baleares" /><label for="dr_baleares"
+                        class="ml-2 mb-0">Islas
+                        Baleares</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_canarias" name="dr_canarias" /><label for="dr_canarias"
+                        class="ml-2 mb-0">Canarias</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_cantabria" name="dr_cantabria" /><label for="dr_cantabria"
+                        class="ml-2 mb-0">Cantabria</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_castilla_mancha" name="dr_castilla_mancha" /><label
+                        for="dr_castilla_mancha" class="ml-2 mb-0">Castilla La Mancha</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_castilla_leon" name="dr_castilla_leon" /><label
+                        for="dr_castilla_leon" class="ml-2 mb-0">Castilla
+                        y León</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_cataluna" name="dr_cataluna" /><label for="dr_cataluna"
+                        class="ml-2 mb-0">Cataluña</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_extremadura" name="dr_extremadura" checked /><label
+                        for="dr_extremadura" class="ml-2 mb-0">Extremadura</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_galicia" name="dr_galicia" /><label for="dr_galicia"
+                        class="ml-2 mb-0">Galicia</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_madrid" name="dr_madrid" /><label for="dr_madrid"
+                        class="ml-2 mb-0">Madrid</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_murcia" name="dr_murcia" /><label for="dr_murcia"
+                        class="ml-2 mb-0">Murcia</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_navarra" name="dr_navarra" /><label for="dr_navarra"
+                        class="ml-2 mb-0">Navarra</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_pais_vasco" name="dr_pais_vasco" /><label for="dr_pais_vasco"
+                        class="ml-2 mb-0">País
+                        Vasco</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_rioja" name="dr_rioja" /><label for="dr_rioja" class="ml-2 mb-0">La
+                        Rioja</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_valenciana" name="dr_valenciana" /><label for="dr_valenciana"
+                        class="ml-2 mb-0">C.
+                        Valenciana</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Líneas de Ayuda de Desarrollo Rural (Extremadura)
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    (Sección simplificada. Añadir checkboxes específicos según sea
+                    necesario basados en la página 4 del PDF)
+                  </p>
+                  <div class="flex items-center">
+                    <input type="checkbox" id="dr_ex_prod_integrada_frutales_hueso_2019"
+                      name="dr_ex_prod_integrada_frutales_hueso_2019" checked />
+                    <label for="dr_ex_prod_integrada_frutales_hueso_2019" class="ml-2 mb-0">Operación 10.1.1. Producción
+                      Integrada de frutales de hueso.
+                      Convocatoria 2019</label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Declaraciones, Compromisos y Autorizaciones</legend>
+                  <p class="text-gray-600 mb-4">
+                    (Sección simplificada. Añadir checkboxes específicos según sea
+                    necesario basados en las páginas 5 a 9 del PDF)
+                  </p>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="declara_datos_verdaderos" name="declara_datos_verdaderos" checked />
+                      <label for="declara_datos_verdaderos" class="ml-2 mb-0">Declara que todos los datos contenidos en
+                        esta
+                        solicitud...
+                        son verdaderos.</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="declara_conoce_sigpac" name="declara_conoce_sigpac" checked />
+                      <label for="declara_conoce_sigpac" class="ml-2 mb-0">Declara que conoce los usos y delimitaciones
+                        que
+                        figuran en
+                        la base de datos SIGPAC...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="autoriza_consulta_aeat" name="autoriza_consulta_aeat" checked />
+                      <label for="autoriza_consulta_aeat" class="ml-2 mb-0">Autoriza consulta de datos de estar al
+                        corriente
+                        con
+                        AEAT/Agencia Tributaria Autonómica.</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="autoriza_consulta_tgss" name="autoriza_consulta_tgss" checked />
+                      <label for="autoriza_consulta_tgss" class="ml-2 mb-0">Autoriza consulta de datos de estar al
+                        corriente
+                        con
+                        TGSS.</label>
+                    </div>
+                  </div>
+                </fieldset>
               </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_pastoreo_extensivo" name="eco_pastoreo_extensivo" /><label
-                  for="eco_pastoreo_extensivo" class="ml-2 mb-0">Pastoreo extensivo</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_siega_sostenible" name="eco_siega_sostenible" /><label
-                  for="eco_siega_sostenible" class="ml-2 mb-0">Siega sostenible</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_islas_biodiversidad" name="eco_islas_biodiversidad" /><label
-                  for="eco_islas_biodiversidad" class="ml-2 mb-0">Islas de biodiversidad en pastos</label>
+              <div id="section-datos-adicionales" class="form-section">
+                <fieldset>
+                  <legend>Datos Adicionales</legend>
+                  <p>Contenido de la sección Datos Adicionales...</p>
+                </fieldset>
               </div>
 
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_rotaciones_siembra_directa" name="eco_rotaciones_siembra_directa"
-                  checked />
-                <label for="eco_rotaciones_siembra_directa" class="ml-2 mb-0">Agricultura de carbono y agroecología:
-                  Rotaciones y siembra
-                  directa en tierras de cultivo (de secano, de secano húmedo o
-                  de regadío)</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_rotacion_mejorantes" name="eco_rotacion_mejorantes" checked /><label
-                  for="eco_rotacion_mejorantes" class="ml-2 mb-0">Rotación de cultivos con especies mejorantes</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_siembra_directa" name="eco_siembra_directa" /><label
-                  for="eco_siembra_directa" class="ml-2 mb-0">Siembra directa</label>
+              <div id="section-recordatorios-reglamentacion" class="form-section">
+                <fieldset>
+                  <legend>Recordatorios Reglamentación</legend>
+                  <p>Contenido de la sección Recordatorios Reglamentación...</p>
+                </fieldset>
               </div>
 
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_cubiertas_lenosos" name="eco_cubiertas_lenosos" checked />
-                <label for="eco_cubiertas_lenosos" class="ml-2 mb-0">Agricultura de carbono: Cubiertas vegetales y
-                  cubiertas
-                  inertes en cultivos leñosos (en terrenos llanos, en terrenos
-                  de pendiente media o en terrenos de elevada
-                  pendiente)</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_cubierta_vegetal" name="eco_cubierta_vegetal" checked /><label
-                  for="eco_cubierta_vegetal" class="ml-2 mb-0">Cubierta vegetal espontánea o sembrada</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_cubierta_inerte" name="eco_cubierta_inerte" /><label
-                  for="eco_cubierta_inerte" class="ml-2 mb-0">Cubierta inerte de restos de poda</label>
+              <div id="section-documentacion" class="form-section">
+                <fieldset>
+                  <legend>Documentación</legend>
+                  <p>Contenido de la sección Documentación...</p>
+                </fieldset>
               </div>
 
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_espacios_biodiversidad" name="eco_espacios_biodiversidad" />
-                <label for="eco_espacios_biodiversidad" class="ml-2 mb-0">Agroecología: Espacios de biodiversidad en
-                  tierras de
-                  cultivo y cultivos permanentes</label>
-              </div>
-              <div class="flex items-center ml-6">
-                <input type="checkbox" id="eco_espacios_biodiversidad_sub"
-                  name="eco_espacios_biodiversidad_sub" /><label for="eco_espacios_biodiversidad_sub"
-                  class="ml-2 mb-0">Espacios de biodiversidad</label>
+              <div id="section-derechos" class="form-section">
+                <fieldset>
+                  <legend>Derechos</legend>
+                  <p>Contenido de la sección Derechos...</p>
+                </fieldset>
               </div>
 
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_lamina_nivelacion" name="eco_lamina_nivelacion" /><label
-                  for="eco_lamina_nivelacion" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Nivelación
-                  anual
-                  del terreno...</label>
+              <div id="section-figuras-calidad" class="form-section">
+                <fieldset>
+                  <legend>Figuras de Calidad</legend>
+                  <p>Contenido de la sección Figuras de Calidad...</p>
+                </fieldset>
               </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_lamina_siembra_seco" name="eco_lamina_siembra_seco" /><label
-                  for="eco_lamina_siembra_seco" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Siembra en
-                  seco...</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_lamina_secas" name="eco_lamina_secas" /><label for="eco_lamina_secas"
-                  class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Secas
-                  intermitentes...</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="eco_lamina_caballones" name="eco_lamina_caballones" /><label
-                  for="eco_lamina_caballones" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Construcción de
-                  caballones...</label>
-              </div>
-            </div>
 
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Solicitas de Desarrollo Rural dentro Sistema Integrado (FEADER)
-            </h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 mb-6">
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_andalucia" name="dr_andalucia" /><label for="dr_andalucia"
-                  class="ml-2 mb-0">Andalucía</label>
+              <div id="section-recintos" class="form-section">
+                <fieldset>
+                  <legend>Datos de Recintos</legend>
+                  <p class="text-gray-600 mb-4">
+                    (Sección simplificada debido a la complejidad de la tabla
+                    original.)
+                  </p>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                      <thead class="bg-gray-50">
+                        <tr>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Prov</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mun
+                          </th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Políg</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Parc</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rec
+                          </th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Producto</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Sup. Decl. (Ha)</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uso
+                            SIGPAC</th>
+                          <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Ayudas</th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white divide-y divide-gray-200" id="tabla-recintos-body">
+                        <tr>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="06"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="44"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="26"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="16"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="2"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="NECTARINO"
+                              class="text-sm p-1 w-24 recinto-campo" name="recinto_producto_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="number" step="0.01" value="2.35"
+                              class="text-sm p-1 w-20 recinto-campo" name="recinto_sup_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="FY"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_0" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="18, 510, 9100236"
+                              class="text-sm p-1 w-32 recinto-campo" name="recinto_ayudas_0" /></td>
+                        </tr>
+                        <tr>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="06"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="44"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="26"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="16"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="0"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="NECTARINO"
+                              class="text-sm p-1 w-24 recinto-campo" name="recinto_producto_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="number" step="0.01" value="2.97"
+                              class="text-sm p-1 w-20 recinto-campo" name="recinto_sup_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="FY"
+                              class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_1" /></td>
+                          <td class="px-3 py-2 whitespace-nowrap"><input type="text" value="18, 510, 9100236"
+                              class="text-sm p-1 w-32 recinto-campo" name="recinto_ayudas_1" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <button type="button" id="addRecintoButton"
+                    class="mt-4 bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm">
+                    Añadir Recinto
+                  </button>
+                </fieldset>
               </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_aragon" name="dr_aragon" /><label for="dr_aragon"
-                  class="ml-2 mb-0">Aragón</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_asturias" name="dr_asturias" /><label for="dr_asturias"
-                  class="ml-2 mb-0">Asturias</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_baleares" name="dr_baleares" /><label for="dr_baleares"
-                  class="ml-2 mb-0">Islas
-                  Baleares</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_canarias" name="dr_canarias" /><label for="dr_canarias"
-                  class="ml-2 mb-0">Canarias</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_cantabria" name="dr_cantabria" /><label for="dr_cantabria"
-                  class="ml-2 mb-0">Cantabria</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_castilla_mancha" name="dr_castilla_mancha" /><label
-                  for="dr_castilla_mancha" class="ml-2 mb-0">Castilla La Mancha</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_castilla_leon" name="dr_castilla_leon" /><label for="dr_castilla_leon"
-                  class="ml-2 mb-0">Castilla
-                  y León</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_cataluna" name="dr_cataluna" /><label for="dr_cataluna"
-                  class="ml-2 mb-0">Cataluña</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_extremadura" name="dr_extremadura" checked /><label for="dr_extremadura"
-                  class="ml-2 mb-0">Extremadura</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_galicia" name="dr_galicia" /><label for="dr_galicia"
-                  class="ml-2 mb-0">Galicia</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_madrid" name="dr_madrid" /><label for="dr_madrid"
-                  class="ml-2 mb-0">Madrid</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_murcia" name="dr_murcia" /><label for="dr_murcia"
-                  class="ml-2 mb-0">Murcia</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_navarra" name="dr_navarra" /><label for="dr_navarra"
-                  class="ml-2 mb-0">Navarra</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_pais_vasco" name="dr_pais_vasco" /><label for="dr_pais_vasco"
-                  class="ml-2 mb-0">País
-                  Vasco</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_rioja" name="dr_rioja" /><label for="dr_rioja" class="ml-2 mb-0">La
-                  Rioja</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="dr_valenciana" name="dr_valenciana" /><label for="dr_valenciana"
-                  class="ml-2 mb-0">C.
-                  Valenciana</label>
-              </div>
-            </div>
 
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">
-              Líneas de Ayuda de Desarrollo Rural (Extremadura)
-            </h3>
-            <p class="text-gray-600 mb-4">
-              (Sección simplificada. Añadir checkboxes específicos según sea
-              necesario basados en la página 4 del PDF)
-            </p>
-            <div class="flex items-center">
-              <input type="checkbox" id="dr_ex_prod_integrada_frutales_hueso_2019"
-                name="dr_ex_prod_integrada_frutales_hueso_2019" checked />
-              <label for="dr_ex_prod_integrada_frutales_hueso_2019" class="ml-2 mb-0">Operación 10.1.1. Producción
-                Integrada de frutales de hueso.
-                Convocatoria 2019</label>
-            </div>
-          </fieldset>
+              <div id="section-lineas-ayuda-recintos" class="form-section">
+                <fieldset>
+                  <legend>Líneas de Ayuda / Recintos</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-detalle-variedades" class="form-section">
+                <fieldset>
+                  <legend>Detalle Variedades</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-datos-adicionales-recintos" class="form-section">
+                <fieldset>
+                  <legend>Datos Adicionales de Recintos</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-productos-horticolas-frutales" class="form-section">
+                <fieldset>
+                  <legend>Productos Hortícolas y otros Frutales</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-recintos-explotaciones-ganaderas" class="form-section">
+                <fieldset>
+                  <legend>Recintos - Explotaciones Ganaderas</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-documentos-asociados-recinto" class="form-section">
+                <fieldset>
+                  <legend>Documentos asociados por Recinto</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-aprovechamientos" class="form-section">
+                <fieldset>
+                  <legend>Aprovechamientos</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-lineas-ayuda-aprovechamiento" class="form-section">
+                <fieldset>
+                  <legend>Líneas Ayuda / Aprovechamiento</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-explotaciones-ganaderas" class="form-section">
+                <fieldset>
+                  <legend>Explotaciones Ganaderas</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-socios" class="form-section">
+                <fieldset>
+                  <legend>Socios</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-declaracion-responsable-agricultor-activo" class="form-section">
+                <fieldset>
+                  <legend>Declaración Responsable (Agricultor Activo)</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-encuesta-responsable-explotacion" class="form-section">
+                <fieldset>
+                  <legend>Encuesta Responsable Explotación</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-opfh" class="form-section">
+                <fieldset>
+                  <legend>OPFH</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-solicitante-explotacion-pdr" class="form-section">
+                <fieldset>
+                  <legend>Solicitante/Explotación (PDR)</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-datos-especificos-aprovechamientos-pdr" class="form-section">
+                <fieldset>
+                  <legend>Datos Específicos Aprovechamientos (PDR)</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-datos-edificios-instalaciones" class="form-section">
+                <fieldset>
+                  <legend>Datos de Edificios e Instalaciones</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-cumplimiento-bcams-ecorregimenes" class="form-section">
+                <fieldset>
+                  <legend>Cumplimiento de BCAMs y Ecorregímenes</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-resumen-solicitud" class="form-section">
+                <fieldset>
+                  <legend>Resumen de la solicitud</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-impreso-justificante-registro" class="form-section">
+                <fieldset>
+                  <legend>Impreso y Justificante Registro</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
+              <div id="section-solicitudes-relacionadas" class="form-section">
+                <fieldset>
+                  <legend>Solicitudes Relacionadas</legend>
+                  <p>Contenido...</p>
+                </fieldset>
+              </div>
 
-          <fieldset>
-            <legend>Declaraciones, Compromisos y Autorizaciones</legend>
-            <p class="text-gray-600 mb-4">
-              (Sección simplificada. Añadir checkboxes específicos según sea
-              necesario basados en las páginas 5 a 9 del PDF)
-            </p>
-            <div class="space-y-2">
-              <div class="flex items-center">
-                <input type="checkbox" id="declara_datos_verdaderos" name="declara_datos_verdaderos" checked />
-                <label for="declara_datos_verdaderos" class="ml-2 mb-0">Declara que todos los datos contenidos en esta
-                  solicitud...
-                  son verdaderos.</label>
+              <div class="mt-10 text-center">
+                <button type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Guardar
+                  Cambios</button>
               </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="declara_conoce_sigpac" name="declara_conoce_sigpac" checked />
-                <label for="declara_conoce_sigpac" class="ml-2 mb-0">Declara que conoce los usos y delimitaciones que
-                  figuran en
-                  la base de datos SIGPAC...</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="autoriza_consulta_aeat" name="autoriza_consulta_aeat" checked />
-                <label for="autoriza_consulta_aeat" class="ml-2 mb-0">Autoriza consulta de datos de estar al corriente
-                  con
-                  AEAT/Agencia Tributaria Autonómica.</label>
-              </div>
-              <div class="flex items-center">
-                <input type="checkbox" id="autoriza_consulta_tgss" name="autoriza_consulta_tgss" checked />
-                <label for="autoriza_consulta_tgss" class="ml-2 mb-0">Autoriza consulta de datos de estar al corriente
-                  con
-                  TGSS.</label>
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Datos de Recintos</legend>
-            <p class="text-gray-600 mb-4">
-              (Sección simplificada debido a la complejidad de la tabla
-              original. Aquí se podría implementar una tabla editable o un
-              sistema para añadir/editar recintos con JavaScript)
-            </p>
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Prov
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Mun
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Políg
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Parc
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Rec
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Producto
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Sup. Decl. (Ha)
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Uso SIGPAC
-                    </th>
-                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Ayudas
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="tabla-recintos-body">
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="06" class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="44" class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="26" class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="16" class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="2" class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24 recinto-campo"
-                        name="recinto_producto_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="number" step="0.01" value="2.35" class="text-sm p-1 w-20 recinto-campo"
-                        name="recinto_sup_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="FY" class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_0" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32 recinto-campo"
-                        name="recinto_ayudas_0" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="06" class="text-sm p-1 w-12 recinto-campo" name="recinto_prov_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="44" class="text-sm p-1 w-12 recinto-campo" name="recinto_mun_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="26" class="text-sm p-1 w-12 recinto-campo" name="recinto_polig_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="16" class="text-sm p-1 w-12 recinto-campo" name="recinto_parc_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="0" class="text-sm p-1 w-12 recinto-campo" name="recinto_rec_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="NECTARINO" class="text-sm p-1 w-24 recinto-campo"
-                        name="recinto_producto_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="number" step="0.01" value="2.97" class="text-sm p-1 w-20 recinto-campo"
-                        name="recinto_sup_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="FY" class="text-sm p-1 w-12 recinto-campo" name="recinto_uso_1" />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <input type="text" value="18, 510, 9100236" class="text-sm p-1 w-32 recinto-campo"
-                        name="recinto_ayudas_1" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <button type="button" id="addRecintoButton"
-              class="mt-4 bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm">
-              Añadir Recinto
-            </button>
-          </fieldset>
-
-          <div class="mt-10 text-center">
-            <button type="submit"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg">Guardar
-              Cambios</button>
-          </div>
-        </form>
+            </form>
+          </main>
+        </div>
       </div>
     </div>
   </div>
@@ -1283,6 +1575,7 @@
     <div id="validationsList" class="space-y-3">
     </div>
   </div>
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -1585,7 +1878,40 @@
 
     // --- INICIALIZACIÓN GENERAL ---
     document.addEventListener("DOMContentLoaded", () => {
-      pacForm = document.getElementById("pac-form");
+      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
+      const formSections = document.querySelectorAll(".form-section");
+      pacForm = document.getElementById("pac-form"); // Asegúrate que pacForm está definido aquí o globalmente si es necesario
+
+      function showSection(sectionIdToShow) {
+        formSections.forEach(section => {
+          if (section.id === "section-" + sectionIdToShow) {
+            section.classList.add("active");
+          } else {
+            section.classList.remove("active");
+          }
+        });
+
+        formNavigationLinks.forEach(link => {
+          if (link.dataset.section === sectionIdToShow) {
+            link.classList.add("active-nav-link");
+          } else {
+            link.classList.remove("active-nav-link");
+          }
+        });
+      }
+
+      formNavigationLinks.forEach(link => {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          const sectionId = this.dataset.section;
+          if (sectionId) {
+            showSection(sectionId);
+          }
+        });
+      });
+
+      // Mostrar la sección inicial (Datos Generales)
+      showSection("datos-generales");
       toggleResidencia(); // Llamada inicial
 
       // Cargar el estado más reciente del historial si existe (sin resaltar)
