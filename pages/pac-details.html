@@ -10,13 +10,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 
 <body>
   <nav class="sidebar">
     <div class="logo-section">
-      <img src="img/laiw_color.png" alt="LAIW Logo" />
+      <img src="../img/laiw_color.png" alt="LAIW Logo" />
       <!-- <span class="link-text">LAIW</span> -->
     </div>
     <ul class="nav flex-column flex-grow-1">
@@ -61,7 +65,7 @@
         <a href="javascript:history.back()" class="text-decoration-none me-2">
           <i class="fas fa-arrow-left text-muted"></i>
         </a>
-        <span class="navbar-brand">PAC 123</span>
+        <span class="navbar-brand">Atrás</span>
       </div>
       <form class="d-flex search-form flex-grow-1 mx-3" role="search">
         <input class="form-control me-2" type="search" placeholder="Copilot Search..." aria-label="Search" />
@@ -79,10 +83,10 @@
           <div class="card-body">
             <div class="row">
               <div class="col" onclick="location.href='pac-edit.html'" style="cursor: pointer;">
-                <h5 class="card-title" style="font-weight: 700;">
+                <h2 class="card-title" style="font-weight: 700; font-size: 1.5rem;">
                   <span>PAC 123</span>
                   <i class="fa-solid fa-arrow-right"></i>
-                </h5>
+                </h2>
                 <p class="text-muted mb-0">Pequeña explotación agraria</p>
               </div>
               <div class="col-md-auto text-md-end">
@@ -93,7 +97,7 @@
                 <p class="text-muted mb-0">Última modificación: 3 May 2025</p>
               </div>
             </div>
-            <hr />
+            <hr class="my-3" />
             <p class="mb-0">
               Descripción breve generada automáticamente del PAC 123 y su
               propósito en el sistema. Esta descripción proporciona contexto
@@ -106,30 +110,9 @@
           <!-- Recent Actions Section -->
           <div class="col-md-4 mb-4">
             <div class="card h-100">
-              <div class="card-header">ACCIONES RECIENTES</div>
+              <div class="card-header">HISTORIAL DE CAMBIOS</div>
               <div class="card-body p-0">
-                <div class="list-group list-group-flush">
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Actualización de estado</h6>
-                      <small class="text-muted">3d</small>
-                    </div>
-                    <p class="mb-1">Changed status to Ready</p>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Revisión completada</h6>
-                      <small class="text-muted">5d</small>
-                    </div>
-                    <p class="mb-1">Review completed by user1</p>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h6 class="mb-1">Documento actualizado</h6>
-                      <small class="text-muted">1w</small>
-                    </div>
-                    <p class="mb-1">Updated main document</p>
-                  </a>
+                <div id="historyList">
                 </div>
               </div>
             </div>
@@ -191,6 +174,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="../js/historial.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      populateHistoryList();
+    });
+  </script>
 </body>
 
 </html>

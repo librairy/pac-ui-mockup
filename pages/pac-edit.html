@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom styles if needed */
@@ -139,7 +139,7 @@
 <body>
   <nav class="sidebar">
     <div class="logo-section">
-      <img src="img/laiw_color.png" alt="LAIW Logo" />
+      <img src="../img/laiw_color.png" alt="LAIW Logo" />
     </div>
     <ul class="nav flex-column flex-grow-1">
       <li class="nav-item">
@@ -1207,278 +1207,316 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+
+  <script src="../js/historial.js" defer></script>
+
   <script>
+    // Form base
+    function getBaseFormData() {
+      // Esta función debería idealmente leer los valores actuales del formulario
+      // O, para este mockup, devolver un objeto con todos los valores por defecto del HTML.
+      // Es VITAL que esta función devuelva un objeto con TODOS los campos y sus valores iniciales.
+      return {
+        campana: "2025",
+        num_solicitud: "367389",
+        estado_actual: "Finalizada",
+        fecha_registro: "",
+        num_registro: "2024000000154555",
+        ambito_grabacion: "AGROAL GESTIÓN INTEGRAL, S.L.U.",
+        tipo_registro: "",
+        codigo_regepa: "1106030141",
+        cod_explotacion: "",
+        comunidad_autonoma: "Extremadura",
+        num_expediente: "11039695",
+        sol_cif_nif: "B06258511",
+        sol_nombre_razon: "FRUTICOLA CASTELNOVO SL",
+        sol_apellido1: "",
+        sol_apellido2: "",
+        sol_fecha_nac: "",
+        sol_genero: "",
+        sol_estado_civil: "",
+        sol_telefono: "924856096",
+        sol_movil: "649092918",
+        sol_email: "torrado@tany.es",
+        sol_titularidad_compartida: false,
+        com_sms: false,
+        com_email: true,
+        not_tipo_via: "Carretera",
+        not_nombre_via: "NAC 430",
+        not_numero: "115",
+        not_bloque: "",
+        not_portal: "",
+        not_escalera: "",
+        not_planta: "",
+        not_puerta: "IZ",
+        not_km: "115",
+        not_provincia: "Badajoz",
+        not_municipio: "Villanueva de la Serena",
+        not_cp: "06700",
+        not_localidad: "VILLANUEVA DE LA SERENA",
+        not_apartado: "",
+        not_oficina: "",
+        res_igual_not: true, // Este controla la visibilidad de otra sección
+        // Campos de dirección residencia (se rellenarán si res_igual_not es false, pero deben existir en el modelo)
+        res_tipo_via: "Carretera",
+        res_nombre_via: "NAC 430",
+        res_numero: "115",
+        res_bloque: "",
+        res_portal: "",
+        res_escalera: "",
+        res_planta: "",
+        res_puerta: "IZ",
+        res_km: "115",
+        res_provincia: "Badajoz",
+        res_municipio: "Villanueva de la Serena",
+        res_cp: "06700",
+        res_localidad: "VILLANUEVA DE LA SERENA",
+        iban: "ES6221002027690200037255",
+        entidad: "2100",
+        sucursal: "2027",
+        dc: "69",
+        num_cuenta: "0200037255",
+        fiscal_incorpora: false,
+        fiscal_forma_juridica: "Otras personas jurídicas",
+        fiscal_cif_integradora: "",
+        fiscal_ingresos_integradora_2023: null, // usar null o "" para números vacíos
+        fiscal_ingresos_agrarios_2023: 13624150.7,
+        fiscal_ingresos_agrarios_2022: 15564544.25,
+        fiscal_ingresos_agrarios_2021: 13665204.58,
+        fiscal_ingresos_totales_2023: 7069803.74,
+        fiscal_costes_laborales: null,
+        rep_cif_nif: "76226750N",
+        rep_nombre: "ATANASIO",
+        rep_apellido1: "NARANJO",
+        rep_apellido2: "HIDALGO",
+        rep_fecha_nac: "1956-07-22",
+        rep_genero: "Hombre",
+        rep_telefono: "",
+        rep_movil: "",
+        rep_email: "",
+        responsabilidad_tipo: "juridica", // Radio button
+        resp_gerente_titular: "no",
+        resp_gerente_familiar: "no",
+        resp_comparte_familiar: "no",
+        resp_comparte_conyuge: "no",
+        resp_gerente_conyuge: "no",
+        resp_grupo_empresarial: "no",
+        gerente_nif: "76226750N",
+        gerente_nombre: "ATANASIO",
+        gerente_apellido1: "NARANJO",
+        gerente_apellido2: "HIDALGO",
+        gerente_fecha_nac: "1956-07-22",
+        gerente_genero: "Hombre",
+        gerente_email: "",
+        gerente_telefono: "",
+        gerente_movil: "",
+        gerente_jornadas: "-50%",
+        gerente_ano_inicio: 1997,
+        gerente_formacion: "Cursos de formación agraria",
+        gerente_cursos_perfeccionamiento: "no",
+        gerente_cif_matriz: "",
+        gerente_razon_matriz: "",
+        ayuda_abrs: true,
+        ayuda_redistributiva: true,
+        ayuda_jovenes: false,
+        ayuda_proteinas: false,
+        ayuda_arroz: false,
+        ayuda_remolacha: false,
+        ayuda_tomate: false,
+        ayuda_frutos_secos: false,
+        ayuda_uva_pasa: false,
+        ayuda_olivar: false,
+        ayuda_algodon: false,
+        ayuda_gan_vacuno_carne: false,
+        ayuda_gan_terneros_nacimiento: false,
+        ayuda_gan_terneros_sostenible: false,
+        ayuda_gan_leche_vaca: false,
+        ayuda_gan_ovino_caprino_carne: false,
+        ayuda_gan_leche_oveja_cabra: false,
+        ayuda_gan_ovino_caprino_sin_pastos: false,
+        eco_pastoreo_siega_biodiversidad: false,
+        eco_pastoreo_extensivo: false,
+        eco_siega_sostenible: false,
+        eco_islas_biodiversidad: false,
+        eco_rotaciones_siembra_directa: true,
+        eco_rotacion_mejorantes: true,
+        eco_siembra_directa: false,
+        eco_cubiertas_lenosos: true,
+        eco_cubierta_vegetal: true,
+        eco_cubierta_inerte: false,
+        eco_espacios_biodiversidad: false,
+        eco_espacios_biodiversidad_sub: false,
+        eco_lamina_nivelacion: false,
+        eco_lamina_siembra_seco: false,
+        eco_lamina_secas: false,
+        eco_lamina_caballones: false,
+        dr_andalucia: false,
+        dr_aragon: false,
+        dr_asturias: false,
+        dr_baleares: false,
+        dr_canarias: false,
+        dr_cantabria: false,
+        dr_castilla_mancha: false,
+        dr_castilla_leon: false,
+        dr_cataluna: false,
+        dr_extremadura: true,
+        dr_galicia: false,
+        dr_madrid: false,
+        dr_murcia: false,
+        dr_navarra: false,
+        dr_pais_vasco: false,
+        dr_rioja: false,
+        dr_valenciana: false,
+        dr_ex_prod_integrada_frutales_hueso_2019: true,
+        declara_datos_verdaderos: true,
+        declara_conoce_sigpac: true,
+        autoriza_consulta_aeat: true,
+        autoriza_consulta_tgss: true,
+        // Para la tabla de recintos, necesitaríamos una estructura más compleja, ej: un array de objetos.
+        // recintos: [
+        //   { recinto_prov_0: "06", recinto_mun_0: "44", ... },
+        //   { recinto_prov_1: "06", recinto_mun_1: "44", ... }
+        // ]
+        // Por simplicidad, no lo implementamos completamente aquí, pero es para tenerlo en cuenta.
+      };
+    }
+
     // Function to toggle visibility of residencia details based on checkbox
     function toggleResidencia() {
       const checkbox = document.getElementById("res_igual_not");
       const detailsDiv = document.getElementById("residencia-details");
-      if (checkbox.checked) {
-        detailsDiv.classList.add("hidden"); // Hide details if checkbox is checked
-      } else {
-        detailsDiv.classList.remove("hidden"); // Show details if checkbox is unchecked
+      if (checkbox) { // Buena práctica: comprobar si el elemento existe
+        if (checkbox.checked) {
+          detailsDiv.classList.add("hidden");
+        } else {
+          detailsDiv.classList.remove("hidden");
+        }
       }
     }
 
-    // Initial call to set the correct state on page load for residencia details
-    // Ensure it's called after DOM is loaded if this script is in <head>
-    // document.addEventListener("DOMContentLoaded", toggleResidencia); // Ya se llama abajo
+    // Funciones de historial
 
-    // Add event listener for form submission (optional)
-    document
-      .getElementById("pac-form")
-      .addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission
-        alert(
-          "Formulario guardado (simulación). En una aplicación real, aquí se enviarían los datos."
-        );
-      });
-
-    // --- HISTORIAL SCRIPT ---
-    document.addEventListener("DOMContentLoaded", () => {
-      toggleResidencia(); // Llama aquí para asegurar que se ejecuta al cargar.
-
-      const historyButton = document.getElementById("historyButton");
+    function toggleHistoryPanel() {
+      // Asegúrate de que el ID 'historyPanel' exista en el HTML que use esta función
       const historyPanel = document.getElementById("historyPanel");
-      const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
-      const historyListContainer = document.getElementById("historyList");
-      const pacForm = document.getElementById("pac-form");
-
-      // --- Datos de ejemplo para el historial ---
-      const formHistory = [
-        {
-          date: "2025-05-10 14:30",
-          description: "Actualización de dirección de notificación en base a nuevos documentos subidos.",
-          user: "Asistente",
-          formData: {
-            ...getBaseFormData(), // Importante
-            not_nombre_via: "Calle Vieja",
-            not_numero: "5",
-            not_cp: "06701",
-            not_localidad: "Villanueva de la Serena",
-            not_provincia: "Badajoz",
-          },
-          changedFields: ["not_nombre_via", "not_numero", "not_cp", "not_localidad", "not_provincia"]
-        },
-        {
-          date: "2025-05-03 10:15",
-          description: "Actualización datos de contacto y dirección.",
-          user: "Ana Pérez",
-          formData: {
-            sol_telefono: "924856097",
-            sol_movil: "649092919",
-            sol_email: "ana.perez@example.com",
-            not_nombre_via: "Calle Nueva",
-            not_numero: "10",
-            // Mantener el resto de valores como estaban en la versión anterior (o inicial si es el primer cambio)
-            // Copiamos de la base para mantener consistencia, luego sobreescribimos.
-            ...getBaseFormData(), // Importante para tener todos los campos
-            // Sobreescribimos los que cambiaron
-            sol_telefono: "924856097",
-            sol_movil: "649092919",
-            sol_email: "ana.perez@example.com",
-            not_nombre_via: "Calle Nueva",
-            not_numero: "10",
-          },
-          changedFields: ["sol_telefono", "sol_movil", "sol_email", "not_nombre_via", "not_numero"]
-        },
-        {
-          date: "2025-04-28 16:30",
-          description: "Modificación de IBAN y ayudas solicitadas.",
-          user: "Carlos López",
-          formData: {
-            ...getBaseFormData(), // Importante
-            iban: "ES5021000000000000000001",
-            ayuda_jovenes: true,
-            ayuda_abrs: true, // Este ya estaba true, pero lo incluimos si fue parte del "guardado"
-          },
-          changedFields: ["iban", "ayuda_jovenes"]
-        },
-        {
-          date: "2025-04-20 09:00",
-          description: "Creación inicial del formulario.",
-          user: "Sistema",
-          formData: getBaseFormData(), // Estado inicial del formulario
-          changedFields: []
-        },
-      ];
-
-      function getBaseFormData() {
-        // Esta función debería idealmente leer los valores actuales del formulario
-        // O, para este mockup, devolver un objeto con todos los valores por defecto del HTML.
-        // Es VITAL que esta función devuelva un objeto con TODOS los campos y sus valores iniciales.
-        return {
-          campana: "2025", num_solicitud: "367389", estado_actual: "Finalizada", fecha_registro: "", num_registro: "2024000000154555",
-          ambito_grabacion: "AGROAL GESTIÓN INTEGRAL, S.L.U.", tipo_registro: "", codigo_regepa: "1106030141", cod_explotacion: "",
-          comunidad_autonoma: "Extremadura", num_expediente: "11039695",
-          sol_cif_nif: "B06258511", sol_nombre_razon: "FRUTICOLA CASTELNOVO SL", sol_apellido1: "", sol_apellido2: "", sol_fecha_nac: "",
-          sol_genero: "", sol_estado_civil: "", sol_telefono: "924856096", sol_movil: "649092918", sol_email: "torrado@tany.es",
-          sol_titularidad_compartida: false, com_sms: false, com_email: true,
-          not_tipo_via: "Carretera", not_nombre_via: "NAC 430", not_numero: "115", not_bloque: "", not_portal: "", not_escalera: "",
-          not_planta: "", not_puerta: "IZ", not_km: "115", not_provincia: "Badajoz", not_municipio: "Villanueva de la Serena",
-          not_cp: "06700", not_localidad: "VILLANUEVA DE LA SERENA", not_apartado: "", not_oficina: "",
-          res_igual_not: true, // Este controla la visibilidad de otra sección
-          // Campos de dirección residencia (se rellenarán si res_igual_not es false, pero deben existir en el modelo)
-          res_tipo_via: "Carretera", res_nombre_via: "NAC 430", res_numero: "115", res_bloque: "", res_portal: "", res_escalera: "",
-          res_planta: "", res_puerta: "IZ", res_km: "115", res_provincia: "Badajoz", res_municipio: "Villanueva de la Serena",
-          res_cp: "06700", res_localidad: "VILLANUEVA DE LA SERENA",
-          iban: "ES6221002027690200037255", entidad: "2100", sucursal: "2027", dc: "69", num_cuenta: "0200037255",
-          fiscal_incorpora: false, fiscal_forma_juridica: "Otras personas jurídicas", fiscal_cif_integradora: "", fiscal_ingresos_integradora_2023: null, // usar null o "" para números vacíos
-          fiscal_ingresos_agrarios_2023: 13624150.7, fiscal_ingresos_agrarios_2022: 15564544.25, fiscal_ingresos_agrarios_2021: 13665204.58,
-          fiscal_ingresos_totales_2023: 7069803.74, fiscal_costes_laborales: null,
-          rep_cif_nif: "76226750N", rep_nombre: "ATANASIO", rep_apellido1: "NARANJO", rep_apellido2: "HIDALGO", rep_fecha_nac: "1956-07-22",
-          rep_genero: "Hombre", rep_telefono: "", rep_movil: "", rep_email: "",
-          responsabilidad_tipo: "juridica", // Radio button
-          resp_gerente_titular: "no", resp_gerente_familiar: "no", resp_comparte_familiar: "no", resp_comparte_conyuge: "no",
-          resp_gerente_conyuge: "no", resp_grupo_empresarial: "no",
-          gerente_nif: "76226750N", gerente_nombre: "ATANASIO", gerente_apellido1: "NARANJO", gerente_apellido2: "HIDALGO",
-          gerente_fecha_nac: "1956-07-22", gerente_genero: "Hombre", gerente_email: "", gerente_telefono: "", gerente_movil: "",
-          gerente_jornadas: "-50%", gerente_ano_inicio: 1997, gerente_formacion: "Cursos de formación agraria",
-          gerente_cursos_perfeccionamiento: "no", gerente_cif_matriz: "", gerente_razon_matriz: "",
-          ayuda_abrs: true, ayuda_redistributiva: true, ayuda_jovenes: false,
-          ayuda_proteinas: false, ayuda_arroz: false, ayuda_remolacha: false, ayuda_tomate: false, ayuda_frutos_secos: false,
-          ayuda_uva_pasa: false, ayuda_olivar: false, ayuda_algodon: false,
-          ayuda_gan_vacuno_carne: false, ayuda_gan_terneros_nacimiento: false, ayuda_gan_terneros_sostenible: false,
-          ayuda_gan_leche_vaca: false, ayuda_gan_ovino_caprino_carne: false, ayuda_gan_leche_oveja_cabra: false,
-          ayuda_gan_ovino_caprino_sin_pastos: false,
-          eco_pastoreo_siega_biodiversidad: false, eco_pastoreo_extensivo: false, eco_siega_sostenible: false, eco_islas_biodiversidad: false,
-          eco_rotaciones_siembra_directa: true, eco_rotacion_mejorantes: true, eco_siembra_directa: false,
-          eco_cubiertas_lenosos: true, eco_cubierta_vegetal: true, eco_cubierta_inerte: false,
-          eco_espacios_biodiversidad: false, eco_espacios_biodiversidad_sub: false,
-          eco_lamina_nivelacion: false, eco_lamina_siembra_seco: false, eco_lamina_secas: false, eco_lamina_caballones: false,
-          dr_andalucia: false, dr_aragon: false, dr_asturias: false, dr_baleares: false, dr_canarias: false, dr_cantabria: false,
-          dr_castilla_mancha: false, dr_castilla_leon: false, dr_cataluna: false, dr_extremadura: true, dr_galicia: false,
-          dr_madrid: false, dr_murcia: false, dr_navarra: false, dr_pais_vasco: false, dr_rioja: false, dr_valenciana: false,
-          dr_ex_prod_integrada_frutales_hueso_2019: true,
-          declara_datos_verdaderos: true, declara_conoce_sigpac: true, autoriza_consulta_aeat: true, autoriza_consulta_tgss: true,
-          // Para la tabla de recintos, necesitaríamos una estructura más compleja, ej: un array de objetos.
-          // recintos: [
-          //   { recinto_prov_0: "06", recinto_mun_0: "44", ... },
-          //   { recinto_prov_1: "06", recinto_mun_1: "44", ... }
-          // ]
-          // Por simplicidad, no lo implementamos completamente aquí, pero es para tenerlo en cuenta.
-        };
-      }
-
-
-      function toggleHistoryPanel() {
+      if (historyPanel) {
         historyPanel.classList.toggle("translate-x-full");
       }
+    }
 
-      function populateHistoryList() {
-        historyListContainer.innerHTML = "";
-        if (formHistory.length === 0) {
-          historyListContainer.innerHTML = '<p class="text-gray-500">No hay historial de cambios.</p>';
-          return;
-        }
-
-        formHistory.forEach((entry) => {
-          const entryDiv = document.createElement("div");
-          entryDiv.className = "p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150";
-
-          let userDisplayHTML = '';
-          if (entry.user.toLowerCase() === "sistema") {
-            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Sistema">
-                                 <i class="fas fa-desktop fa-fw mr-2 text-blue-500"></i> Sistema
-                               </span>`;
-          } else if (entry.user.toLowerCase() === "asistente") {
-            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Asistente">
-                                 <i class="fas fa-robot fa-fw mr-2 text-purple-500"></i> Asistente
-                               </span>`;
-          } else {
-            userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="${entry.user}">
-                                 <i class="fas fa-user fa-fw mr-2 text-gray-400"></i> ${entry.user}
-                               </span>`;
-          }
-
-          entryDiv.innerHTML = `
-            <p class="font-semibold text-sm text-blue-600">${new Date(entry.date).toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-            <p class="text-sm text-gray-700 mt-1">${entry.description}</p>
-            ${userDisplayHTML}
-          `;
-          entryDiv.addEventListener("click", () => {
-            applyHistoryEntry(entry);
-            toggleHistoryPanel();
-          });
-          historyListContainer.appendChild(entryDiv);
-        });
+    function clearFormHighlights() {
+      // 'pacForm' debe estar disponible o pasarse como parámetro
+      if (typeof pacForm === "undefined") {
+        console.error("pacForm no está definido para clearFormHighlights.");
+        return;
       }
+      const highlightedFields = pacForm.querySelectorAll(
+        ".campo-modificado-historial"
+      );
+      highlightedFields.forEach((field) => {
+        field.classList.remove("campo-modificado-historial");
+        if (field.labels && field.labels[0])
+          field.labels[0].classList.remove("campo-modificado-historial");
+      });
+    }
 
-      function clearFormHighlights() {
-        const highlightedFields = pacForm.querySelectorAll(".campo-modificado-historial");
-        highlightedFields.forEach(field => {
-          field.classList.remove("campo-modificado-historial");
-        });
+    function applyHistoryEntry(historyEntry, highlight = true) {
+      // 'pacForm', 'toggleResidencia' (si existe) deben estar disponibles
+      if (typeof pacForm === "undefined") {
+        console.error("pacForm no está definido para applyHistoryEntry.");
+        return;
       }
+      clearFormHighlights();
+      const formDataFromHistory = historyEntry.formData;
 
-      function applyHistoryEntry(historyEntry, highlight = true) {
-        clearFormHighlights();
-        const formDataFromHistory = historyEntry.formData;
-
-        for (const fieldId in formDataFromHistory) {
-          if (formDataFromHistory.hasOwnProperty(fieldId)) { // Buena práctica
-            const field = pacForm.elements[fieldId];
-            if (field) {
-              // Si hay múltiples campos con el mismo nombre (ej. radio buttons)
-              if (field.length && field[0] && (field[0].type === "radio")) {
-                for (let i = 0; i < field.length; i++) {
-                  if (field[i].value === formDataFromHistory[fieldId]) {
-                    field[i].checked = true;
-                  } else {
-                    field[i].checked = false;
-                  }
+      for (const fieldId in formDataFromHistory) {
+        if (formDataFromHistory.hasOwnProperty(fieldId)) {
+          const field = pacForm.elements[fieldId];
+          if (field) {
+            if (field.length && field[0] && field[0].type === "radio") {
+              for (let i = 0; i < field.length; i++) {
+                if (field[i].value === formDataFromHistory[fieldId]) {
+                  field[i].checked = true;
+                } else {
+                  field[i].checked = false;
                 }
-              } else if (field.type === "checkbox") {
-                field.checked = formDataFromHistory[fieldId];
-              } else {
-                field.value = formDataFromHistory[fieldId];
               }
+            } else if (field.type === "checkbox") {
+              field.checked = formDataFromHistory[fieldId];
+            } else {
+              field.value = formDataFromHistory[fieldId];
             }
           }
         }
-
-        if (highlight && historyEntry.changedFields && historyEntry.changedFields.length > 0) {
-          historyEntry.changedFields.forEach(fieldId => {
-            const field = pacForm.elements[fieldId];
-            if (field) {
-              // Si es un grupo de radio buttons, destacar el contenedor o el label general sería más complejo
-              // Por ahora, destacamos el input individual (aunque visualmente solo uno estará checked)
-              if (field.length && field[0] && (field[0].type === "radio")) {
-                // No es trivial destacar el radio "correcto" si solo tenemos el name
-                // Se podría buscar el que tiene el valor del historial y destacarlo
-                for (let i = 0; i < field.length; i++) {
-                  if (field[i].value === formDataFromHistory[fieldId]) {
-                    field[i].classList.add("campo-modificado-historial");
-                  }
-                }
-              } else {
-                field.classList.add("campo-modificado-historial");
-              }
-            }
-          });
-        }
-
-        if (formDataFromHistory.hasOwnProperty('res_igual_not')) {
-          toggleResidencia();
-        }
       }
 
-      // Al principio, se carga el último cambio del historial
+      if (
+        highlight &&
+        historyEntry.changedFields &&
+        historyEntry.changedFields.length > 0
+      ) {
+        historyEntry.changedFields.forEach((fieldId) => {
+          const field = pacForm.elements[fieldId];
+          if (field) {
+            if (field.length && field[0] && field[0].type === "radio") {
+              for (let i = 0; i < field.length; i++) {
+                if (field[i].value === formDataFromHistory[fieldId]) {
+                  field[i].classList.add("campo-modificado-historial");
+                }
+              }
+            } else {
+              field.classList.add("campo-modificado-historial");
+            }
+          }
+        });
+      }
+
+      // Considerar cómo manejar dependencias como toggleResidencia si no existe en todas las páginas
+      if (
+        typeof toggleResidencia === "function" &&
+        formDataFromHistory.hasOwnProperty("res_igual_not")
+      ) {
+        toggleResidencia();
+      }
+    }
+
+
+    // Variable global para el formulario (para que sea accesible por las funciones de historial.js)
+    let pacForm;
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      pacForm = document.getElementById("pac-form"); // Asignar aquí
+      toggleResidencia();
+
+      const historyButton = document.getElementById("historyButton");
+      const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
+
       if (formHistory.length > 0) {
         const latestEntry = formHistory[0];
         applyHistoryEntry(latestEntry, false); // No resaltar al cargar
       }
 
+      // --- Event Listeners (ESPECÍFICOS DE ESTA PÁGINA) ---
       if (historyButton) {
         historyButton.addEventListener("click", () => {
-          populateHistoryList();
-          toggleHistoryPanel();
+          populateHistoryList(); // Esta función ahora viene de historial.js
+          toggleHistoryPanel(); // Esta función ahora viene de historial.js
         });
       }
 
       if (closeHistoryPanelButton) {
-        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel);
+        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel); // Esta función ahora viene de historial.js
       }
-    });
+
+      // Event listener para el submit del formulario
+      if (pacForm) {
+        pacForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert("Formulario guardado (simulación). En una aplicación real, aquí se enviarían los datos.");
+        });
+      }
+    }); 
   </script>
 </body>
 
