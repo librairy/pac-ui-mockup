@@ -13,41 +13,29 @@
   <link rel="stylesheet" href="../css/styles.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Custom styles if needed */
     body {
       font-family: "Inter", sans-serif;
-      /* Using Inter font as recommended */
     }
 
     fieldset {
       border: 1px solid #e5e7eb;
-      /* light gray border */
       border-radius: 0.5rem;
-      /* rounded corners */
       padding: 1.5rem !important;
-      /* padding */
       margin-bottom: 1.5rem !important;
-      /* margin bottom */
     }
 
     legend {
       font-size: 1.25rem;
-      /* larger font size */
       font-weight: 600;
-      /* semi-bold */
       padding: 0 0.5rem;
-      /* horizontal padding */
       color: #1f2937;
-      /* dark gray text */
     }
 
     label {
       display: block;
       margin-bottom: 0.25rem;
       font-weight: 500;
-      /* medium weight */
       color: #374151;
-      /* gray text */
     }
 
     input[type="text"],
@@ -60,11 +48,8 @@
       width: 100%;
       padding: 0.5rem 0.75rem;
       border: 1px solid #d1d5db;
-      /* gray border */
       border-radius: 0.375rem;
-      /* rounded corners */
       box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      /* subtle inner shadow */
       transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
@@ -77,14 +62,11 @@
     textarea:focus {
       outline: none;
       border-color: #2563eb;
-      /* blue border on focus */
       box-shadow: 0 0 0 3px rgb(59 130 246 / 0.5);
-      /* blue ring on focus */
     }
 
     input[type="checkbox"],
     input[type="radio"] {
-      /* Añadido radio para consistencia */
       margin-right: 0.5rem;
       border-radius: 0.25rem;
       border-color: #d1d5db;
@@ -92,43 +74,85 @@
 
     input[type="checkbox"]:focus,
     input[type="radio"]:focus {
-      /* Añadido radio para consistencia */
       outline: none;
       box-shadow: 0 0 0 3px rgb(59 130 246 / 0.5);
-      /* blue ring on focus */
     }
 
     .grid-cols-form {
-      grid-template-columns: repeat(auto-fit,
-          minmax(200px, 1fr));
-      /* Responsive grid */
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
     /* Estilos para el panel de historial y campos modificados */
     .campo-modificado-historial {
       border-color: #30751b !important;
-      /* Tailwind amber-400 */
       background-color: #c7fec791 !important;
-      /* Tailwind amber-100 */
       box-shadow: 0 0 0 2px #30751b !important;
     }
 
-    #historyPanel::-webkit-scrollbar {
+    #historyPanel::-webkit-scrollbar,
+    #validationsPanel::-webkit-scrollbar {
+      /* Aplicado también al panel de validaciones */
       width: 8px;
     }
 
-    #historyPanel::-webkit-scrollbar-track {
+    #historyPanel::-webkit-scrollbar-track,
+    #validationsPanel::-webkit-scrollbar-track {
+      /* Aplicado también al panel de validaciones */
       background: #f1f1f1;
       border-radius: 10px;
     }
 
-    #historyPanel::-webkit-scrollbar-thumb {
+    #historyPanel::-webkit-scrollbar-thumb,
+    #validationsPanel::-webkit-scrollbar-thumb {
+      /* Aplicado también al panel de validaciones */
       background: #c7c7c7;
       border-radius: 10px;
     }
 
-    #historyPanel::-webkit-scrollbar-thumb:hover {
+    #historyPanel::-webkit-scrollbar-thumb:hover,
+    #validationsPanel::-webkit-scrollbar-thumb:hover {
+      /* Aplicado también al panel de validaciones */
       background: #a3a3a3;
+    }
+
+    /* Estilos para resaltar campos de validación */
+    .campo-validacion-error {
+      border-color: #ef4444 !important;
+      /* red-500 */
+      background-color: #fee2e2 !important;
+      /* red-100 */
+      box-shadow: 0 0 0 2px #ef4444 !important;
+    }
+
+    .campo-validacion-error+label,
+    label.campo-validacion-error {
+      /* Para destacar el label si es necesario */
+      color: #ef4444 !important;
+    }
+
+
+    .campo-validacion-incidencia {
+      border-color: #f97316 !important;
+      /* orange-500 */
+      background-color: #ffedd5 !important;
+      /* orange-100 */
+      box-shadow: 0 0 0 2px #f97316 !important;
+    }
+
+    .campo-validacion-incidencia+label,
+    label.campo-validacion-incidencia {
+      color: #f97316 !important;
+    }
+
+    .campo-validacion-aviso {
+      border-color: rgb(13, 202, 240) !important;
+      background-color: #bbf7f4 !important;
+      box-shadow: 0 0 0 2px rgb(13, 202, 240) !important;
+    }
+
+    .campo-validacion-aviso+label,
+    label.campo-validacion-aviso {
+      color: rgb(13, 202, 240) !important;
     }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -200,8 +224,12 @@
           <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
             Solicitud Única PAC 2025 (Editable)
           </h1>
+          <button id="validationsButton" title="Ver Validaciones"
+            class="ml-4 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <i class="fas fa-check-circle"></i>
+          </button>
           <button id="historyButton" title="Ver Historial"
-            class="ml-4 p-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
             <i class="fas fa-history"></i>
           </button>
         </div>
@@ -1204,11 +1232,24 @@
     </div>
   </div>
 
+  <div id="validationsPanel"
+    class="fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-40 p-6 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-gray-700">Validaciones del Formulario</h2>
+      <button id="closeValidationsPanel" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+    <div id="validationsList" class="space-y-3">
+    </div>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 
-  <script src="../js/historial.js" defer></script>
+  <script src="../js/script.js" defer></script>
 
   <script>
     // Form base
@@ -1385,62 +1426,34 @@
     function toggleResidencia() {
       const checkbox = document.getElementById("res_igual_not");
       const detailsDiv = document.getElementById("residencia-details");
-      if (checkbox) { // Buena práctica: comprobar si el elemento existe
-        if (checkbox.checked) {
-          detailsDiv.classList.add("hidden");
-        } else {
-          detailsDiv.classList.remove("hidden");
-        }
+      if (checkbox && detailsDiv) {
+        detailsDiv.classList.toggle("hidden", checkbox.checked);
       }
     }
 
-    // Funciones de historial
-
+    // --- LÓGICA HISTORIAL (simplificada, asumiendo que está aquí o en un .js importado) ---
     function toggleHistoryPanel() {
-      // Asegúrate de que el ID 'historyPanel' exista en el HTML que use esta función
       const historyPanel = document.getElementById("historyPanel");
-      if (historyPanel) {
-        historyPanel.classList.toggle("translate-x-full");
-      }
+      if (historyPanel) historyPanel.classList.toggle("translate-x-full");
     }
 
     function clearFormHighlights() {
-      // 'pacForm' debe estar disponible o pasarse como parámetro
-      if (typeof pacForm === "undefined") {
-        console.error("pacForm no está definido para clearFormHighlights.");
-        return;
-      }
-      const highlightedFields = pacForm.querySelectorAll(
-        ".campo-modificado-historial"
-      );
-      highlightedFields.forEach((field) => {
-        field.classList.remove("campo-modificado-historial");
-        if (field.labels && field.labels[0])
-          field.labels[0].classList.remove("campo-modificado-historial");
-      });
+      if (!pacForm) return;
+      const highlightedFields = pacForm.querySelectorAll(".campo-modificado-historial");
+      highlightedFields.forEach(field => field.classList.remove("campo-modificado-historial"));
     }
 
     function applyHistoryEntry(historyEntry, highlight = true) {
-      // 'pacForm', 'toggleResidencia' (si existe) deben estar disponibles
-      if (typeof pacForm === "undefined") {
-        console.error("pacForm no está definido para applyHistoryEntry.");
-        return;
-      }
-      clearFormHighlights();
+      if (!pacForm) return;
+      clearFormHighlights(); // Limpia destacados de historial
+      clearValidationHighlights(); // Limpia también destacados de validaciones
       const formDataFromHistory = historyEntry.formData;
-
       for (const fieldId in formDataFromHistory) {
         if (formDataFromHistory.hasOwnProperty(fieldId)) {
           const field = pacForm.elements[fieldId];
           if (field) {
             if (field.length && field[0] && field[0].type === "radio") {
-              for (let i = 0; i < field.length; i++) {
-                if (field[i].value === formDataFromHistory[fieldId]) {
-                  field[i].checked = true;
-                } else {
-                  field[i].checked = false;
-                }
-              }
+              field.forEach(radio => radio.checked = radio.value === formDataFromHistory[fieldId]);
             } else if (field.type === "checkbox") {
               field.checked = formDataFromHistory[fieldId];
             } else {
@@ -1449,74 +1462,133 @@
           }
         }
       }
-
-      if (
-        highlight &&
-        historyEntry.changedFields &&
-        historyEntry.changedFields.length > 0
-      ) {
-        historyEntry.changedFields.forEach((fieldId) => {
+      if (highlight && historyEntry.changedFields) {
+        historyEntry.changedFields.forEach(fieldId => {
           const field = pacForm.elements[fieldId];
           if (field) {
-            if (field.length && field[0] && field[0].type === "radio") {
-              for (let i = 0; i < field.length; i++) {
-                if (field[i].value === formDataFromHistory[fieldId]) {
-                  field[i].classList.add("campo-modificado-historial");
-                }
-              }
+            if (field.length && field[0].type === "radio") {
+              field.forEach(radio => { if (radio.checked) radio.classList.add("campo-modificado-historial") });
             } else {
               field.classList.add("campo-modificado-historial");
             }
           }
         });
       }
-
-      // Considerar cómo manejar dependencias como toggleResidencia si no existe en todas las páginas
-      if (
-        typeof toggleResidencia === "function" &&
-        formDataFromHistory.hasOwnProperty("res_igual_not")
-      ) {
+      if (typeof toggleResidencia === "function" && formDataFromHistory.hasOwnProperty('res_igual_not')) {
         toggleResidencia();
       }
     }
 
+    // --- LÓGICA DE VALIDACIONES ---
 
-    // Variable global para el formulario (para que sea accesible por las funciones de historial.js)
-    let pacForm;
 
+    function toggleValidationsPanel() {
+      const validationsPanel = document.getElementById("validationsPanel");
+      if (validationsPanel) validationsPanel.classList.toggle("translate-x-full");
+    }
+
+    function clearValidationHighlights() {
+      if (!pacForm) return;
+      const errorFields = pacForm.querySelectorAll('.campo-validacion-error');
+      errorFields.forEach(el => el.classList.remove('campo-validacion-error'));
+
+      const incidenciaFields = pacForm.querySelectorAll('.campo-validacion-incidencia');
+      incidenciaFields.forEach(el => el.classList.remove('campo-validacion-incidencia'));
+
+      const avisoFields = pacForm.querySelectorAll('.campo-validacion-aviso');
+      avisoFields.forEach(el => el.classList.remove('campo-validacion-aviso'));
+    }
+
+    function applyValidationFocus(validationEntry) {
+      if (!pacForm) return;
+      clearValidationHighlights(); // Limpiar resaltados previos de validación
+      clearFormHighlights(); // Limpiar también resaltados de historial
+
+      const fieldElement = document.getElementById(validationEntry.fieldId);
+      if (fieldElement) {
+        let highlightClass = '';
+        switch (validationEntry.type) {
+          case 'error':
+            highlightClass = 'campo-validacion-error';
+            break;
+          case 'incidencia':
+            highlightClass = 'campo-validacion-incidencia';
+            break;
+          case 'aviso':
+            highlightClass = 'campo-validacion-aviso';
+            break;
+        }
+
+        if (highlightClass) {
+          fieldElement.classList.add(highlightClass);
+          // Intentar resaltar el label también si existe
+          const label = fieldElement.labels ? fieldElement.labels[0] : null;
+          if (label) {
+            // label.classList.add(highlightClass); // Esto podría colorear el texto del label, o aplicar un borde
+          }
+        }
+
+        fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Esperar un poco a que termine el scroll antes de enfocar, si es un campo de texto
+        setTimeout(() => {
+          if (typeof fieldElement.focus === 'function' && (fieldElement.type === 'text' || fieldElement.type === 'number' || fieldElement.type === 'email' || fieldElement.type === 'tel' || fieldElement.type === 'date' || fieldElement.tagName.toLowerCase() === 'select' || fieldElement.tagName.toLowerCase() === 'textarea')) {
+            fieldElement.focus({ preventScroll: true }); // preventScroll para evitar doble scroll
+          }
+        }, 350); // 350ms es una estimación para el scroll suave
+
+        // Opcional: cerrar el panel después de hacer clic
+        // toggleValidationsPanel(); 
+      } else {
+        console.warn(`Elemento con ID '${validationEntry.fieldId}' no encontrado para la validación.`);
+      }
+    }
+
+    // --- INICIALIZACIÓN GENERAL ---
     document.addEventListener("DOMContentLoaded", () => {
+      pacForm = document.getElementById("pac-form");
+      toggleResidencia(); // Llamada inicial
 
-      pacForm = document.getElementById("pac-form"); // Asignar aquí
-      toggleResidencia();
+      // Cargar el estado más reciente del historial si existe (sin resaltar)
+      if (formHistory.length > 0) {
+        applyHistoryEntry(formHistory[0], false);
+      }
 
+      // Botones Historial
       const historyButton = document.getElementById("historyButton");
       const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
 
-      if (formHistory.length > 0) {
-        const latestEntry = formHistory[0];
-        applyHistoryEntry(latestEntry, false); // No resaltar al cargar
-      }
-
-      // --- Event Listeners (ESPECÍFICOS DE ESTA PÁGINA) ---
       if (historyButton) {
         historyButton.addEventListener("click", () => {
-          populateHistoryList(); // Esta función ahora viene de historial.js
-          toggleHistoryPanel(); // Esta función ahora viene de historial.js
+          populateHistoryList();
+          toggleHistoryPanel();
         });
       }
-
       if (closeHistoryPanelButton) {
-        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel); // Esta función ahora viene de historial.js
+        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel);
       }
 
-      // Event listener para el submit del formulario
+      // Botones Validaciones
+      const validationsButton = document.getElementById("validationsButton");
+      const closeValidationsPanelButton = document.getElementById("closeValidationsPanel");
+
+      if (validationsButton) {
+        validationsButton.addEventListener("click", () => {
+          populateValidationsList();
+          toggleValidationsPanel();
+        });
+      }
+      if (closeValidationsPanelButton) {
+        closeValidationsPanelButton.addEventListener("click", toggleValidationsPanel);
+      }
+
+      // Submit del formulario
       if (pacForm) {
         pacForm.addEventListener("submit", function (event) {
           event.preventDefault();
-          alert("Formulario guardado (simulación). En una aplicación real, aquí se enviarían los datos.");
+          alert("Formulario guardado (simulación).");
         });
       }
-    }); 
+    });
   </script>
 </body>
 

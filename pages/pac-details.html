@@ -108,7 +108,7 @@
 
         <div class="row">
           <!-- Recent Actions Section -->
-          <div class="col-md-4 mb-4">
+          <div class="col">
             <div class="card h-100">
               <div class="card-header">HISTORIAL DE CAMBIOS</div>
               <div class="card-body p-0">
@@ -119,7 +119,7 @@
           </div>
 
           <!-- Recommendations Section -->
-          <div class="col-md-4 mb-4">
+          <div class="col">
             <div class="card h-100">
               <div class="card-header">RECOMENDACIONES</div>
               <div class="card-body p-0">
@@ -142,7 +142,7 @@
           </div>
 
           <!-- File Repository Section -->
-          <div class="col-md-4 mb-4">
+          <div class="col">
             <div class="card h-100">
               <div class="card-header">REPOSITORIO DE ARCHIVOS</div>
               <div class="card-body p-0">
@@ -166,7 +166,19 @@
               </div>
             </div>
           </div>
+
+          <!-- Validations Section -->
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-header">VALIDACIONES</div>
+              <div class="card-body p-0">
+                <div id="validationsList">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -174,10 +186,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <script src="../js/historial.js"></script>
+  <script src="../js/script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       populateHistoryList();
+      populateValidationsList();
     });
   </script>
 </body>

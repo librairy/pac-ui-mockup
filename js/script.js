@@ -129,3 +129,103 @@ function populateHistoryList() {
     historyListContainer.appendChild(entryDiv);
   });
 }
+
+// VALIDACIONES
+
+const formValidations = [
+  {
+    id: "val001",
+    type: "error",
+    message:
+      "El CIF/NIF del solicitante es obligatorio y no puede estar vacío.",
+    fieldId: "sol_cif_nif",
+    fieldLabel: "CIF/NIF Solicitante",
+  },
+  {
+    id: "val002",
+    type: "incidencia",
+    message: "El número de teléfono fijo parece incompleto. Revise el formato.",
+    fieldId: "sol_telefono",
+    fieldLabel: "Teléfono Solicitante",
+  },
+  {
+    id: "val003",
+    type: "aviso",
+    message: "No se ha marcado la autorización para comunicaciones por SMS.",
+    fieldId: "com_sms",
+    fieldLabel: "Autorización SMS",
+  },
+  {
+    id: "val004",
+    type: "error",
+    message: "El IBAN es incorrecto o está incompleto.",
+    fieldId: "iban",
+    fieldLabel: "IBAN",
+  },
+  {
+    id: "val005",
+    type: "incidencia",
+    message:
+      "Los ingresos agrarios de 2023 son significativamente diferentes a los de 2022.",
+    fieldId: "fiscal_ingresos_agrarios_2023",
+    fieldLabel: "Ingresos Agrarios 2023",
+  },
+];
+
+function populateValidationsList() {
+  const validationsListContainer = document.getElementById("validationsList");
+  if (!validationsListContainer) return;
+
+  validationsListContainer.innerHTML = ""; // Limpiar lista
+  if (formValidations.length === 0) {
+    validationsListContainer.innerHTML =
+      '<p class="text-gray-500">No hay validaciones pendientes.</p>';
+    return;
+  }
+
+  formValidations.forEach((val) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className =
+      "p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150";
+
+    let iconClass = "";
+    let iconColorClass = "";
+    let typeText = "";
+
+    switch (val.type) {
+      case "error":
+        iconClass = "fas fa-times-circle";
+        iconColorClass = "text-danger";
+        typeText = "Error";
+        break;
+      case "incidencia":
+        iconClass = "fas fa-exclamation-circle";
+        iconColorClass = "text-warning";
+        typeText = "Incidencia";
+        break;
+      case "aviso":
+        iconClass = "fas fa-exclamation-circle";
+        iconColorClass = "text-info";
+        typeText = "Aviso";
+        break;
+    }
+
+    itemDiv.innerHTML = `
+      <div class="flex items-start">
+        <i class="${iconClass} ${iconColorClass} fa-fw mr-3 mt-1 text-lg"></i>
+        <div>
+          <p class="font-semibold text-sm ${iconColorClass}">${typeText}: ${
+      val.fieldLabel || val.fieldId
+    }</p>
+          <p class="text-xs text-gray-600 mt-1">${val.message}</p>
+        </div>
+      </div>
+    `;
+    itemDiv.addEventListener("click", () => {
+      applyValidationFocus(val);
+      // Decidir si cerrar el panel o no:
+      // toggleValidationsPanel();
+    });
+    validationsListContainer.appendChild(itemDiv);
+  });
+}
