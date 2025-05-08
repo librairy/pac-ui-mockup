@@ -1574,6 +1574,14 @@
     </div>
     <div id="validationsList" class="space-y-3">
     </div>
+    <div id="validationTimestamp" class="text-sm text-gray-500 mt-4 w-full flex justify-center">
+      Última validación: <span id="validationDate" class="ml-1">10:34, 8/5/2025</span>
+    </div>
+    <div class="mt-4 w-full flex justify-center">
+      <button id="validateButton" class="btn btn-primary" onclick="validateForm()">
+        Validar
+      </button>
+    </div>
   </div>
 
 
@@ -1874,6 +1882,50 @@
       } else {
         console.warn(`Elemento con ID '${validationEntry.fieldId}' no encontrado para la validación.`);
       }
+    }
+
+    function validateForm() {
+      const validationsList = document.getElementById("validationsList");
+      const validationTimestamp = document.getElementById("validationTimestamp");
+      const validationDate = document.getElementById("validationDate");
+      const validationButton = document.getElementById("validateButton");
+
+      let currentValidations;
+
+      // Mostrar un mensaje de carga
+      if (validationsList) {
+        currentValidations = validationsList.innerHTML;
+
+        validationsList.innerHTML = "\n" +
+          "<div class='text-center'>\n" +
+          "<p class='text-gray-500'>Validación en proceso...</p>\n" +
+          "</div>";
+      }
+      if (validationTimestamp) {
+        validationTimestamp.classList.add("hidden");
+      }
+      if (validationButton) {
+        validationButton.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Validando...";
+        validationButton.disabled = true;
+      }
+
+      // Tras un tiempo, volver a mostrar la información de validación
+      setTimeout(() => {
+        if (validationsList) {
+          validationsList.innerHTML = currentValidations;
+        }
+        if (validationTimestamp) {
+          validationTimestamp.classList.remove("hidden");
+        }
+        if (validationDate) {
+          const now = new Date();
+          validationDate.innerHTML = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ", " + now.toLocaleDateString();
+        }
+        if (validationButton) {
+          validationButton.innerHTML = "Validar";
+          validationButton.disabled = false;
+        }
+      }, 2000);
     }
 
     // --- INICIALIZACIÓN GENERAL ---
