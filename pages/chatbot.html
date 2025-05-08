@@ -12,13 +12,65 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../css/styles.css" />
   <style>
+    .content-wrapper {
+      /* Asegurar que el content-wrapper permita que el container-fluid interno tome altura */
+      height: calc(100vh - 56px);
+      /* Altura del top-nav. Ajusta si es diferente */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container-fluid.h-100 {
+      flex-grow: 1;
+      /* Para que el container-fluid crezca y llene el content-wrapper */
+    }
+
+    .chat-history-sidebar {
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #chatHistoryList {
+      flex-grow: 1;
+      /* Permite que la lista crezca y el botón quede abajo */
+      overflow-y: auto;
+    }
+
+
+    .chat-history-sidebar .list-group-item {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      border-left: 0;
+      border-right: 0;
+      border-top: 0;
+    }
+
+
+
+    .chat-history-sidebar .list-group-item small {
+      font-size: 0.75rem;
+    }
+
+    .active small {
+      color: #d4d4d4 !important;
+    }
+
+    /* Ajuste para que el chat-container no tenga margen superior si se quiere que ocupe todo el espacio vertical de su columna */
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 200px);
-      /* Ajusta según la altura de tu nav y otros elementos */
-      max-width: 800px;
-      margin: auto;
+      /* height: calc(100vh - 110px); Ya no es necesario aquí, se controla por el layout de columnas */
+      height: 100%;
+      /* Ocupa toda la altura de su columna */
+      width: 100%;
+      /* Ocupa todo el ancho de su columna */
+      max-width: none;
+      /* Quita el max-width anterior */
+      margin: 0;
+      /* Quita el margen auto */
+      /* p-3 ya está en el HTML para el padding interno */
     }
 
     .chat-messages {
@@ -53,15 +105,6 @@
       align-self: flex-start;
       margin-right: auto;
       border-bottom-left-radius: 5px;
-    }
-
-    .chat-input {
-      display: flex;
-    }
-
-    .chat-input input {
-      flex-grow: 1;
-      margin-right: 10px;
     }
   </style>
 </head>
@@ -126,19 +169,40 @@
     </nav>
 
     <div class="content-wrapper">
-      <div class="container-fluid">
-        <div class="chat-container">
-          <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-              Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?
+      <div class="container-fluid h-100">
+        <div class="row h-100">
+          <div class="col-md-3 col-lg-2 chat-history-sidebar bg-light border-end p-3">
+            <button class="btn btn-outline-primary w-100 mb-3" id="newChatButton">
+              <i class="fas fa-plus"></i> Nuevo Chat
+            </button>
+            <div id="chatHistoryList" class="list-group">
+              <a href="#" class="list-group-item list-group-item-action" data-chat-id="chat1">
+                Consulta sobre normativa...
+                <small class="d-block text-muted">Hoy, 10:30 AM</small>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action" data-chat-id="chat2">
+                Perfil cliente X...
+                <small class="d-block text-muted">Ayer, 02:15 PM</small>
+              </a>
+            </div>
+
+          </div>
+
+          <div class="col-md-9 col-lg-10 d-flex flex-column">
+            <div class="chat-container flex-grow-1 p-3">
+              <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                  Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?
+                </div>
+              </div>
+              <form id="chatForm" class="chat-input d-flex mt-auto">
+                <input type="text" class="form-control me-2" id="userInput" placeholder="Escribe tu consulta aquí..." />
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
             </div>
           </div>
-          <form id="chatForm" class="chat-input">
-            <input type="text" class="form-control" id="userInput" placeholder="Escribe tu consulta aquí..." />
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-paper-plane"></i> Enviar
-            </button>
-          </form>
         </div>
       </div>
     </div>
@@ -152,40 +216,175 @@
       const chatForm = document.getElementById("chatForm");
       const userInput = document.getElementById("userInput");
       const chatMessages = document.getElementById("chatMessages");
+      const chatHistoryList = document.getElementById("chatHistoryList");
+      const newChatButton = document.getElementById("newChatButton");
+
+      let chatHistory = []; // Empezar con historial vacío o cargar desde localStorage
+      let activeChatId = null;
+
+      // --- Cargar historial desde localStorage (opcional, para persistencia) ---
+      function loadHistory() {
+        chatHistory = [
+          { id: `chat${Date.now() + 1}`, title: "Consulta sobre normativa...", timestamp: "Hoy, 10:30 AM", messages: [{ type: 'bot', text: "Hola, soy tu asistente virtual. ¿Cómo puedo ayudarte con la consulta sobre normativa?" }, { type: 'user', text: "Necesito saber los plazos." }, { type: 'bot-message', text: "Los plazos para la PAC 2025 son..." }] },
+          { id: `chat${Date.now() + 2}`, title: "Perfil cliente X...", timestamp: "Ayer, 02:15 PM", messages: [{ type: 'bot', text: "Hola, ¿qué necesitas saber del cliente X?" }, { type: 'user', text: "¿Cuál es su NIF?" }] }
+        ];
+        const storedActiveChatId = localStorage.getItem('activeChatId');
+        if (storedActiveChatId && chatHistory.find(chat => chat.id === storedActiveChatId)) {
+          activeChatId = storedActiveChatId;
+        } else if (chatHistory.length > 0) {
+          activeChatId = chatHistory[0].id; // Activa el primer chat por defecto si no hay uno guardado
+        }
+      }
+
+      function renderChatMessages(messagesArray) {
+        chatMessages.innerHTML = ""; // Limpiar mensajes actuales
+        messagesArray.forEach(msg => {
+          const messageDiv = document.createElement("div");
+          messageDiv.classList.add("message", msg.type === 'user' ? 'user-message' : 'bot-message');
+          messageDiv.textContent = msg.text;
+          chatMessages.appendChild(messageDiv);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function loadChatConversation(chatId) {
+        const chat = chatHistory.find(c => c.id === chatId);
+        if (chat) {
+          activeChatId = chatId;
+          renderChatMessages(chat.messages);
+          userInput.focus();
+        }
+        // Marcar el chat activo en la lista
+        document.querySelectorAll('#chatHistoryList .list-group-item').forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('data-chat-id') === chatId) {
+            item.classList.add('active');
+          }
+        });
+      }
+
+      function renderChatHistory() {
+        chatHistoryList.innerHTML = ""; // Limpiar historial existente
+        // Ordenar por timestamp descendente (más nuevo primero) si los timestamps son comparables
+        // Para esta simulación, los nuevos se añaden al principio, así que ya están ordenados.
+
+        chatHistory.forEach(chat => {
+          const historyItem = document.createElement("a");
+          historyItem.href = "#";
+          historyItem.classList.add("list-group-item", "list-group-item-action");
+          historyItem.setAttribute("data-chat-id", chat.id);
+          historyItem.innerHTML = `
+        <span class="chat-title">${chat.title}</span>
+        <small class="d-block text-muted">${chat.timestamp}</small>
+      `;
+          if (chat.id === activeChatId) {
+            historyItem.classList.add('active');
+          }
+          historyItem.addEventListener('click', function (e) {
+            e.preventDefault();
+            loadChatConversation(chat.id);
+          });
+          chatHistoryList.appendChild(historyItem);
+        });
+      }
+
+
+      function addMessageToChat(text, type) {
+        if (!activeChatId) {
+          // Si no hay chat activo, significa que es un nuevo chat que se creó con el botón "Nuevo Chat"
+          // o es la primera interacción y no se ha seleccionado/creado un chat.
+          // Creamos uno nuevo y lo activamos.
+          startNewChat(text); // El primer mensaje del usuario definirá el título
+        }
+
+        const chat = chatHistory.find(c => c.id === activeChatId);
+        if (chat) {
+          chat.messages.push({ text: text, type: type === 'user-message' ? 'user' : 'bot' });
+
+          // Si el chat es "Nuevo chat" y este es el primer mensaje del usuario, actualizar título
+          if (type === 'user-message' && chat.title.startsWith("Nuevo chat") && chat.messages.filter(m => m.type === 'user').length === 1) {
+            chat.title = text.substring(0, 25) + (text.length > 25 ? "..." : "");
+            // Actualizar timestamp al del primer mensaje real
+            const now = new Date();
+            chat.timestamp = `${now.toLocaleDateString()}, ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            renderChatHistory(); // Re-renderizar para mostrar el nuevo título y timestamp
+          }
+
+          renderChatMessages(chat.messages); // Renderizar solo los mensajes del chat activo
+        } else {
+          console.error("No se encontró el chat activo para añadir el mensaje:", activeChatId);
+          // Como fallback, podría crear un nuevo chat si activeChatId es nulo inesperadamente
+          if (!activeChatId) {
+            startNewChat(text);
+            const newActiveChat = chatHistory.find(c => c.id === activeChatId);
+            if (newActiveChat) newActiveChat.messages.push({ text: text, type: type === 'user-message' ? 'user' : 'bot' });
+            renderChatMessages(newActiveChat ? newActiveChat.messages : []);
+          }
+        }
+      }
+
 
       chatForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const userText = userInput.value.trim();
 
         if (userText) {
-          // Mostrar mensaje del usuario
-          addMessage(userText, "user-message");
-          userInput.value = ""; // Limpiar input
+          addMessageToChat(userText, "user-message");
+          userInput.value = "";
 
-          // Simular respuesta del bot
           setTimeout(() => {
-            // Aquí iría la lógica para procesar la pregunta del usuario y obtener una respuesta real.
-            // Por ahora, es una respuesta genérica.
-            let botResponse = "Gracias por tu pregunta. Estoy procesando tu solicitud sobre: '" + userText + "'.";
+            let botResponse = "Procesando: '" + userText + "'...";
             if (userText.toLowerCase().includes("hola") || userText.toLowerCase().includes("buenos días")) {
               botResponse = "¡Hola! ¿Cómo puedo asistirte con la PAC hoy?";
             } else if (userText.toLowerCase().match(/qui[eé]n eres|ayuda|info/)) {
-              botResponse = "Soy un asistente virtual diseñado para ayudarte con consultas sobre perfiles de clientes, documentos, PACs y la normativa de la Política Agraria Común."
+              botResponse = "Soy un asistente virtual diseñado para ayudarte con consultas sobre perfiles de clientes, documentos, PACs y la normativa de la Política Agraria Común.";
             } else if (userText.toLowerCase().includes("adiós") || userText.toLowerCase().includes("gracias")) {
               botResponse = "De nada. ¡Que tengas un buen día!";
+            } else {
+              // Respuesta por defecto si no coincide ninguna anterior
+              botResponse = "He recibido tu consulta sobre '" + userText + "'. Estoy buscando la información...";
             }
-            addMessage(botResponse, "bot-message");
+            addMessageToChat(botResponse, "bot-message");
           }, 1000);
         }
       });
 
-      function addMessage(text, type) {
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", type);
-        messageDiv.textContent = text;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll hacia abajo
+      function startNewChat(optionalFirstMessageTitle = null) {
+        const now = new Date();
+        const newChatId = `chat${Date.now()}`;
+        const newChatEntry = {
+          id: newChatId,
+          title: optionalFirstMessageTitle ? (optionalFirstMessageTitle.substring(0, 25) + (optionalFirstMessageTitle.length > 25 ? "..." : "")) : `Nuevo chat`,
+          timestamp: `${now.toLocaleDateString()}, ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+          messages: [
+            { type: 'bot-message', text: "Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?" }
+          ]
+        };
+        chatHistory.unshift(newChatEntry); // Añadir al principio
+        activeChatId = newChatId;
+        renderChatHistory(); // Actualizar la lista de historial
+        loadChatConversation(newChatId); // Cargar y activar el nuevo chat
       }
+
+
+      newChatButton.addEventListener('click', function () {
+        startNewChat();
+      });
+
+      // --- Inicialización ---
+      loadHistory(); // Cargar desde localStorage
+      renderChatHistory();
+
+      if (activeChatId) {
+        loadChatConversation(activeChatId);
+      } else if (chatHistory.length > 0) {
+        // Si no hay activeChatId pero hay historial, carga el más reciente
+        loadChatConversation(chatHistory[0].id);
+      } else {
+        // Si no hay historial ni activeChatId (primera vez, localStorage vacío), inicia un nuevo chat
+        startNewChat();
+      }
+
     });
   </script>
 </body>
