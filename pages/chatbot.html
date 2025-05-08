@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot - PAC Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 200px);
+      /* Ajusta según la altura de tu nav y otros elementos */
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      background-color: #0d6efd;
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+
+    .bot-message {
+      background-color: #e9ecef;
+      color: #333;
+      align-self: flex-start;
+      margin-right: auto;
+      border-bottom-left-radius: 5px;
+    }
+
+    .chat-input {
+      display: flex;
+    }
+
+    .chat-input input {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="sidebar">
+    <div class="logo-section d-flex align-items-center justify-content-center">
+      <img src="../img/laiw_color.png" alt="LAIW Logo" />
+    </div>
+    <ul class="nav flex-column flex-grow-1">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="index.html">
+          <i class="fas fa-home"></i>
+          <span class="link-text">Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-file-alt"></i>
+          <span class="link-text">PAC</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-bullhorn"></i>
+          <span class="link-text">Acciones</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="users.html">
+          <i class="fas fa-users"></i>
+          <span class="link-text">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="chatbot.html">
+          <i class="fas fa-robot"></i>
+          <span class="link-text">Asistente</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav flex-column mt-auto mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-cog"></i>
+          <span class="link-text">Configuración</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <nav class="top-nav">
+      <div class="d-flex align-items-center me-auto">
+        <span class="navbar-brand">Asistente Virtual</span>
+      </div>
+
+      <div class="nav-icons d-flex align-items-center">
+        <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
+        <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
+      </div>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+              Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?
+            </div>
+          </div>
+          <form id="chatForm" class="chat-input">
+            <input type="text" class="form-control" id="userInput" placeholder="Escribe tu consulta aquí..." />
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Enviar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatForm = document.getElementById("chatForm");
+      const userInput = document.getElementById("userInput");
+      const chatMessages = document.getElementById("chatMessages");
+
+      chatForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const userText = userInput.value.trim();
+
+        if (userText) {
+          // Mostrar mensaje del usuario
+          addMessage(userText, "user-message");
+          userInput.value = ""; // Limpiar input
+
+          // Simular respuesta del bot
+          setTimeout(() => {
+            // Aquí iría la lógica para procesar la pregunta del usuario y obtener una respuesta real.
+            // Por ahora, es una respuesta genérica.
+            let botResponse = "Gracias por tu pregunta. Estoy procesando tu solicitud sobre: '" + userText + "'.";
+            if (userText.toLowerCase().includes("hola") || userText.toLowerCase().includes("buenos días")) {
+              botResponse = "¡Hola! ¿Cómo puedo asistirte con la PAC hoy?";
+            } else if (userText.toLowerCase().match(/qui[eé]n eres|ayuda|info/)) {
+              botResponse = "Soy un asistente virtual diseñado para ayudarte con consultas sobre perfiles de clientes, documentos, PACs y la normativa de la Política Agraria Común."
+            } else if (userText.toLowerCase().includes("adiós") || userText.toLowerCase().includes("gracias")) {
+              botResponse = "De nada. ¡Que tengas un buen día!";
+            }
+            addMessage(botResponse, "bot-message");
+          }, 1000);
+        }
+      });
+
+      function addMessage(text, type) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", type);
+        messageDiv.textContent = text;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll hacia abajo
+      }
+    });
+  </script>
+</body>
+
+</html>

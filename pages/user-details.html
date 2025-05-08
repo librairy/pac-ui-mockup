@@ -38,7 +38,13 @@
       <li class="nav-item">
         <a class="nav-link active" href="users.html">
           <i class="fas fa-users"></i>
-          <span class="link-text">Usuarios</span>
+          <span class="link-text">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="chatbot.html">
+          <i class="fas fa-robot"></i>
+          <span class="link-text">Asistente</span>
         </a>
       </li>
     </ul>
@@ -55,9 +61,13 @@
   <!-- Main Content -->
   <div class="main-content">
     <nav class="top-nav">
-      <div class="d-flex align-items-center">
-        <span class="navbar-brand">CAMPAÑA</span>
-        <select class="form-select form-select-sm ms-2 year-select" aria-label="Year selection">
+      <div class="d-flex align-items-center me-auto">
+        <a href="users.html" class="text-decoration-none" title="Volver a Usuarios">
+          <i class="fas fa-arrow-left text-muted"></i>
+          <span class="navbar-brand ms-2" id="topNavTitle">Detalles del cliente</span>
+        </a>
+        <span class="text-muted ms-5">Campaña</span>
+        <select class="form-select form-select-sm ms-2 year-select" aria-label="Selección de Campaña">
           <option value="2025" selected>2025</option>
           <option value="2024">2024</option>
           <option value="2023">2023</option>
@@ -71,12 +81,10 @@
           <option value="2015">2015</option>
         </select>
       </div>
-      <form class="d-flex search-form flex-grow-1 mx-3" role="search">
-        <input class="form-control me-2" type="search" placeholder="Copilot Search..." aria-label="Search" />
-      </form>
+
       <div class="nav-icons d-flex align-items-center">
-        <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
-        <a href="#" title="User Profile"><i class="fas fa-user-circle"></i></a>
+        <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
+        <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
       </div>
     </nav>
     <div class="content-wrapper">
@@ -146,7 +154,6 @@
         </div>
       </div>
 
-      <a href="users.html" class="btn btn-secondary mt-4"><i class="fas fa-arrow-left"></i> Volver a usuarios</a>
     </div>
   </div>
 
