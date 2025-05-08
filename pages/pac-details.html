@@ -21,7 +21,6 @@
   <nav class="sidebar">
     <div class="logo-section">
       <img src="../img/laiw_color.png" alt="LAIW Logo" />
-      <!-- <span class="link-text">LAIW</span> -->
     </div>
     <ul class="nav flex-column flex-grow-1">
       <li class="nav-item">
@@ -78,7 +77,6 @@
 
     <div class="content-wrapper">
       <div class="container-fluid">
-        <!-- Header Card with Status and Last Modified -->
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
@@ -91,8 +89,8 @@
               </div>
               <div class="col-md-auto text-md-end">
                 <span class="badge bg-success rounded-pill mb-2">Ready</span>
-                <a href="#" class="text-muted ms-2" title="Upload">
-                  <i class="fas fa-upload"></i>
+                <a href="#" id="uploadIconLink" class="text-muted ms-2" title="Upload">
+                  <i id="uploadIcon" class="fas fa-upload"></i>
                 </a>
                 <p class="text-muted mb-0">Última modificación: 3 May 2025</p>
               </div>
@@ -107,7 +105,6 @@
         </div>
 
         <div class="row">
-          <!-- Recent Actions Section -->
           <div class="col">
             <div class="card h-100">
               <div class="card-header">HISTORIAL DE CAMBIOS</div>
@@ -118,7 +115,6 @@
             </div>
           </div>
 
-          <!-- Recommendations Section -->
           <div class="col">
             <div class="card h-100">
               <div class="card-header">RECOMENDACIONES</div>
@@ -141,7 +137,6 @@
             </div>
           </div>
 
-          <!-- File Repository Section -->
           <div class="col">
             <div class="card h-100">
               <div class="card-header">REPOSITORIO DE ARCHIVOS</div>
@@ -167,7 +162,6 @@
             </div>
           </div>
 
-          <!-- Validations Section -->
           <div class="col">
             <div class="card h-100">
               <div class="card-header">VALIDACIONES</div>
@@ -191,6 +185,169 @@
     document.addEventListener("DOMContentLoaded", () => {
       populateHistoryList();
       populateValidationsList();
+    });
+  </script>
+
+  <div class="modal fade" id="uploadConfirmationModal" tabindex="-1" aria-labelledby="uploadConfirmationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-bold" id="uploadConfirmationModalLabel">Confirmar Subida</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Quieres subir este documento a la plataforma SGA?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" id="confirmUploadButton">Sí</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="uploadStatusModal" tabindex="-1" aria-labelledby="uploadStatusModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-bold" id="uploadStatusModalLabel">Estado de la Subida</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body flex flex-column align-items-center">
+          <span id="uploadCurrentStatus">
+
+          </span>
+          <p class="text-sm text-gray-500">La subida comenzó el: <span id="uploadStartTime"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="cancelUploadButton">Cancelar Subida</button>
+          <button type="button" class="btn btn-warning" id="retryUploadButton">Reintentar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // El código para populateHistoryList y populateValidationsList ya se ejecuta en el script anterior.
+      // Este DOMContentLoaded es específico para la lógica de subida.
+
+      const uploadIconLink = document.getElementById('uploadIconLink');
+      const uploadIcon = document.getElementById('uploadIcon');
+      const confirmUploadButton = document.getElementById('confirmUploadButton');
+      const uploadConfirmationModalEl = document.getElementById('uploadConfirmationModal');
+      const uploadConfirmationModal = new bootstrap.Modal(uploadConfirmationModalEl);
+
+      const uploadStatusModalEl = document.getElementById('uploadStatusModal');
+      const uploadStatusModal = new bootstrap.Modal(uploadStatusModalEl);
+      const uploadStartTimeEl = document.getElementById('uploadStartTime');
+      const uploadCurrentStatusEl = document.getElementById('uploadCurrentStatus');
+      const cancelUploadButton = document.getElementById('cancelUploadButton');
+      const retryUploadButton = document.getElementById('retryUploadButton');
+
+      let isUploading = false;
+      let isUploaded = false;
+      let uploadStartTime = null;
+      let uploadTimeoutId = null;
+
+      const setInitialIcon = () => {
+        uploadIcon.className = 'fas fa-upload';
+        uploadIconLink.title = 'Upload';
+        isUploading = false;
+        isUploaded = false;
+        if (uploadTimeoutId) {
+          clearTimeout(uploadTimeoutId);
+          uploadTimeoutId = null;
+        }
+        uploadCurrentStatusEl.textContent = 'Subiendo...';
+        retryUploadButton.style.display = 'inline-block';
+        cancelUploadButton.style.display = 'inline-block';
+      };
+
+      const setUploadingIcon = () => {
+        uploadIcon.className = 'fas fa-sync fa-spin';
+        uploadIconLink.title = 'Subiendo... Click para ver estado';
+        isUploading = true;
+        isUploaded = false;
+        uploadStartTime = new Date();
+        uploadStartTimeEl.textContent = uploadStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        uploadCurrentStatusEl.textContent = 'Subiendo...';
+        retryUploadButton.style.display = 'none';
+        cancelUploadButton.style.display = 'inline-block';
+      };
+
+      const setUploadedIcon = () => {
+        uploadIcon.className = 'fas fa-check-circle text-success'; // Añadido text-success para color verde
+        uploadIconLink.title = 'Documento subido y actualizado';
+        isUploading = false;
+        isUploaded = true;
+        if (uploadTimeoutId) {
+          clearTimeout(uploadTimeoutId);
+          uploadTimeoutId = null;
+        }
+        uploadCurrentStatusEl.textContent = 'Completado';
+        cancelUploadButton.style.display = 'none';
+        retryUploadButton.style.display = 'inline-block';
+      };
+
+      const simulateUpload = () => {
+        setUploadingIcon();
+        console.log("Iniciando subida simulada...");
+
+        uploadTimeoutId = setTimeout(() => {
+          setUploadedIcon();
+          console.log("Subida simulada completada.");
+        }, 5000);
+      };
+
+      if (uploadIconLink) { // Verificar que el elemento exista antes de añadir listeners
+        uploadIconLink.addEventListener('click', (event) => {
+          event.preventDefault();
+
+          if (isUploading) {
+            uploadStartTimeEl.textContent = uploadStartTime ? uploadStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/A';
+            uploadStatusModal.show();
+          } else if (isUploaded) {
+            uploadCurrentStatusEl.textContent = 'Completado';
+            uploadStartTimeEl.textContent = uploadStartTime ? uploadStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/A';
+            cancelUploadButton.style.display = 'none';
+            retryUploadButton.style.display = 'inline-block';
+            uploadStatusModal.show();
+          } else {
+            uploadConfirmationModal.show();
+          }
+        });
+      }
+
+
+      if (confirmUploadButton) {
+        confirmUploadButton.addEventListener('click', () => {
+          uploadConfirmationModal.hide();
+          simulateUpload();
+        });
+      }
+
+      if (cancelUploadButton) {
+        cancelUploadButton.addEventListener('click', () => {
+          if (isUploading) {
+            console.log("Subida cancelada por el usuario.");
+            setInitialIcon();
+          }
+          uploadStatusModal.hide();
+        });
+      }
+
+      if (retryUploadButton) {
+        retryUploadButton.addEventListener('click', () => {
+          console.log("Reintentando subida...");
+          uploadStatusModal.hide();
+          setInitialIcon();
+          uploadConfirmationModal.show();
+        });
+      }
     });
   </script>
 </body>
