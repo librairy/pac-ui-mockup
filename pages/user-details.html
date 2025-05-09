@@ -66,20 +66,6 @@
           <i class="fas fa-arrow-left text-muted"></i>
           <span class="navbar-brand ms-2" id="topNavTitle">Detalles del cliente</span>
         </a>
-        <span class="text-muted ms-5">Campaña</span>
-        <select class="form-select form-select-sm ms-2 year-select" aria-label="Selección de Campaña">
-          <option value="2025" selected>2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
-          <option value="2020">2020</option>
-          <option value="2019">2019</option>
-          <option value="2018">2018</option>
-          <option value="2017">2017</option>
-          <option value="2016">2016</option>
-          <option value="2015">2015</option>
-        </select>
       </div>
 
       <div class="nav-icons d-flex align-items-center">
@@ -88,8 +74,22 @@
       </div>
     </nav>
     <div class="content-wrapper">
-      <h2 id="user-name">Nombre Usuario</h2>
-      <p class="text-muted" id="user-desc">Perfil del agricultor</p>
+      <div class="row d-flex justify-content-between align-items-top">
+        <div class="col-md-6">
+          <h2 id="user-name" style="font-weight: 600">Nombre Usuario</h2>
+          <p class="text-muted" id="user-desc">Perfil del agricultor</p>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center justify-content-end">
+          <span class="me-2" style="font-weight: 600;">
+            Campaña:
+          </span>
+          <select class="form-select year-select" aria-label="Selección de Campaña">
+            <option value="2025" selected>2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+          </select>
+        </div>
+      </div>
 
       <div class="card mt-3">
         <div class="card-header">Perfil</div>
