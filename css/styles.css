@@ -335,6 +335,18 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
+.tab-content {
+  /* Añadir un poco de padding para el contenido */
+  padding: 1.5rem;
+  /* Borde sin parte de arriba */
+  border: 1px solid #dee2e6;
+  border-top: none;
+  /* Redondear las esquinas inferiores */
+  border-radius: 0 0 0.5rem 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .sidebar {

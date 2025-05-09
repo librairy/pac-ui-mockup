@@ -4,27 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detalles del Usuario - PAC Manager</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <title>Detalles del Cliente - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
-<body class="bg-light">
+<body>
   <nav class="sidebar">
-    <div class="logo-section">
+    <div class="logo-section d-flex align-items-center justify-content-center">
       <img src="../img/laiw_color.png" alt="LAIW Logo" />
-      <!-- <span class="link-text">LAIW</span> -->
     </div>
     <ul class="nav flex-column flex-grow-1">
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="index.html">
+        <a class="nav-link" href="index.html">
           <i class="fas fa-home"></i>
           <span class="link-text">Inicio</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="pac-list.html">
           <i class="fas fa-file-alt"></i>
           <span class="link-text">PAC</span>
         </a>
@@ -36,8 +38,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="users.html">
-          <i class="fas fa-users"></i>
+        <a class="nav-link active" aria-current="page" href="users.html"> <i class="fas fa-users"></i>
           <span class="link-text">Clientes</span>
         </a>
       </li>
@@ -58,276 +59,523 @@
     </ul>
   </nav>
 
-  <!-- Main Content -->
   <div class="main-content">
     <nav class="top-nav">
       <div class="d-flex align-items-center me-auto">
-        <a href="users.html" class="text-decoration-none" title="Volver a Usuarios">
-          <i class="fas fa-arrow-left text-muted"></i>
-          <span class="navbar-brand ms-2" id="topNavTitle">Detalles del cliente</span>
+        <a href="users.html" class="text-decoration-none d-flex align-items-center text-muted me-3"
+          title="Volver a Lista de Clientes">
+          <i class="fas fa-arrow-left fs-5"></i>
         </a>
+        <span class="navbar-brand" id="topNavUserName">Detalles del Cliente</span>
       </div>
-
       <div class="nav-icons d-flex align-items-center">
-        <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
+        <a href="#" title="Notificaciones" class="me-2"><i class="fas fa-bell"></i></a>
         <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
       </div>
     </nav>
+
     <div class="content-wrapper">
-      <div class="row d-flex justify-content-between align-items-top">
-        <div class="col-md-6">
-          <h2 id="user-name" style="font-weight: 600">Nombre Usuario</h2>
-          <p class="text-muted" id="user-desc">Perfil del agricultor</p>
-        </div>
-        <div class="col-lg-6 d-flex align-items-center justify-content-end">
-          <span class="me-2" style="font-weight: 600;">
-            Campaña:
-          </span>
-          <select class="form-select year-select" aria-label="Selección de Campaña">
-            <option value="2025" selected>2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="card mt-3">
-        <div class="card-header">Perfil</div>
-        <div class="card-body">
-          <p id="user-profile-text">Cargando descripción...</p>
-        </div>
-      </div>
-
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="card" id="pac-card">
-            <a href="pac-details.html" class="card-header" style="text-decoration: none; color: inherit">
-              PAC
-            </a>
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  <strong>ID:</strong> <span id="pac-id"></span>
-                </li>
-                <li class="list-group-item">
-                  <strong>Campaña:</strong> <span id="pac-campaña"></span>
-                </li>
-                <li class="list-group-item">
-                  <strong>Estado:</strong>
-                  <span class="badge rounded-pill" id="pac-estado-badge"></span>
-                </li>
-              </ul>
-            </div>
+      <div class="container-fluid">
+        <div class="row mb-3 align-items-center">
+          <div class="col-md-8">
+            <h1 class="h2 mb-0" id="detailUserName">Cargando nombre...</h1>
+            <p class="text-muted mb-0" id="detailUserNifCif">NIF/CIF: Cargando...</p>
           </div>
-          <div class="card" id="new-pac-card" style="display: none">
-            <div class="card-header">PAC</div>
-            <div class="card-body">
-              <p class="text-muted">No hay PAC asociada a este usuario.</p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearPacModal">
-                <i class="fas fa-plus"></i> Crear nueva PAC
+          <div class="col-md-4 d-flex justify-content-md-end gap-3">
+            <div class="d-flex align-items-center">
+              <span class="badge" id="detailUserStatus">Tipo: Cargando...</span>
+            </div>
+            <div class="dropdown me-2">
+              <button class="btn btn-outline-primary dropdown-toggle btn-sm" type="button" id="userActionsDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-ellipsis-v me-1"></i>
               </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">Contacto</div>
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  <strong>Email:</strong> <span id="user-email"></span>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userActionsDropdown">
+                <li><a class="dropdown-item" href="#" id="editUserLink"><i class="fas fa-edit me-2"></i>Editar
+                    Cliente</a>
                 </li>
-                <li class="list-group-item">
-                  <strong>Teléfono:</strong> <span id="user-phone"></span>
+                <li><a class="dropdown-item" href="#" id="createUserPacLink"><i
+                      class="fas fa-file-medical me-2"></i>Crear
+                    PAC para Cliente</a></li>
+                <li>
+                  <hr class="dropdown-divider">
                 </li>
+                <li><a class="dropdown-item text-danger" href="#" id="deleteUserLink" data-bs-toggle="modal"
+                    data-bs-target="#deleteUserModal"><i class="fas fa-trash me-2"></i>Eliminar Cliente</a></li>
               </ul>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="card mt-4">
-        <div class="card-header">Documentos Asociados</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush" id="document-list"></ul>
-        </div>
-      </div>
+        <ul class="nav nav-tabs" id="userDetailsTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-content"
+              type="button" role="tab" aria-controls="info-content" aria-selected="true">
+              <i class="fas fa-user-circle me-2"></i>Información General
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pacs-tab" data-bs-toggle="tab" data-bs-target="#pacs-content" type="button"
+              role="tab" aria-controls="pacs-content" aria-selected="false">
+              <i class="fas fa-file-alt me-2"></i>PACs Asociadas (<span id="pacCount">0</span>)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-content"
+              type="button" role="tab" aria-controls="documents-content" aria-selected="false">
+              <i class="fas fa-folder-open me-2"></i>Documentos (<span id="documentCount">0</span>)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-content" type="button"
+              role="tab" aria-controls="notes-content" aria-selected="false">
+              <i class="fas fa-sticky-note me-2"></i>Notas
+            </button>
+          </li>
+        </ul>
 
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="crearPacModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="crearPacModalLabel">Crear nueva PAC</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <form id="crearPacForm">
-            <div class="mb-3">
-              <label class="form-label">Selecciona el método:</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="metodo" id="desdeCero" value="cero" checked />
-                <label class="form-check-label" for="desdeCero">Crear desde cero</label>
+        <div class="tab-content" id="userDetailsTabContent">
+          <div class="tab-pane fade show active" id="info-content" role="tabpanel" aria-labelledby="info-tab">
+            <div class="row mb-4 mx-0">
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-info-circle me-2"></i>Descripción / Perfil
+                </div>
+                <div class="card-body">
+                  <p id="infoDescription" class="text-muted">Cargando...</p>
+                </div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="metodo" id="desdeDocs" value="docs" />
-                <label class="form-check-label" for="desdeDocs">Crear a partir de documentos</label>
-                <div class="mb-3" id="documentosOpciones" style="display: none">
-                  <label class="form-label">Selecciona documentos:</label>
-                  <div id="checkboxDocs" class="form-check">
-                    <!-- Checkboxes generados por JS -->
+            </div>
+            <div class="row justify-content-between">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header">
+                    <i class="fas fa-id-card me-2"></i>Datos de Contacto y Personales
+                  </div>
+                  <div class="card-body">
+                    <dl class="row justify-content-between">
+                      <dt class="col-sm-6">Nombre Completo / Razón Social:</dt>
+                      <dd class="col-sm-6" id="infoFullName">Cargando...</dd>
+
+                      <dt class="col-sm-6">NIF/CIF:</dt>
+                      <dd class="col-sm-6" id="infoNifCif">Cargando...</dd>
+
+                      <dt class="col-sm-6">Email Principal:</dt>
+                      <dd class="col-sm-6" id="infoEmail">Cargando...</dd>
+
+                      <dt class="col-sm-6">Teléfono Principal:</dt>
+                      <dd class="col-sm-6" id="infoPhone">Cargando...</dd>
+
+                      <dt class="col-sm-6">Tipo de Cliente:</dt>
+                      <dd class="col-sm-6" id="infoUserType">Cargando...</dd>
+
+                      <dt class="col-sm-6">Fecha de Alta:</dt>
+                      <dd class="col-sm-6" id="infoRegDate">Cargando...</dd>
+                    </dl>
                   </div>
                 </div>
               </div>
+              <div class="col align-self-stretch d-flex">
+                <div class="card flex-grow-1">
+                  <div class="card-header">
+                    <i class="fas fa-map-marker-alt me-2"></i>Dirección
+                  </div>
+                  <div class="card-body">
+                    <dl class="row">
+                      <dt class="col-sm-6">Dirección:</dt>
+                      <dd class="col-sm-6" id="infoAddress">Cargando...</dd>
+
+                      <dt class="col-sm-6">Localidad:</dt>
+                      <dd class="col-sm-6" id="infoCity">Cargando...</dd>
+
+                      <dt class="col-sm-6">Provincia:</dt>
+                      <dd class="col-sm-6" id="infoProvince">Cargando...</dd>
+
+                      <dt class="col-sm-6">Código Postal:</dt>
+                      <dd class="col-sm-6" id="infoZipCode">Cargando...</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pacs-content" role="tabpanel" aria-labelledby="pacs-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="mb-0">PACs del Cliente</h4>
+              <button class="btn btn-success btn-sm" id="createNewPacForUserBtn">
+                <i class="fas fa-plus me-2"></i>Asignar/Crear Nueva PAC
+              </button>
+            </div>
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Ref. PAC</th>
+                        <th>Campaña</th>
+                        <th>Fecha Creación</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="userPacsTableBody">
+                      <tr>
+                        <td colspan="5" class="text-center p-4"><em class="text-muted">No hay PACs asociadas a este
+                            cliente.</em></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="documents-content" role="tabpanel" aria-labelledby="documents-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="mb-0">Documentos del Cliente</h4>
+              <button class="btn btn-success btn-sm" id="uploadDocumentBtn">
+                <i class="fas fa-upload me-2"></i>Subir Documento
+              </button>
+            </div>
+            <div class="card">
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="userDocumentList">
+                  <li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos para este
+                      cliente.</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="notes-content" role="tabpanel" aria-labelledby="notes-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="mb-0">Notas Internas</h4>
+              <button class="btn btn-success btn-sm" id="addNoteBtn">
+                <i class="fas fa-plus me-2"></i>Añadir Nota
+              </button>
+            </div>
+            <div id="userNotesContainer">
+              <div class="card">
+                <div class="card-body text-center p-4"><em class="text-muted">No hay notas para este cliente.</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="managePacModal" tabindex="-1" aria-labelledby="managePacModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="managePacModalLabel">Gestionar PAC para <span id="modalPacUserName"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Aquí iría el formulario para crear una nueva PAC desde cero, a partir de documentos, o desde SGA,
+            específico para este cliente.</p>
+          <p>Campaña actual por defecto: <span id="modalPacCampaignYear">2025</span></p>
+          <form id="crearPacFormModal">
+            <div class="mb-3">
+              <label for="pacCampaignModal" class="form-label">Campaña PAC:</label>
+              <input type="number" class="form-control" id="pacCampaignModal" value="2025" required>
+            </div>
+            <div class="mb-3">
+              <label for="pacRefModal" class="form-label">Referencia PAC (opcional):</label>
+              <input type="text" class="form-control" id="pacRefModal" placeholder="Ej: PAC2025-XYZ">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Selecciona el método de creación:</label>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="metodo" id="desdeSGA" value="sga" />
-                <label class="form-check-label" for="desdeSGA">Obtener de SGA</label>
+                <input class="form-check-input" type="radio" name="metodoPacModal" id="desdeCeroModal" value="cero"
+                  checked />
+                <label class="form-check-label" for="desdeCeroModal">Crear desde cero</label>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancelar
-          </button>
-          <button type="submit" form="crearPacForm" class="btn btn-primary">
-            Crear PAC
-          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" form="crearPacFormModal" class="btn btn-primary">Guardar PAC</button>
         </div>
       </div>
     </div>
   </div>
 
+  <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteUserModalLabel">Confirmar Eliminación de Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar al cliente <strong id="userNameToDelete"></strong>? Esta acción no se
+          puede deshacer.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteUserButton">Eliminar Cliente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
   <script>
-    const users = {
-      user1: {
-        nombre: "Juan Pérez",
-        email: "juan.perez@agro.com",
-        telefono: "+34 600 123 456",
-        descripcion: "Perfil del agricultor",
-        texto:
-          "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015 con una trayectoria destacada en sostenibilidad.",
-        pac: {
-          id: "PAC 123",
-          campaña: "2025",
-          estado: "Ready",
-        },
-        documentos: [
-          "Declaración de superficies 2025",
-          "Justificante de titularidad",
-          "Plano SIGPAC",
+    // Datos de ejemplo (similares a los de users.html y pac-list.html para consistencia)
+    const clientsData = {
+      "USR001": {
+        id: "USR001",
+        nombreCompleto: "Juan Pérez Gómez",
+        nifCif: "12345678A",
+        email: "juan.perez@example.com",
+        telefono: "600123456",
+        direccion: "Calle Falsa, 123",
+        localidad: "Pueblo Nuevo",
+        provincia: "Badajoz",
+        codigoPostal: "06001",
+        tipoCliente: "Agricultor Individual",
+        fechaAlta: "2023-01-15",
+        estado: "Activo",
+        descripcion: "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015.",
+        pacs: [
+          { idPac: "PAC2025-001", campana: "2025", fechaCreacion: "2025-01-20", estado: "Enviada", estadoBadge: "bg-success" },
+          { idPac: "PAC2024-005", campana: "2024", fechaCreacion: "2024-01-15", estado: "Completada", estadoBadge: "bg-primary" },
         ],
-      },
-      user2: {
-        nombre: "María Gómez",
-        email: "maria.gomez@campo.org",
-        telefono: "+34 600 654 321",
-        descripcion: "Ganadera familiar en Castilla y León",
-        texto:
-          "María tiene una explotación familiar centrada en ganadería extensiva.",
-        pac: {
-          id: "PAC 456",
-          campaña: "2025",
-          estado: "En revisión",
-        },
         documentos: [
-          "Certificado de explotaciones ganaderas",
-          "Solicitud PAC 2025",
+          { nombre: "DNI Juan Perez.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
+          { nombre: "Contrato Arrendamiento Finca_ElRobledal.pdf", tipo: "Contrato", fechaSubida: "2023-01-20", tamano: "800KB", url: "#" },
+          { nombre: "SIGPAC_parcela_123.zip", tipo: "SIGPAC", fechaSubida: "2024-02-10", tamano: "5.5MB", url: "#" },
         ],
+        notas: [
+          { id: "N001", fecha: "2025-04-10", autor: "Ana G.", texto: "Cliente contactó para preguntar sobre la nueva normativa de eco-regímenes. Se le envió documentación." },
+          { id: "N002", fecha: "2025-02-15", autor: "Carlos M.", texto: "Revisión de la PAC 2025. Todo correcto. Pendiente de firma." }
+        ]
       },
-      user3: {
-        nombre: "Luis Martínez",
-        email: "luis.martinez@granja.net",
-        telefono: "+34 600 789 123",
-        descripcion: "Olivicultor extremeño",
-        texto:
-          "Luis cultiva olivar tradicional y se ha acogido a prácticas eco-regionales.",
-        pac: null,
-        documentos: ["Plan de gestión sostenible", "Informe técnico PAC"],
+      "USR002": {
+        id: "USR002",
+        nombreCompleto: "Agropecuaria La Esperanza S.L.",
+        nifCif: "B98765432",
+        email: "contacto@agroesperanza.com",
+        telefono: "924001122",
+        direccion: "Polígono Industrial Las Vegas, Nave 7",
+        localidad: "Don Benito",
+        provincia: "Cáceres",
+        codigoPostal: "06400",
+        tipoCliente: "Sociedad Limitada",
+        fechaAlta: "2022-11-05",
+        estado: "Activo",
+        descripcion: "Empresa dedicada a la explotación de cereales y leguminosas. Buscan optimizar sus ayudas PAC.",
+        pacs: [
+          { idPac: "PAC2025-002", campana: "2025", fechaCreacion: "2025-02-01", estado: "En Proceso", estadoBadge: "bg-warning text-dark" },
+        ],
+        documentos: [
+          { nombre: "Escrituras_Agroesperanza.pdf", tipo: "Constitución", fechaSubida: "2022-11-05", tamano: "3.1MB", url: "#" },
+        ],
+        notas: []
       },
+      "USR003": {
+        id: "USR003",
+        nombreCompleto: "Luis Martínez Solo",
+        nifCif: "87654321B",
+        email: "luis.martinez@email.net",
+        telefono: "601234567",
+        direccion: "Camino Viejo, S/N",
+        localidad: "Almendralejo",
+        provincia: "Badajoz",
+        codigoPostal: "06200",
+        tipoCliente: "Agricultor Individual",
+        fechaAlta: "2024-03-10",
+        estado: "Inactivo",
+        descripcion: "Olivar tradicional. Mostró interés pero no ha iniciado PAC este año.",
+        pacs: [],
+        documentos: [],
+        notas: [
+          { id: "N003", fecha: "2024-03-15", autor: "Laura P.", texto: "Primer contacto. Interesado en ayudas para olivar." }
+        ]
+      }
     };
 
-    function getEstadoBadgeClass(estado) {
+    function getStatusBadgeClass(status) {
+      if (!status) return 'text-bg-light';
+      switch (status.toLowerCase()) {
+        case "activo": return "text-bg-success";
+        case "inactivo": return "text-bg-secondary";
+        case "potencial": return "text-bg-info";
+        default: return "text-bg-light";
+      }
+    }
+
+    function formatPacState(estado) {
+      if (!estado) return { text: 'Desconocido', badgeClass: 'bg-secondary' };
       switch (estado.toLowerCase()) {
-        case "ready":
-          return "bg-success";
-        case "aceptada":
-          return "bg-primary";
-        case "en revisión":
-          return "bg-warning text-dark";
-        default:
-          return "bg-secondary";
+        case 'nueva': return { text: 'Nueva', badgeClass: 'bg-secondary' };
+        case 'en proceso': return { text: 'En Proceso', badgeClass: 'bg-warning text-dark' };
+        case 'lista': return { text: 'Lista', badgeClass: 'bg-info' };
+        case 'enviada': return { text: 'Enviada', badgeClass: 'bg-success' };
+        case 'requiere revisión': return { text: 'Requiere Revisión', badgeClass: 'bg-danger' };
+        case 'completada': return { text: 'Completada', badgeClass: 'bg-primary' };
+        default: return { text: estado, badgeClass: 'bg-light text-dark' };
       }
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const userId = params.get("id");
-    const user = users[userId];
 
-    if (user) {
-      document.getElementById("user-name").textContent = user.nombre;
-      document.getElementById("user-desc").textContent = user.descripcion;
-      document.getElementById("user-profile-text").textContent = user.texto;
-      document.getElementById("user-email").textContent = user.email;
-      document.getElementById("user-phone").textContent = user.telefono;
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+      const client = clientsData[userId];
 
-      if (user.pac) {
-        document.getElementById("pac-id").textContent = user.pac.id;
-        document.getElementById("pac-campaña").textContent = user.pac.campaña;
+      if (client) {
+        // Poblar encabezado general
+        document.getElementById("topNavUserName").textContent = `Cliente: ${client.nombreCompleto}`;
+        document.getElementById("detailUserName").textContent = client.nombreCompleto;
+        document.getElementById("detailUserNifCif").textContent = `NIF/CIF: ${client.nifCif || 'No especificado'}`;
 
-        const badge = document.getElementById("pac-estado-badge");
-        badge.textContent = user.pac.estado;
-        badge.className =
-          "badge rounded-pill " + getEstadoBadgeClass(user.pac.estado);
+        const statusBadge = document.getElementById("detailUserStatus");
+        statusBadge.textContent = client.estado || 'No especificado';
+        statusBadge.className = `badge ${getStatusBadgeClass(client.estado)}`;
+
+        // Poblar pestaña de Información General
+        document.getElementById("infoFullName").textContent = client.nombreCompleto;
+        document.getElementById("infoNifCif").textContent = client.nifCif || 'No especificado';
+        document.getElementById("infoEmail").textContent = client.email || 'No especificado';
+        document.getElementById("infoPhone").textContent = client.telefono || 'No especificado';
+        document.getElementById("infoUserType").textContent = client.tipoCliente || 'No especificado';
+        document.getElementById("infoRegDate").textContent = client.fechaAlta || 'No especificado';
+        document.getElementById("infoAddress").textContent = client.direccion || 'No especificado';
+        document.getElementById("infoCity").textContent = client.localidad || 'No especificado';
+        document.getElementById("infoProvince").textContent = client.provincia || 'No especificado';
+        document.getElementById("infoZipCode").textContent = client.codigoPostal || 'No especificado';
+        document.getElementById("infoDescription").textContent = client.descripcion || 'No hay descripción disponible.';
+
+        // Poblar pestaña de PACs
+        const pacsTableBody = document.getElementById("userPacsTableBody");
+        const pacCountSpan = document.getElementById("pacCount");
+        if (client.pacs && client.pacs.length > 0) {
+          pacsTableBody.innerHTML = ""; // Limpiar mensaje por defecto
+          client.pacs.forEach(pac => {
+            const pacState = formatPacState(pac.estado);
+            const row = `<tr>
+              <td><a href="pac-details.html?id=${pac.idPac}">${pac.idPac}</a></td>
+              <td>${pac.campana}</td>
+              <td>${pac.fechaCreacion}</td>
+              <td class="text-center"><span class="badge rounded-pill ${pacState.badgeClass}">${pacState.text}</span></td>
+              <td class="text-center">
+                <a href="pac-details.html?id=${pac.idPac}" class="btn btn-sm btn-outline-primary" title="Ver PAC"><i class="fas fa-eye"></i></a>
+                <a href="pac-edit.html?id=${pac.idPac}" class="btn btn-sm btn-outline-secondary ms-1" title="Editar PAC"><i class="fas fa-edit"></i></a>
+              </td>
+            </tr>`;
+            pacsTableBody.innerHTML += row;
+          });
+          pacCountSpan.textContent = client.pacs.length;
+        } else {
+          pacsTableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4"><em class="text-muted">No hay PACs asociadas a este cliente.</em></td></tr>`;
+          pacCountSpan.textContent = 0;
+        }
+
+        // Poblar pestaña de Documentos
+        const documentListUl = document.getElementById("userDocumentList");
+        const documentCountSpan = document.getElementById("documentCount");
+        if (client.documentos && client.documentos.length > 0) {
+          documentListUl.innerHTML = ""; // Limpiar
+          client.documentos.forEach(doc => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+                    <div>
+                        <i class="fas fa-file-alt me-2 text-primary"></i>
+                        <a href="${doc.url}" target="_blank">${doc.nombre}</a>
+                        <small class="d-block text-muted">Tipo: ${doc.tipo} | Subido: ${doc.fechaSubida} | Tamaño: ${doc.tamano}</small>
+                    </div>
+                    <div>
+                        <a href="${doc.url}" download="${doc.nombre}" class="btn btn-sm btn-outline-secondary" title="Descargar"><i class="fas fa-download"></i></a>
+                        <button class="btn btn-sm btn-outline-danger ms-1" title="Eliminar Documento"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            documentListUl.appendChild(li);
+          });
+          documentCountSpan.textContent = client.documentos.length;
+        } else {
+          documentListUl.innerHTML = `<li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos para este cliente.</em></li>`;
+          documentCountSpan.textContent = 0;
+        }
+
+        // Poblar pestaña de Notas
+        const notesContainer = document.getElementById("userNotesContainer");
+        if (client.notas && client.notas.length > 0) {
+          notesContainer.innerHTML = ""; // Limpiar
+          client.notas.forEach(nota => {
+            const noteCard = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">${nota.texto}</p>
+                        </div>
+                        <div class="card-footer text-muted small">
+                            Por ${nota.autor} el ${nota.fecha}
+                            <button class="btn btn-sm btn-outline-secondary float-end py-0" title="Editar Nota"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>`;
+            notesContainer.innerHTML += noteCard;
+          });
+        } else {
+          notesContainer.innerHTML = `<div class="card"><div class="card-body text-center p-4"><em class="text-muted">No hay notas para este cliente.</em></div></div>`;
+        }
+
+
+        // Configurar enlaces de acciones y modal
+        document.getElementById("editUserLink").href = `user-edit.html?id=${client.id}`;
+
+        const createUserPacBtn = document.getElementById("createUserPacLink");
+        const createNewPacForUserBtnModal = document.getElementById("createNewPacForUserBtn");
+
+        const managePacModalTrigger = () => {
+          document.getElementById("modalPacUserName").textContent = client.nombreCompleto;
+          // Aquí podrías pre-rellenar más datos en el modal si es necesario
+          var modalInstance = new bootstrap.Modal(document.getElementById('managePacModal'));
+          modalInstance.show();
+        };
+
+        if (createUserPacBtn) createUserPacBtn.addEventListener('click', managePacModalTrigger);
+        if (createNewPacForUserBtnModal) createNewPacForUserBtnModal.addEventListener('click', managePacModalTrigger);
+
+
+        const deleteUserLink = document.getElementById("deleteUserLink");
+        if (deleteUserLink) {
+          deleteUserLink.setAttribute('data-user-id', client.id);
+          deleteUserLink.setAttribute('data-user-name', client.nombreCompleto);
+        }
+
+
       } else {
-        document.getElementById("pac-card").style.display = "none";
-        document.getElementById("new-pac-card").style.display = "flex";
+        document.querySelector(".content-wrapper .container-fluid").innerHTML =
+          '<div class="alert alert-danger" role="alert"><h2>Cliente no encontrado</h2><p>El ID de cliente proporcionado no es válido o el cliente no existe.</p><a href="users.html" class="btn btn-primary">Volver a la lista de Clientes</a></div>';
       }
-
-      const docList = document.getElementById("document-list");
-      docList.innerHTML = "";
-      user.documentos.forEach((doc) => {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.innerHTML = `<a href="#">${doc}</a>`;
-        docList.appendChild(li);
-      });
-    } else {
-      document.querySelector(".content-wrapper").innerHTML =
-        "<h2>Usuario no encontrado</h2>";
-    }
-  </script>
-  <script>
-    // Mostrar checkboxes si se selecciona "a partir de documentos"
-    document.querySelectorAll('input[name="metodo"]').forEach((radio) => {
-      radio.addEventListener("change", () => {
-        const docsVisible = document.getElementById("desdeDocs").checked;
-        document.getElementById("documentosOpciones").style.display =
-          docsVisible ? "block" : "none";
-      });
     });
 
-    // Rellenar checkboxes desde los documentos del usuario actual
-    if (user && user.documentos) {
-      const checkboxContainer = document.getElementById("checkboxDocs");
-      checkboxContainer.innerHTML = "";
-      user.documentos.forEach((doc, index) => {
-        const div = document.createElement("div");
-        div.className = "form-check";
-        div.innerHTML = `
-            <input class="form-check-input" type="checkbox" value="${doc}" id="doc${index}">
-            <label class="form-check-label" for="doc${index}">${doc}</label>
-          `;
-        checkboxContainer.appendChild(div);
+    // Script para pasar datos del cliente al modal de eliminación (reutilizado)
+    const deleteUserModal = document.getElementById('deleteUserModal');
+    if (deleteUserModal) {
+      deleteUserModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget || document.getElementById('deleteUserLink'); // Puede ser activado por JS
+        const userId = button.getAttribute('data-user-id');
+        const userName = button.getAttribute('data-user-name');
+
+        const modalUserIdElement = deleteUserModal.querySelector('#userNameToDelete'); // El ID en el modal es para el nombre
+        // const modalUserIdSpan = deleteUserModal.querySelector('#userIdToDelete'); // Si tuvieras un span para el ID
+
+        if (modalUserIdElement) modalUserIdElement.textContent = userName;
+        // if (modalUserIdSpan) modalUserIdSpan.textContent = userId;
+
+        // document.getElementById('confirmDeleteUserButton').setAttribute('data-user-to-delete', userId);
       });
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
