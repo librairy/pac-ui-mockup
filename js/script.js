@@ -6,6 +6,7 @@ formHistory = [
     description:
       "Actualización de dirección de notificación en base a nuevos documentos subidos.",
     user: "Asistente",
+    is_uploaded: false,
     formData: {
       ...(typeof getBaseFormData === "function" ? getBaseFormData() : {}),
       not_nombre_via: "Calle Vieja",
@@ -26,6 +27,7 @@ formHistory = [
     date: "2025-05-03 10:15",
     description: "Actualización datos de contacto y dirección.",
     user: "Ana Pérez",
+    is_uploaded: true,
     formData: {
       ...(typeof getBaseFormData === "function" ? getBaseFormData() : {}),
       sol_telefono: "924856097",
@@ -46,6 +48,7 @@ formHistory = [
     date: "2025-04-28 16:30",
     description: "Modificación de IBAN y ayudas solicitadas.",
     user: "Carlos López",
+    is_uploaded: false,
     formData: {
       ...(typeof getBaseFormData === "function" ? getBaseFormData() : {}),
       iban: "ES5021000000000000000001",
@@ -58,6 +61,7 @@ formHistory = [
     date: "2025-04-20 09:00",
     description: "Creación inicial del formulario.",
     user: "Sistema",
+    is_uploaded: false,
     formData: typeof getBaseFormData === "function" ? getBaseFormData() : {},
     changedFields: [],
   },
@@ -108,15 +112,23 @@ function populateHistoryList() {
     }
 
     entryDiv.innerHTML = `
-      <p class="font-semibold text-sm text-blue-600">${new Date(
-        entry.date
-      ).toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })}</p>
+      <div class="flex justify-between items-center">
+        <p class="font-semibold text-sm">${new Date(entry.date).toLocaleString(
+          "es-ES",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+        )}</p>
+        ${
+          entry.is_uploaded
+            ? '<span class="badge text-bg-success" title="Subido al SGA">Subido</span>'
+            : ""
+        }
+      </div>
       <p class="text-sm text-gray-700 mt-1">${entry.description}</p>
       ${userDisplayHTML}
     `;
@@ -214,7 +226,7 @@ function populateValidationsList() {
       <div class="flex items-start">
         <i class="${iconClass} ${iconColorClass} fa-fw mr-3 mt-1 text-lg"></i>
         <div>
-          <p class="font-semibold text-sm ${iconColorClass}">${typeText}: ${
+          <p class="font-semibold text-sm">${typeText}: ${
       val.fieldLabel || val.fieldId
     }</p>
           <p class="text-xs text-gray-600 mt-1">${val.message}</p>

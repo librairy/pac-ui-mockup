@@ -225,8 +225,8 @@
       // --- Cargar historial desde localStorage (opcional, para persistencia) ---
       function loadHistory() {
         chatHistory = [
-          { id: `chat${Date.now() + 1}`, title: "Consulta sobre normativa...", timestamp: "Hoy, 10:30 AM", messages: [{ type: 'bot', text: "Hola, soy tu asistente virtual. ¿Cómo puedo ayudarte con la consulta sobre normativa?" }, { type: 'user', text: "Necesito saber los plazos." }, { type: 'bot-message', text: "Los plazos para la PAC 2025 son..." }] },
-          { id: `chat${Date.now() + 2}`, title: "Perfil cliente X...", timestamp: "Ayer, 02:15 PM", messages: [{ type: 'bot', text: "Hola, ¿qué necesitas saber del cliente X?" }, { type: 'user', text: "¿Cuál es su NIF?" }] }
+          { id: `chat${Date.now() + 1}`, title: "Consulta sobre normativa...", timestamp: "Hoy, 10:30 AM", messages: [{ type: 'bot', text: "Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?" }, { type: 'user', text: "¿Cuáles son los plazos de presentación de la PAC?" }, { type: 'bot-message', text: "Los plazos para la PAC 2025 son..." }] },
+          { id: `chat${Date.now() + 2}`, title: "Perfil cliente X...", timestamp: "Ayer, 02:15 PM", messages: [{ type: 'bot', text: "Hola, soy tu asistente virtual para la PAC. ¿En qué puedo ayudarte hoy?" }, { type: 'user', text: "¿Cuál es el NIF del cliente X?" }, { type: 'bot-message', text: "El NIF del cliente X es..." }] }
         ];
         const storedActiveChatId = localStorage.getItem('activeChatId');
         if (storedActiveChatId && chatHistory.find(chat => chat.id === storedActiveChatId)) {
