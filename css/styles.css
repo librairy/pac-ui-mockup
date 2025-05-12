@@ -290,7 +290,6 @@ body {
   border-bottom: 1px solid #e9ecef;
   font-weight: 600;
   padding: 0.9rem 1.25rem; /* Ajuste de padding */
-  color: #343a40; /* Color de texto más oscuro para el header */
 }
 
 .card-body {
@@ -345,6 +344,15 @@ body {
   border-radius: 0 0 0.5rem 0.5rem;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nav-tabs .nav-link.active {
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link {
+  color: #495057;
+  font-weight: 500;
 }
 
 /* Responsive adjustments */

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PAC 123 - Details</title>
+  <title>Detalles de PAC - Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -15,23 +15,40 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Estilos adicionales para items de historial y validaciones si son necesarios */
+    .history-item .action-description {
+      font-weight: 500;
+    }
+
+    .history-item .action-meta {
+      font-size: 0.85em;
+      color: #6c757d;
+      /* text-muted */
+    }
+
+    .validation-item .validation-icon {
+      font-size: 1.2rem;
+      /* Ajusta el tamaño del icono de validación */
+    }
+  </style>
 </head>
 
 <body>
   <nav class="sidebar">
-    <div class="logo-section">
+    <div class="logo-section d-flex align-items-center justify-content-center">
       <img src="../img/laiw_color.png" alt="LAIW Logo" />
     </div>
     <ul class="nav flex-column flex-grow-1">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="index.html">
+        <a class="nav-link" href="index.html">
           <i class="fas fa-home"></i>
           <span class="link-text">Inicio</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pac-list.html">
-          <i class="fas fa-file-alt"></i>
+        <a class="nav-link active" aria-current="page" href="pac-list.html"> <i class="fas fa-file-alt"></i>
           <span class="link-text">PACs</span>
         </a>
       </li>
@@ -67,14 +84,34 @@
   <div class="main-content">
     <nav class="top-nav">
       <div class="d-flex align-items-center me-auto">
-        <a href="javascript:history.back()" class="text-decoration-none me-3" title="Atrás">
-          <i class="fas fa-arrow-left text-muted"></i>
-          <span class="navbar-brand ms-2">Detalles de PAC</span>
+        <a href="javascript:history.back()" class="text-decoration-none d-flex align-items-center text-muted me-3"
+          title="Volver atrás">
+          <i class="fas fa-arrow-left fs-5"></i>
         </a>
+        <span class="navbar-brand" id="topNavPacId">Detalles de PAC</span>
       </div>
-
       <div class="nav-icons d-flex align-items-center">
-        <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
+        <div class="dropdown me-2">
+          <button class="btn btn-outline-primary dropdown-toggle btn-sm" type="button" id="pacActionsDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-ellipsis-v me-1"></i> Acciones PAC
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="pacActionsDropdown">
+            <li><a class="dropdown-item" href="#" id="editPacLink"><i class="fas fa-edit me-2"></i>Editar PAC</a></li>
+            <li><a class="dropdown-item" href="#" id="validatePacLink"><i class="fas fa-check-double me-2"></i>Validar
+                PAC</a></li>
+            <li><a class="dropdown-item" href="#" id="sendPacLinkSGA" data-bs-toggle="modal"
+                data-bs-target="#uploadConfirmationModal"><i class="fas fa-paper-plane me-2"></i>Enviar a SGA</a></li>
+            <li><a class="dropdown-item" href="#" id="downloadPacSummaryLink"><i
+                  class="fas fa-file-download me-2"></i>Descargar Resumen</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" href="#" id="deletePacLink" data-bs-toggle="modal"
+                data-bs-target="#deletePacModal"><i class="fas fa-trash me-2"></i>Eliminar PAC</a></li>
+          </ul>
+        </div>
+        <a href="#" title="Notificaciones" class="me-2"><i class="fas fa-bell"></i></a>
         <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
       </div>
     </nav>
@@ -86,111 +123,162 @@
             <div class="row">
               <div class="col" onclick="location.href='pac-edit.html'" style="cursor: pointer;">
                 <h2 class="card-title" style="font-weight: 700; font-size: 1.5rem;">
-                  <span>PAC 123</span>
+                  <span id="detailPacRef">Cargando...</span>
                   <i class="fa-solid fa-arrow-right"></i>
                 </h2>
-                <p class="text-muted mb-0">Pequeña explotación agraria</p>
+                <p class="text-muted mb-0">Campaña: <span id="detailPacCampaign">Cargando...</span> | Solicitante: <a
+                    href="#" id="detailPacClientLink" style="font-weight: 600">Cargando...</a></p>
               </div>
               <div class="col-md-auto text-md-end">
-                <span class="badge bg-success rounded-pill mb-2">Ready</span>
+                <span class="badge fs-6 me-2" id="detailPacStatus">Cargando...</span>
                 <a href="#" id="uploadIconLink" class="text-muted ms-2" title="Upload">
                   <i id="uploadIcon" class="fas fa-upload"></i>
                 </a>
-                <p class="text-muted mb-0">Última modificación: 3 May 2025</p>
-              </div>
-            </div>
-            <hr class="my-3" />
-            <p class="mb-0">
-              Descripción breve generada automáticamente del PAC 123 y su
-              propósito en el sistema. Esta descripción proporciona contexto
-              sobre el elemento y sus objetivos principales.
-            </p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="card h-100">
-              <div class="card-header">HISTORIAL DE CAMBIOS</div>
-              <div class="card-body p-0">
-                <div id="historyList">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card h-100">
-              <div class="card-header">RECOMENDACIONES</div>
-              <div class="card-body p-0">
-                <div class="list-group list-group-flush">
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-check-circle text-success me-2"></i>
-                    Verificar documentación adjunta
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-exclamation-circle text-warning me-2"></i>
-                    Actualizar estado del proceso
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-info-circle text-info me-2"></i>
-                    Revisar comentarios pendientes
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card h-100">
-              <div class="card-header">REPOSITORIO DE ARCHIVOS</div>
-              <div class="card-body p-0">
-                <div class="list-group list-group-flush">
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-file-pdf me-2"></i>
-                    Documento principal.pdf
-                    <small class="text-muted ms-2">2.1 MB</small>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-file-excel me-2"></i>
-                    Datos_complementarios.xlsx
-                    <small class="text-muted ms-2">1.5 MB</small>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-file-word me-2"></i>
-                    Informe_tecnico.docx
-                    <small class="text-muted ms-2">890 KB</small>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card h-100">
-              <div class="card-header">VALIDACIONES</div>
-              <div class="card-body p-0">
-                <div id="validationsList">
-                </div>
+                <p class="text-muted mt-2 mb-0 small">Últ. Modificación: <span id="detailPacLastMod">Cargando...</span>
+                </p>
               </div>
             </div>
           </div>
         </div>
 
+
+        <ul class="nav nav-tabs" id="pacDetailsTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pac-summary-tab" data-bs-toggle="tab"
+              data-bs-target="#pac-summary-content" type="button" role="tab" aria-controls="pac-summary-content"
+              aria-selected="true">
+              <i class="fas fa-clipboard-list me-2"></i>Resumen
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pac-documents-tab" data-bs-toggle="tab" data-bs-target="#pac-documents-content"
+              type="button" role="tab" aria-controls="pac-documents-content" aria-selected="false">
+              <i class="fas fa-folder-open me-2"></i>Documentos (<span id="pacDocumentCount">0</span>)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pac-validations-tab" data-bs-toggle="tab"
+              data-bs-target="#pac-validations-content" type="button" role="tab" aria-controls="pac-validations-content"
+              aria-selected="false">
+              <i class="fas fa-check-circle me-2"></i>Validaciones
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pac-history-tab" data-bs-toggle="tab" data-bs-target="#pac-history-content"
+              type="button" role="tab" aria-controls="pac-history-content" aria-selected="false">
+              <i class="fas fa-history me-2"></i>Historial
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pac-recommendations-tab" data-bs-toggle="tab"
+              data-bs-target="#pac-recommendations-content" type="button" role="tab"
+              aria-controls="pac-recommendations-content" aria-selected="false">
+              <i class="fas fa-lightbulb me-2"></i>Recomendaciones
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="pacDetailsTabContent">
+          <div class="tab-pane fade show active" id="pac-summary-content" role="tabpanel"
+            aria-labelledby="pac-summary-tab">
+            <div class="card mb-4">
+              <div class="card-header"><i class="fas fa-info-circle me-2"></i>Información General de la Solicitud</div>
+              <div class="card-body">
+                <dl class="row">
+                  <dt class="col-sm-3">Referencia PAC:</dt>
+                  <dd class="col-sm-9" id="summaryPacRef">Cargando...</dd>
+                  <dt class="col-sm-3">Campaña:</dt>
+                  <dd class="col-sm-9" id="summaryPacCampaign">Cargando...</dd>
+                  <dt class="col-sm-3">Solicitante:</dt>
+                  <dd class="col-sm-9">
+                    <a href="#" id="summaryPacClientLink" style="font-weight: 600;">Cargando...</a>
+                  <dt class="col-sm-3">Fecha de Creación:</dt>
+                  <dd class="col-sm-9" id="summaryPacCreationDate">Cargando...</dd>
+                  <dt class="col-sm-3">Última Modificación:</dt>
+                  <dd class="col-sm-9" id="summaryPacLastMod">Cargando...</dd>
+                  <dt class="col-sm-3">Estado Actual:</dt>
+                  <dd class="col-sm-9"><span class="badge" id="summaryPacStatus">Cargando...</span></dd>
+                  <dt class="col-sm-3">Descripción Breve:</dt>
+                  <dd class="col-sm-9" id="summaryPacDescription">Cargando...</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pac-documents-content" role="tabpanel" aria-labelledby="pac-documents-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Documentos de la Solicitud PAC</h4>
+                <button class="btn btn-success btn-sm" id="uploadPacDocumentBtn">
+                  <i class="fas fa-upload me-2"></i>Añadir Documento a la PAC
+                </button>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="pacDocumentListUl">
+                  <li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos específicos para
+                      esta PAC.</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pac-history-content" role="tabpanel" aria-labelledby="pac-history-tab">
+            <div class="card h-100">
+              <div class="card-header"><i class="fas fa-history me-2"></i>Historial de cambios</div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="historyList">
+                  <li class="list-group-item text-center p-4"><em class="text-muted">Cargando historial...</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pac-validations-content" role="tabpanel" aria-labelledby="pac-validations-tab">
+            <div class="card h-100">
+              <div class="card-header"><i class="fas fa-check-circle me-2"></i>Validaciones</div>
+              <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="validationsList">
+                  <li class="list-group-item text-center p-4"><em class="text-muted">Cargando validaciones...</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pac-recommendations-content" role="tabpanel"
+            aria-labelledby="pac-recommendations-tab">
+            <div class="card">
+              <div class="card-header"><i class="fas fa-lightbulb me-2"></i>RECOMENDACIONES Y ALERTAS</div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="pacRecommendationsListInternal">
+                  <div class="list-group-item text-center p-3"><em class="text-muted">Cargando recomendaciones...</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <script src="../js/script.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      populateHistoryList();
-      populateValidationsList();
-    });
-  </script>
+  <div class="modal fade" id="deletePacModal" tabindex="-1" aria-labelledby="deletePacModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deletePacModalLabel">Confirmar Eliminación de PAC</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar la PAC <strong id="pacRefToDelete"></strong>? Esta acción no se puede
+          deshacer.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeletePacButton">Eliminar PAC</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal fade" id="uploadConfirmationModal" tabindex="-1" aria-labelledby="uploadConfirmationModalLabel"
     aria-hidden="true">
@@ -234,6 +322,179 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="../js/script.js" defer></script>
+  <script>
+    // Datos de ejemplo para PACs
+    const pacsData = {
+      "PAC2025-001": {
+        idPac: "PAC2025-001", campana: "2025", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
+        fechaCreacion: "2025-01-20", fechaUltimaModificacion: "2025-05-08", estado: "Enviada",
+        descripcionBreve: "Solicitud PAC para explotación de secano y regadío en Badajoz.", importeSolicitado: "15,250.75€",
+        documentosAdjuntosPAC: [
+          { nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
+          { nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
+        ],
+        recomendaciones: [ // Usaremos la estructura que tenías en tu pac-details original para 'icono'
+          { texto: "Revisar posible nueva ayuda para jóvenes agricultores.", icono: "fas fa-info-circle text-info" },
+          { texto: "Planificar siembra directa para próxima campaña para mejora de puntuación eco-régimen.", icono: "fas fa-leaf text-success" }
+        ]
+      },
+      "PAC2024-005": {
+        idPac: "PAC2024-005", campana: "2024", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
+        fechaCreacion: "2024-01-15", fechaUltimaModificacion: "2024-03-10", estado: "Completada",
+        descripcionBreve: "PAC 2024 para cultivos de cereal.", importeSolicitado: "12,800.00€",
+        documentosAdjuntosPAC: [],
+        recomendaciones: []
+      },
+      "PAC2025-002": {
+        idPac: "PAC2025-002", campana: "2025", idClienteAsociado: "USR002", nombreSolicitante: "Agropecuaria La Esperanza S.L.",
+        fechaCreacion: "2025-02-01", fechaUltimaModificacion: "2025-05-01", estado: "En Proceso",
+        descripcionBreve: "Solicitud PAC para explotación de cereales y leguminosas.", importeSolicitado: "28,500.00€",
+        documentosAdjuntosPAC: [{ nombre: "Memoria_Tecnica_Cultivos_2025.pdf", tipo: "Memoria Técnica", fechaSubida: "2025-02-01", tamano: "4.2MB", url: "#" }],
+        recomendaciones: [
+          { texto: "Urgente: Verificar datos SIGPAC con el cliente antes del 15/05.", icono: "fas fa-exclamation-triangle text-danger" },
+        ]
+      }
+    };
+
+    function formatPacStateForDetails(estado) {
+      if (!estado) return { text: 'Desconocido', badgeClass: 'bg-secondary' };
+      let estadoNormalizado = estado.toLowerCase();
+      if (estadoNormalizado.includes("enviada")) return { text: 'Enviada', badgeClass: 'bg-success' };
+      if (estadoNormalizado.includes("proceso")) return { text: 'En Proceso', badgeClass: 'bg-warning text-dark' };
+      if (estadoNormalizado.includes("lista")) return { text: 'Lista', badgeClass: 'bg-info' };
+      if (estadoNormalizado.includes("completada") || estadoNormalizado.includes("pagada")) return { text: 'Completada', badgeClass: 'bg-primary' };
+      if (estadoNormalizado.includes("nueva")) return { text: 'Nueva', badgeClass: 'bg-secondary' };
+      if (estadoNormalizado.includes("revisión") || estadoNormalizado.includes("requiere")) return { text: 'Requiere Revisión', badgeClass: 'bg-danger' };
+      return { text: estado, badgeClass: 'bg-light text-dark' };
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const pacId = params.get("id");
+      const pac = pacsData[pacId];
+
+      if (pac) {
+        document.title = `${pac.idPac} - Detalles - Dashboard`;
+        document.getElementById("detailPacRef").textContent = pac.idPac;
+        document.getElementById("detailPacCampaign").textContent = pac.campana;
+        const clientLink = document.getElementById("detailPacClientLink");
+        clientLink.textContent = pac.nombreSolicitante;
+        clientLink.href = `user-details.html?id=${pac.idClienteAsociado}`;
+
+        const statusData = formatPacStateForDetails(pac.estado);
+        const statusBadge = document.getElementById("detailPacStatus");
+        statusBadge.textContent = statusData.text;
+        statusBadge.className = `badge fs-6 me-2 ${statusData.badgeClass}`;
+        document.getElementById("detailPacLastMod").textContent = pac.fechaUltimaModificacion;
+
+        document.getElementById("summaryPacRef").textContent = pac.idPac;
+        document.getElementById("summaryPacCampaign").textContent = pac.campana;
+        const summaryClientLink = document.getElementById("summaryPacClientLink");
+        summaryClientLink.textContent = pac.nombreSolicitante;
+        summaryClientLink.href = `user-details.html?id=${pac.idClienteAsociado}`;
+        document.getElementById("summaryPacCreationDate").textContent = pac.fechaCreacion;
+        document.getElementById("summaryPacLastMod").textContent = pac.fechaUltimaModificacion;
+        const summaryStatusBadge = document.getElementById("summaryPacStatus");
+        summaryStatusBadge.textContent = statusData.text;
+        summaryStatusBadge.className = `badge ${statusData.badgeClass}`;
+        document.getElementById("summaryPacDescription").textContent = pac.descripcionBreve || "No disponible.";
+
+        const pacDocListUl = document.getElementById("pacDocumentListUl");
+        const pacDocCountSpan = document.getElementById("pacDocumentCount");
+        if (pac.documentosAdjuntosPAC && pac.documentosAdjuntosPAC.length > 0) {
+          pacDocListUl.innerHTML = "";
+          pac.documentosAdjuntosPAC.forEach(doc => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+                    <div>
+                        <i class="fas fa-file-pdf me-2 text-danger"></i>
+                        <a href="${doc.url}" target="_blank">${doc.nombre}</a>
+                        <small class="d-block text-muted">Tipo: ${doc.tipo} | Subido: ${doc.fechaSubida} | Tamaño: ${doc.tamano}</small>
+                    </div>
+                    <div>
+                        <a href="${doc.url}" download="${doc.nombre}" class="btn btn-sm btn-outline-secondary" title="Descargar"><i class="fas fa-download"></i></a>
+                        <button class="btn btn-sm btn-outline-danger ms-1" title="Eliminar Documento"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            pacDocListUl.appendChild(li);
+          });
+          pacDocCountSpan.textContent = pac.documentosAdjuntosPAC.length;
+        } else {
+          pacDocListUl.innerHTML = `<li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos específicos para esta PAC.</em></li>`;
+          pacDocCountSpan.textContent = 0;
+        }
+
+        populateHistoryList();
+        populateValidationsList();
+
+        const recommendationsListDiv = document.getElementById("pacRecommendationsListInternal");
+        if (pac.recomendaciones && pac.recomendaciones.length > 0) {
+          recommendationsListDiv.innerHTML = ""; // Limpiar placeholder
+          pac.recomendaciones.forEach(item => {
+            const a = document.createElement("a");
+            a.href = "#";
+            a.className = "list-group-item list-group-item-action";
+            a.innerHTML = `<i class="${item.icono} me-2"></i> ${item.texto}`;
+            recommendationsListDiv.appendChild(a);
+          });
+        } else {
+          recommendationsListDiv.innerHTML = '<div class="list-group-item text-center p-3"><em class="text-muted">No hay recomendaciones o alertas.</em></div>';
+        }
+        // === FIN: Renderizado de Historial, Validaciones y Recomendaciones ===
+
+        document.getElementById("editPacLink").href = `pac-edit.html?id=${pac.idPac}`;
+        const deletePacLink = document.getElementById("deletePacLink");
+        if (deletePacLink) {
+          deletePacLink.setAttribute('data-pac-id', pac.idPac);
+        }
+
+        const sendPacLinkSGA = document.getElementById("sendPacLinkSGA");
+        if (sendPacLinkSGA) {
+          sendPacLinkSGA.addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('sgaPacRef').textContent = pac.idPac;
+            // Lógica para mostrar el modal de confirmación de subida SGA
+          });
+        }
+
+
+      } else {
+        document.querySelector(".content-wrapper .container-fluid").innerHTML =
+          '<div class="alert alert-danger" role="alert"><h2>PAC no encontrada</h2><p>La referencia de PAC proporcionada no es válida o la PAC no existe.</p><a href="pac-list.html" class="btn btn-primary">Volver a la lista de PACs</a></div>';
+      }
+    });
+
+    const deletePacModal = document.getElementById('deletePacModal');
+    if (deletePacModal) {
+      deletePacModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget || document.getElementById('deletePacLink');
+        const pacId = button.getAttribute('data-pac-id');
+        const modalPacRefElement = deletePacModal.querySelector('#pacRefToDelete');
+        if (modalPacRefElement) {
+          modalPacRefElement.textContent = pacId;
+        }
+      });
+    }
+
+    // Lógica para el modal de confirmación de subida a SGA
+    const uploadConfirmationModalEl = document.getElementById('uploadConfirmationModal');
+    if (uploadConfirmationModalEl) {
+      const confirmSgaUploadButton = document.getElementById('confirmSgaUploadButton');
+      confirmSgaUploadButton.addEventListener('click', () => {
+        const pacId = document.getElementById('sgaPacRef').textContent;
+        console.log(`Confirmado envío a SGA para PAC: ${pacId}`);
+        // Aquí iría la lógica real de envío y luego, por ejemplo, mostrar el modal de estado.
+        var modalInstance = bootstrap.Modal.getInstance(uploadConfirmationModalEl);
+        modalInstance.hide();
+        // Ejemplo: podrías llamar a una función que maneje el modal de estado de subida aquí.
+      });
+    }
+
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // El código para populateHistoryList y populateValidationsList ya se ejecuta en el script anterior.

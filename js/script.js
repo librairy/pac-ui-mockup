@@ -1,5 +1,3 @@
-// Contenido de historial.js
-
 formHistory = [
   {
     date: "2025-05-10 14:30",
@@ -68,82 +66,83 @@ formHistory = [
 ];
 
 function populateHistoryList() {
-  // Asegúrate de que los IDs 'historyList', 'pac-form' y las variables
-  // formHistory, applyHistoryEntry existan y estén accesibles.
-  const historyListContainer = document.getElementById("historyList");
-  // 'formHistory' y 'pacForm' (o una referencia al formulario) deben estar disponibles
-  // en el scope donde se llama esta función o pasarse como parámetros.
+  const historyListUl = document.getElementById("historyList"); // Asumimos que ahora es un UL
 
-  if (!historyListContainer || typeof formHistory === "undefined") {
+  if (!historyListUl || typeof formHistory === "undefined") {
     console.error(
-      "Elementos necesarios para el historial no encontrados o formHistory no definido."
+      "Elemento #historyList (debe ser UL) no encontrado o formHistory no definido."
     );
-    if (historyListContainer)
-      historyListContainer.innerHTML =
-        '<p class="text-red-500">Error al cargar el historial.</p>';
+    if (historyListUl) {
+      historyListUl.innerHTML =
+        '<li class="list-group-item text-danger">Error al cargar el historial.</li>';
+    }
     return;
   }
 
-  historyListContainer.innerHTML = "";
+  // Aplicar clases de list-group al UL
+  historyListUl.className = "list-group list-group-flush";
+  historyListUl.innerHTML = ""; // Limpiar lista
+
   if (formHistory.length === 0) {
-    historyListContainer.innerHTML =
-      '<p class="text-gray-500">No hay historial de cambios.</p>';
+    historyListUl.innerHTML =
+      '<li class="list-group-item text-center p-4"><em class="text-muted">No hay historial de cambios.</em></li>';
     return;
   }
 
   formHistory.forEach((entry) => {
-    const entryDiv = document.createElement("div");
-    entryDiv.className =
-      "p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150";
+    const listItem = document.createElement("li");
+    listItem.className = "list-group-item list-group-item-action"; // list-group-item-action para efecto hover y cursor
+    listItem.style.cursor = "pointer"; // Asegurar cursor pointer
 
-    let userDisplayHTML = "";
+    let userIconClass = "fas fa-user text-secondary"; // Icono por defecto
+    let userText = entry.user;
+
     if (entry.user.toLowerCase() === "sistema") {
-      userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Sistema">
-                       <i class="fas fa-desktop fa-fw mr-2 text-blue-500"></i> Sistema
-                     </span>`;
+      userIconClass = "fas fa-desktop text-primary";
+      userText = "Sistema";
     } else if (entry.user.toLowerCase() === "asistente") {
-      userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="Asistente">
-                       <i class="fas fa-robot fa-fw mr-2 text-purple-500"></i> Asistente
-                     </span>`;
-    } else {
-      userDisplayHTML = `<span class="flex items-center text-xs text-gray-500 mt-1" title="${entry.user}">
-                       <i class="fas fa-user fa-fw mr-2 text-gray-400"></i> ${entry.user}
-                     </span>`;
+      userIconClass = "fas fa-robot text-purple"; // Un color personalizado o de Bootstrap
+      userText = "Asistente";
     }
 
-    entryDiv.innerHTML = `
-      <div class="flex justify-between items-center">
-        <p class="font-semibold text-sm">${new Date(entry.date).toLocaleString(
-          "es-ES",
-          {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }
-        )}</p>
+    const formattedDate = new Date(entry.date).toLocaleString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    listItem.innerHTML = `
+      <div class="d-flex w-100 justify-content-between align-items-center">
+        <p class="font-semibold text-sm">${entry.description}</p>
+        <small class="text-muted">${formattedDate}</small>
+      </div>
+      <div class="d-flex w-100 justify-content-between align-items-center mt-1">
+        <small class="d-flex align-items-center">
+          <i class="${userIconClass} fa-fw me-2"></i> ${userText}
+        </small>
         ${
           entry.is_uploaded
             ? '<span class="badge text-bg-success" title="Subido al SGA">Subido</span>'
             : ""
         }
       </div>
-      <p class="text-sm text-gray-700 mt-1">${entry.description}</p>
-      ${userDisplayHTML}
     `;
 
-    entryDiv.addEventListener("click", () => {
-      // applyHistoryEntry debe estar disponible
-      applyHistoryEntry(entry);
-      toggleHistoryPanel(); // toggleHistoryPanel también debe estar disponible
+    listItem.addEventListener("click", () => {
+      if (typeof applyHistoryEntry === "function") {
+        applyHistoryEntry(entry);
+      }
+      if (typeof toggleHistoryPanel === "function") {
+        // toggleHistoryPanel(); // Descomentar si quieres que el panel se cierre al hacer clic
+      }
     });
-    historyListContainer.appendChild(entryDiv);
+    historyListUl.appendChild(listItem);
   });
 }
 
 // VALIDACIONES
-
 const formValidations = [
   {
     id: "val001",
@@ -185,59 +184,74 @@ const formValidations = [
 ];
 
 function populateValidationsList() {
-  const validationsListContainer = document.getElementById("validationsList");
-  if (!validationsListContainer) return;
+  const validationsListUl = document.getElementById("validationsList"); // Asumimos que ahora es un UL
+  if (!validationsListUl) {
+    console.error("Elemento #validationsList (debe ser UL) no encontrado.");
+    return;
+  }
 
-  validationsListContainer.innerHTML = ""; // Limpiar lista
+  // Aplicar clases de list-group al UL
+  validationsListUl.className = "list-group list-group-flush";
+  validationsListUl.innerHTML = ""; // Limpiar lista
+
   if (formValidations.length === 0) {
-    validationsListContainer.innerHTML =
-      '<p class="text-gray-500">No hay validaciones pendientes.</p>';
+    validationsListUl.innerHTML =
+      '<li class="list-group-item text-center p-4"><em class="text-muted">No hay validaciones pendientes.</em></li>';
     return;
   }
 
   formValidations.forEach((val) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className =
-      "p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150";
+    const listItem = document.createElement("li");
+    listItem.className = "list-group-item list-group-item-action"; // list-group-item-action para efecto hover y cursor
+    listItem.style.cursor = "pointer"; // Asegurar cursor pointer
 
     let iconClass = "";
-    let iconColorClass = "";
+    let textColorClass = ""; // Usaremos textColorClass para el texto y el icono para consistencia
     let typeText = "";
 
     switch (val.type) {
       case "error":
         iconClass = "fas fa-times-circle";
-        iconColorClass = "text-danger";
+        textColorClass = "text-danger"; // Rojo para errores
         typeText = "Error";
         break;
       case "incidencia":
-        iconClass = "fas fa-exclamation-circle";
-        iconColorClass = "text-warning";
+        iconClass = "fas fa-exclamation-triangle"; // Cambiado a triángulo para diferenciar de aviso
+        textColorClass = "text-warning"; // Amarillo/Naranja para incidencias
         typeText = "Incidencia";
         break;
       case "aviso":
-        iconClass = "fas fa-exclamation-circle";
-        iconColorClass = "text-info";
+        iconClass = "fas fa-info-circle"; // Cambiado a círculo de info para avisos
+        textColorClass = "text-info"; // Azul para avisos
         typeText = "Aviso";
         break;
+      default:
+        iconClass = "fas fa-question-circle";
+        textColorClass = "text-secondary";
+        typeText = "Desconocido";
     }
 
-    itemDiv.innerHTML = `
-      <div class="flex items-start">
-        <i class="${iconClass} ${iconColorClass} fa-fw mr-3 mt-1 text-lg"></i>
-        <div>
-          <p class="font-semibold text-sm">${typeText}: ${
+    listItem.innerHTML = `
+      <div class="d-flex align-items-center">
+        <i class="${iconClass} ${textColorClass} fa-fw me-3 mt-1"></i>
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0 font-semibold text-sm">${typeText}: ${
       val.fieldLabel || val.fieldId
     }</p>
-          <p class="text-xs text-gray-600 mt-1">${val.message}</p>
+          </div>
+          <small class="text-muted d-block mt-1">${val.message}</small>
         </div>
       </div>
     `;
-    itemDiv.addEventListener("click", () => {
-      applyValidationFocus(val);
-      // Decidir si cerrar el panel o no:
-      // toggleValidationsPanel();
+    listItem.addEventListener("click", () => {
+      if (typeof applyValidationFocus === "function") {
+        applyValidationFocus(val);
+      }
+      if (typeof toggleValidationsPanel === "function") {
+        toggleValidationsPanel(); // Descomentar si quieres que el panel se cierre al hacer clic
+      }
     });
-    validationsListContainer.appendChild(itemDiv);
+    validationsListUl.appendChild(listItem);
   });
 }
