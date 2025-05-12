@@ -426,3 +426,238 @@ body {
     overflow-x: auto;
   }
 }
+
+/* --- Estilos Adicionales para Consistencia --- */
+
+/* Asegurar la fuente base para todo el contenido */
+body,
+.main-content,
+.top-nav,
+.card,
+.btn,
+.form-select,
+.table {
+  font-family: "Inter", sans-serif; /* Heredado de body, pero reforzamos */
+}
+
+/* Barra de Navegación Superior */
+.top-nav {
+  background-color: #ffffff; /* Fondo blanco limpio */
+  border-bottom: 1px solid #e9ecef; /* Borde sutil similar a las tarjetas */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06); /* Sombra suave */
+  padding: 0.8rem 1.5rem; /* Ajuste de padding */
+}
+
+.top-nav .navbar-brand {
+  color: #2c3e50; /* Color principal del sidebar para el título */
+  font-weight: 600; /* Consistente con títulos */
+}
+
+.top-nav .nav-icons a {
+  color: #7f8c8d; /* Gris suave para iconos */
+  transition: color 0.2s ease;
+}
+
+.top-nav .nav-icons a:hover {
+  color: #2c3e50; /* Oscurecer al pasar el ratón */
+}
+
+/* Área de Contenido Principal */
+.content-wrapper {
+  padding: 2rem; /* Más espaciado interno */
+  background-color: #f4f7f6; /* Coincide con el fondo del body */
+}
+
+/* Títulos */
+h1.h3,
+.card-title {
+  color: #34495e; /* Un gris azulado oscuro para títulos */
+  font-weight: 600; /* Hacerlos destacar */
+}
+
+/* Tarjetas (Cards) */
+.card {
+  border: none; /* Quitar borde por defecto si usamos sombra */
+  border-radius: 8px; /* Bordes redondeados consistentes */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07); /* Sombra un poco más pronunciada */
+  margin-bottom: 1.75rem; /* Más espacio entre tarjetas */
+}
+
+.card-header {
+  background-color: #ffffff; /* Fondo blanco */
+  border-bottom: 1px solid #f0f0f0; /* Borde muy sutil */
+  color: #34495e;
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+  border-top-left-radius: 8px; /* Redondear esquinas superiores */
+  border-top-right-radius: 8px;
+}
+
+.card-header i {
+  color: #1abc9c; /* Iconos en el header con el color activo del sidebar */
+  margin-right: 0.6rem;
+}
+
+.card-body {
+  padding: 1.5rem; /* Más padding en el cuerpo */
+  color: #555; /* Color de texto principal dentro de las tarjetas */
+}
+
+.card-footer {
+  background-color: #f8f9fa; /* Fondo ligeramente gris */
+  border-top: 1px solid #f0f0f0;
+  color: #6c757d; /* Color de texto 'muted' */
+  padding: 0.75rem 1.25rem;
+  border-bottom-left-radius: 8px; /* Redondear esquinas inferiores */
+  border-bottom-right-radius: 8px;
+}
+
+/* Estilos específicos para las tarjetas de métricas */
+.card.text-center .display-4 {
+  color: #2c3e50; /* Color principal para los números grandes */
+}
+.card.text-center .card-title {
+  color: #7f8c8d; /* Título de la métrica más suave */
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem; /* Más espacio antes del número */
+}
+
+/* Tablas */
+.table thead th {
+  background-color: #f8f9fa; /* Fondo claro para cabecera */
+  color: #34495e; /* Texto cabecera más oscuro */
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6; /* Borde inferior más grueso */
+  border-top: none;
+}
+
+.table tbody td {
+  color: #555;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #e8f6f3; /* Hover con un toque del color activo */
+}
+
+.table .btn-sm {
+  padding: 0.25rem 0.6rem; /* Ajustar padding botones pequeños en tablas */
+  font-size: 0.8rem;
+}
+
+/* Botones */
+.btn-primary,
+.active .page-link,
+.list-group-item.active,
+.message.user-message,
+.active-nav-link {
+  background-color: #1abc9c; /* Color activo del sidebar */
+  border-color: #1abc9c;
+  color: #ffffff;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover,
+.page-link:hover,
+.active-nav-link:hover {
+  background-color: #16a085; /* Versión más oscura del color activo */
+  border-color: #16a085;
+  color: #ffffff;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.25); /* Sombra de enfoque */
+  background-color: #1abc9c !important;
+  border-color: #1abc9c !important;
+  color: #ffffff !important;
+}
+
+.nav-link {
+  color: #34495e; /* Color de texto de los enlaces */
+  transition: color 0.2s ease;
+  border: 1px solid transparent; /* Para mantener el espacio del borde */
+}
+
+.btn-outline-primary,
+.page-link,
+.nav-link:hover {
+  color: #1abc9c; /* Color del texto */
+  border: 1px solid #1abc9c; /* Borde del botón */
+}
+
+.page-link:focus {
+  color: #1abc9c !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #1abc9c;
+  color: #ffffff;
+  border-color: #1abc9c;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary:focus,
+.btn-outline-primary:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.25); /* Sombra de enfoque */
+  background-color: #1abc9c !important;
+  border-color: #1abc9c !important;
+}
+
+/* Selector de Año */
+.year-select {
+  border: 1px solid #ced4da;
+  border-radius: 6px; /* Consistente con otros redondeos */
+  padding: 0.4rem 0.8rem;
+  background-color: #ffffff; /* Fondo blanco */
+  color: #495057;
+}
+.year-select:focus {
+  border-color: #1abc9c; /* Borde con color activo al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.25); /* Sombra con color activo */
+}
+
+/* Estilos para la lista de actividad reciente */
+.activity-item {
+  border-bottom: 1px solid #f0f0f0; /* Borde más suave */
+  padding: 1rem 1.25rem;
+}
+.activity-item:last-child {
+  border-bottom: none;
+}
+.activity-description strong {
+  color: #34495e; /* Nombres o acciones importantes */
+}
+.activity-user,
+.activity-time {
+  color: #7f8c8d; /* Gris más suave para metadatos */
+  font-size: 0.8rem;
+}
+.activity-item i {
+  /* Iconos de actividad */
+  margin-right: 0.75rem;
+  width: 18px; /* Ancho fijo para alineación */
+  text-align: center;
+  /* Los colores ya vienen de clases de Bootstrap (text-info, etc.) */
+}
+
+/* Ajustes menores para responsividad si es necesario */
+@media (max-width: 992px) {
+  .content-wrapper {
+    padding: 1.5rem; /* Reducir padding en pantallas medianas */
+  }
+  h1.h3 {
+    font-size: 1.5rem; /* Ajustar tamaño de título */
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 1rem; /* Reducir más el padding en móviles */
+  }
+  /* Ajustes adicionales para móvil si son necesarios */
+}
