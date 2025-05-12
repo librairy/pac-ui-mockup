@@ -59,7 +59,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="users.html">
+        <a class="nav-link" href="customers.html">
           <i class="fas fa-users"></i>
           <span class="link-text">Clientes</span>
         </a>
@@ -183,7 +183,7 @@
           <div class="tab-pane fade show active" id="pac-summary-content" role="tabpanel"
             aria-labelledby="pac-summary-tab">
             <div class="card mb-4">
-              <div class="card-header"><i class="fas fa-info-circle me-2"></i>Información General de la Solicitud</div>
+              <div class="card-header">Información General de la Solicitud</div>
               <div class="card-body">
                 <dl class="row">
                   <dt class="col-sm-3">Referencia PAC:</dt>
@@ -209,12 +209,20 @@
           <div class="tab-pane fade" id="pac-documents-content" role="tabpanel" aria-labelledby="pac-documents-tab">
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Documentos de la Solicitud PAC</h4>
-                <button class="btn btn-success btn-sm" id="uploadPacDocumentBtn">
-                  <i class="fas fa-upload me-2"></i>Añadir Documento a la PAC
+                <h4 class="mb-0">Documentos Adjuntos</h4>
+                <button class="btn btn-outline-primary btn-sm" id="linkClientDocumentBtn"
+                  title="Vincular documentos del cliente a esta PAC">
+                  <i class="fas fa-link me-1 hover:text-white"></i>Vincular Documento del Cliente
                 </button>
               </div>
               <div class="card-body p-0">
+                <div id="dropZone"
+                  class="border-2 border-dashed border-gray-300 rounded-md p-8 text-center my-4 mx-3 cursor-pointer hover:border-[#1abc9c] hover:bg-gray-50 transition-colors">
+                  <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                  <p class="text-gray-600">Arrastra y suelta archivos aquí o haz clic para seleccionarlos.</p>
+                  <input type="file" id="fileInput" multiple class="hidden" />
+                  <p id="dropZoneStatus" class="text-sm text-[#1abc9c] mt-2 font-medium" style="display: none;"></p>
+                </div>
                 <ul class="list-group list-group-flush" id="pacDocumentListUl">
                   <li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos específicos para
                       esta PAC.</em></li>
@@ -225,7 +233,7 @@
 
           <div class="tab-pane fade" id="pac-history-content" role="tabpanel" aria-labelledby="pac-history-tab">
             <div class="card h-100">
-              <div class="card-header"><i class="fas fa-history me-2"></i>Historial de cambios</div>
+              <div class="card-header">Historial de cambios</div>
               <div class="card-body p-0">
                 <ul class="list-group list-group-flush" id="historyList">
                   <li class="list-group-item text-center p-4"><em class="text-muted">Cargando historial...</em></li>
@@ -235,7 +243,7 @@
           </div>
           <div class="tab-pane fade" id="pac-validations-content" role="tabpanel" aria-labelledby="pac-validations-tab">
             <div class="card h-100">
-              <div class="card-header"><i class="fas fa-check-circle me-2"></i>Validaciones</div>
+              <div class="card-header">Validaciones</div>
               <div class="card-body p-0">
                 <ul class="list-group list-group-flush" id="validationsList">
                   <li class="list-group-item text-center p-4"><em class="text-muted">Cargando validaciones...</em></li>
@@ -247,7 +255,7 @@
           <div class="tab-pane fade" id="pac-recommendations-content" role="tabpanel"
             aria-labelledby="pac-recommendations-tab">
             <div class="card">
-              <div class="card-header"><i class="fas fa-lightbulb me-2"></i>RECOMENDACIONES Y ALERTAS</div>
+              <div class="card-header">Recomendaciones</div>
               <div class="card-body p-0">
                 <div class="list-group list-group-flush" id="pacRecommendationsListInternal">
                   <div class="list-group-item text-center p-3"><em class="text-muted">Cargando recomendaciones...</em>
@@ -323,20 +331,69 @@
     </div>
   </div>
 
+  <div class="modal fade" id="linkClientDocModal" tabindex="-1" aria-labelledby="linkClientDocModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="linkClientDocModalLabel">Vincular Documentos del Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Selecciona los documentos generales del cliente (<strong id="modalClientNameForDocs"></strong>) que quieres
+            asociar a esta PAC (<strong id="modalPacIdForDocs"></strong>).</p>
+          <ul class="list-group" id="modalClientDocList">
+            <li class="list-group-item text-center p-3"><em class="text-muted">Cargando documentos del cliente...</em>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="confirmLinkDocsBtn">Vincular Seleccionados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../js/script.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <script src="../js/script.js" defer></script>
   <script>
-    // Datos de ejemplo para PACs
+    const clientsData = {
+      "USR001": {
+        id: "USR001", nombreCompleto: "Juan Pérez Gómez",
+        documentos: [ // Lista maestra de documentos del cliente
+          { id: "CLIDOC001", nombre: "DNI Juan Perez.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
+          { id: "CLIDOC002", nombre: "Contrato Arrendamiento Finca_ElRobledal.pdf", tipo: "Contrato", fechaSubida: "2023-01-20", tamano: "800KB", url: "#" },
+          // Este documento podría haber sido subido desde PAC2025-001 originalmente
+          { id: "PACDOC001", nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
+          { id: "PACDOC002", nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
+        ]
+        // ...otros datos del cliente
+      },
+      "USR002": {
+        id: "USR002", nombreCompleto: "Agropecuaria La Esperanza S.L.",
+        documentos: [
+          { id: "CLIDOC004", nombre: "Escrituras_Agroesperanza.pdf", tipo: "Constitución", fechaSubida: "2022-11-05", tamano: "3.1MB", url: "#" },
+          { id: "CLIDOC005", nombre: "CIF_Agroesperanza.pdf", tipo: "Identificación Fiscal", fechaSubida: "2022-11-05", tamano: "0.5MB", url: "#" },
+          // Este documento podría haber sido subido desde PAC2025-002
+          { id: "PACDOC003", nombre: "Memoria_Tecnica_Cultivos_2025.pdf", tipo: "Memoria Técnica", fechaSubida: "2025-02-01", tamano: "4.2MB", url: "#" }
+        ]
+        // ...otros datos del cliente
+      }
+      // ...otros clientes
+    };
+
     const pacsData = {
       "PAC2025-001": {
         idPac: "PAC2025-001", campana: "2025", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
         fechaCreacion: "2025-01-20", fechaUltimaModificacion: "2025-05-08", estado: "Enviada",
         descripcionBreve: "Solicitud PAC para explotación de secano y regadío en Badajoz.", importeSolicitado: "15,250.75€",
-        documentosAdjuntosPAC: [
-          { nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
-          { nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
+        // NO hay 'documentosAdjuntosPAC'
+        linkedClientDocKeys: [ // Claves/Nombres de documentos de clientsData["USR001"].documentos que están vinculados aquí
+          "DNI Juan Perez.pdf",
+          "Solicitud_PAC2025_JuanPerez.pdf", // Vinculado (posiblemente subido desde aquí)
+          "Anexo_Ayudas_Agroambientales.pdf" // Vinculado (posiblemente subido desde aquí)
         ],
         recomendaciones: [ // Usaremos la estructura que tenías en tu pac-details original para 'icono'
           { texto: "Revisar posible nueva ayuda para jóvenes agricultores.", icono: "fas fa-info-circle text-info" },
@@ -347,20 +404,29 @@
         idPac: "PAC2024-005", campana: "2024", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
         fechaCreacion: "2024-01-15", fechaUltimaModificacion: "2024-03-10", estado: "Completada",
         descripcionBreve: "PAC 2024 para cultivos de cereal.", importeSolicitado: "12,800.00€",
-        documentosAdjuntosPAC: [],
-        recomendaciones: []
+        linkedClientDocKeys: ["DNI Juan Perez.pdf"], // Solo el DNI vinculado aquí
+        recomendaciones: [
+          { texto: "Considerar diversificación de cultivos para mejorar sostenibilidad.", icono: "fas fa-info-circle text-info" },
+          { texto: "Revisar normativa de ayudas para cultivos de secano.", icono: "fas fa-exclamation-triangle text-warning" }
+        ]
       },
       "PAC2025-002": {
         idPac: "PAC2025-002", campana: "2025", idClienteAsociado: "USR002", nombreSolicitante: "Agropecuaria La Esperanza S.L.",
         fechaCreacion: "2025-02-01", fechaUltimaModificacion: "2025-05-01", estado: "En Proceso",
         descripcionBreve: "Solicitud PAC para explotación de cereales y leguminosas.", importeSolicitado: "28,500.00€",
-        documentosAdjuntosPAC: [{ nombre: "Memoria_Tecnica_Cultivos_2025.pdf", tipo: "Memoria Técnica", fechaSubida: "2025-02-01", tamano: "4.2MB", url: "#" }],
+        linkedClientDocKeys: [
+          "Escrituras_Agroesperanza.pdf",
+          "Memoria_Tecnica_Cultivos_2025.pdf" // Vinculado (posiblemente subido desde aquí)
+        ],
         recomendaciones: [
-          { texto: "Urgente: Verificar datos SIGPAC con el cliente antes del 15/05.", icono: "fas fa-exclamation-triangle text-danger" },
+          { texto: "Revisar requisitos de documentación para cultivos de leguminosas.", icono: "fas fa-info-circle text-info" },
+          { texto: "Considerar asesoría para optimización de ayudas.", icono: "fas fa-exclamation-triangle text-warning" }
         ]
       }
     };
 
+
+    // --- FUNCIONES HELPER ---
     function formatPacStateForDetails(estado) {
       if (!estado) return { text: 'Desconocido', badgeClass: 'bg-secondary' };
       let estadoNormalizado = estado.toLowerCase();
@@ -373,69 +439,232 @@
       return { text: estado, badgeClass: 'bg-light text-dark' };
     }
 
+    // --- LÓGICA PRINCIPAL ---
     document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
       const pacId = params.get("id");
-      const pac = pacsData[pacId];
+      const currentPacData = pacsData[pacId]; // Datos de la PAC actual
+      let currentClientData = null; // Datos del cliente asociado
+      let linkClientDocModalInstance = null; // Instancia del modal de vinculación
 
-      if (pac) {
-        document.title = `${pac.idPac} - Detalles - Dashboard`;
-        document.getElementById("detailPacRef").textContent = pac.idPac;
-        document.getElementById("detailPacCampaign").textContent = pac.campana;
+      // --- Funciones específicas de esta página ---
+
+      // Función para Renderizar la Lista de Documentos (AHORA SOLO VINCULADOS)
+      function renderPacDocumentList(linkedClientDocKeys = [], clientDocs = []) {
+        const pacDocListUl = document.getElementById("pacDocumentListUl");
+        const pacDocCountSpan = document.getElementById("pacDocumentCount");
+        if (!pacDocListUl || !pacDocCountSpan) {
+          console.error("Elementos de la lista de documentos no encontrados.");
+          return;
+        }
+        pacDocListUl.innerHTML = ""; // Limpiar lista
+
+        let totalDocs = 0;
+        let listContent = "";
+
+        // Mapa de documentos del cliente para búsqueda rápida
+        const clientDocsMap = new Map((clientDocs || []).map(doc => [doc.nombre, doc]));
+
+        linkedClientDocKeys.forEach(docKey => {
+          const clientDoc = clientDocsMap.get(docKey);
+          if (clientDoc) {
+            totalDocs++;
+            // Todos los documentos mostrados son técnicamente "vinculados"
+            listContent += `
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <div>
+                          <i class="fas fa-file-alt me-2 text-primary"></i> <a href="${clientDoc.url || '#'}" target="_blank" title="Documento del cliente vinculado a esta PAC">${clientDoc.nombre}</a>
+                          <small class="d-block text-muted">Tipo: ${clientDoc.tipo || 'N/A'} | Cliente Subió: ${clientDoc.fechaSubida || 'N/A'} | Tamaño: ${clientDoc.tamano || 'N/A'}</small>
+                      </div>
+                      <div>
+                           <a href="${clientDoc.url || '#'}" download="${clientDoc.nombre}" class="btn btn-sm btn-outline-secondary" title="Descargar"><i class="fas fa-download"></i></a>
+                           <button class="btn btn-sm btn-outline-warning ms-1 unlink-client-doc-btn" data-doc-key="${clientDoc.nombre}" title="Desvincular de esta PAC (no elimina del cliente)"><i class="fas fa-unlink"></i></button>
+                           </div>
+                  </li>`;
+          } else {
+            console.warn(`Documento de cliente vinculado "${docKey}" no encontrado en los datos del cliente.`);
+          }
+        });
+
+        // Mostrar mensaje si no hay documentos vinculados
+        if (totalDocs === 0) {
+          pacDocListUl.innerHTML = `<li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos del cliente vinculados a esta PAC.</em></li>`;
+        } else {
+          pacDocListUl.innerHTML = listContent;
+        }
+
+        // Actualizar contador
+        pacDocCountSpan.textContent = totalDocs;
+      }
+
+      // Función para añadir listeners a botones dinámicos (solo desvincular ahora)
+      function attachActionListeners() {
+        document.querySelectorAll('.unlink-client-doc-btn').forEach(button => {
+          if (!button.getAttribute('data-listener-added')) {
+            button.addEventListener('click', handleUnlinkClientDoc);
+            button.setAttribute('data-listener-added', 'true');
+          }
+        });
+      }
+
+      // Handler para desvincular (NO elimina el documento del cliente)
+      function handleUnlinkClientDoc(event) {
+        const docKeyToUnlink = event.currentTarget.getAttribute('data-doc-key');
+        const pacId = currentPacData.idPac;
+
+        if (confirm(`¿Seguro que quieres desvincular el documento "${docKeyToUnlink}" de esta PAC? El documento seguirá existiendo para el cliente.`)) {
+          console.log(`Desvinculando ${docKeyToUnlink} de ${pacId}`);
+
+          // Simulación: Actualizar datos locales (solo los enlaces de la PAC)
+          const currentLinks = pacsData[pacId]?.linkedClientDocKeys || [];
+          pacsData[pacId].linkedClientDocKeys = currentLinks.filter(key => key !== docKeyToUnlink);
+
+          // Re-renderizar la lista
+          renderPacDocumentList(
+            pacsData[pacId]?.linkedClientDocKeys || [],
+            currentClientData?.documentos || [] // Pasa la lista actualizada del cliente si fuera necesario
+          );
+          attachActionListeners(); // Re-attach listeners after re-render
+          // En una app real, harías una llamada API para actualizar los enlaces de la PAC
+        }
+      }
+      // La función handleDeletePacDoc ya no es necesaria aquí
+
+
+      // --- INICIO LÓGICA DE CARGA DE PÁGINA ---
+      if (currentPacData) {
+        document.title = `${currentPacData.idPac} - Detalles - Dashboard`;
+        document.getElementById("topNavPacId").textContent = `Detalles PAC: ${currentPacData.idPac}`;
+
+        // Poblar cabecera... (igual que antes)
+        document.getElementById("detailPacRef").textContent = currentPacData.idPac;
+        document.getElementById("detailPacRef").parentElement.onclick = () => location.href = `pac-edit.html?id=${currentPacData.idPac}`;
+        document.getElementById("detailPacCampaign").textContent = currentPacData.campana;
         const clientLink = document.getElementById("detailPacClientLink");
-        clientLink.textContent = pac.nombreSolicitante;
-        clientLink.href = `user-details.html?id=${pac.idClienteAsociado}`;
-
-        const statusData = formatPacStateForDetails(pac.estado);
+        clientLink.textContent = currentPacData.nombreSolicitante;
+        clientLink.href = `customer-details.html?id=${currentPacData.idClienteAsociado}`;
+        const statusData = formatPacStateForDetails(currentPacData.estado);
         const statusBadge = document.getElementById("detailPacStatus");
         statusBadge.textContent = statusData.text;
         statusBadge.className = `badge fs-6 me-2 ${statusData.badgeClass}`;
-        document.getElementById("detailPacLastMod").textContent = pac.fechaUltimaModificacion;
+        document.getElementById("detailPacLastMod").textContent = currentPacData.fechaUltimaModificacion;
 
-        document.getElementById("summaryPacRef").textContent = pac.idPac;
-        document.getElementById("summaryPacCampaign").textContent = pac.campana;
+        // Poblar pestaña Resumen... (igual que antes)
+        document.getElementById("summaryPacRef").textContent = currentPacData.idPac;
+        document.getElementById("summaryPacCampaign").textContent = currentPacData.campana;
         const summaryClientLink = document.getElementById("summaryPacClientLink");
-        summaryClientLink.textContent = pac.nombreSolicitante;
-        summaryClientLink.href = `user-details.html?id=${pac.idClienteAsociado}`;
-        document.getElementById("summaryPacCreationDate").textContent = pac.fechaCreacion;
-        document.getElementById("summaryPacLastMod").textContent = pac.fechaUltimaModificacion;
+        summaryClientLink.textContent = currentPacData.nombreSolicitante;
+        summaryClientLink.href = `customer-details.html?id=${currentPacData.idClienteAsociado}`;
+        document.getElementById("summaryPacCreationDate").textContent = currentPacData.fechaCreacion;
+        document.getElementById("summaryPacLastMod").textContent = currentPacData.fechaUltimaModificacion;
         const summaryStatusBadge = document.getElementById("summaryPacStatus");
         summaryStatusBadge.textContent = statusData.text;
         summaryStatusBadge.className = `badge ${statusData.badgeClass}`;
-        document.getElementById("summaryPacDescription").textContent = pac.descripcionBreve || "No disponible.";
+        document.getElementById("summaryPacDescription").textContent = currentPacData.descripcionBreve || "No disponible.";
 
-        const pacDocListUl = document.getElementById("pacDocumentListUl");
-        const pacDocCountSpan = document.getElementById("pacDocumentCount");
-        if (pac.documentosAdjuntosPAC && pac.documentosAdjuntosPAC.length > 0) {
-          pacDocListUl.innerHTML = "";
-          pac.documentosAdjuntosPAC.forEach(doc => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between align-items-center';
-            li.innerHTML = `
-                    <div>
-                        <i class="fas fa-file-pdf me-2 text-danger"></i>
-                        <a href="${doc.url}" target="_blank">${doc.nombre}</a>
-                        <small class="d-block text-muted">Tipo: ${doc.tipo} | Subido: ${doc.fechaSubida} | Tamaño: ${doc.tamano}</small>
-                    </div>
-                    <div>
-                        <a href="${doc.url}" download="${doc.nombre}" class="btn btn-sm btn-outline-secondary" title="Descargar"><i class="fas fa-download"></i></a>
-                        <button class="btn btn-sm btn-outline-danger ms-1" title="Eliminar Documento"><i class="fas fa-trash"></i></button>
-                    </div>`;
-            pacDocListUl.appendChild(li);
-          });
-          pacDocCountSpan.textContent = pac.documentosAdjuntosPAC.length;
-        } else {
-          pacDocListUl.innerHTML = `<li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos específicos para esta PAC.</em></li>`;
-          pacDocCountSpan.textContent = 0;
+
+        // Obtener datos del cliente asociado
+        currentClientData = clientsData[currentPacData.idClienteAsociado];
+        if (!currentClientData) {
+          console.error(`Cliente con ID ${currentPacData.idClienteAsociado} no encontrado para la PAC ${pacId}`);
+          // Manejar el error adecuadamente, quizás mostrando un mensaje en la UI
         }
 
+        // --- Lógica para la Pestaña de Documentos ---
+        const linkClientDocBtn = document.getElementById('linkClientDocumentBtn');
+        const modalClientDocList = document.getElementById('modalClientDocList');
+        const confirmLinkDocsBtn = document.getElementById('confirmLinkDocsBtn');
+        const modalClientNameEl = document.getElementById('modalClientNameForDocs');
+        const modalPacIdEl = document.getElementById('modalPacIdForDocs');
+        const linkClientDocModalEl = document.getElementById('linkClientDocModal');
+
+        // Inicializar el modal de Bootstrap para vincular
+        if (linkClientDocModalEl) {
+          linkClientDocModalInstance = new bootstrap.Modal(linkClientDocModalEl);
+        } else {
+          console.error("Modal #linkClientDocModal no encontrado.");
+        }
+
+        // Renderizar la lista inicial de documentos de la PAC (solo vinculados)
+        if (currentClientData) {
+          renderPacDocumentList(
+            currentPacData.linkedClientDocKeys || [],
+            currentClientData.documentos || []
+          );
+          attachActionListeners();
+        } else {
+          const pacDocListUl = document.getElementById("pacDocumentListUl");
+          if (pacDocListUl) pacDocListUl.innerHTML = `<li class="list-group-item text-center p-4 text-danger"><em >No se pudieron cargar los documentos del cliente asociado.</em></li>`;
+          if (linkClientDocBtn) linkClientDocBtn.disabled = true;
+        }
+
+        // Listener para el botón "Vincular Documento del Cliente" (sin cambios importantes aquí)
+        if (linkClientDocBtn && linkClientDocModalInstance && currentClientData) {
+          linkClientDocBtn.disabled = false;
+          linkClientDocBtn.addEventListener('click', () => {
+            // ... (Código para poblar el modal - igual que antes, pero sin la comprobación 'isAlreadySpecific')
+            modalClientDocList.innerHTML = "";
+            modalClientNameEl.textContent = currentClientData.nombreCompleto || 'Cliente no encontrado';
+            modalPacIdEl.textContent = pacId;
+
+            const clientDocs = currentClientData.documentos || [];
+            const alreadyLinkedKeys = currentPacData.linkedClientDocKeys || [];
+
+            if (clientDocs.length === 0) {
+              modalClientDocList.innerHTML = `<li class="list-group-item text-center p-3"><em class="text-muted">Este cliente no tiene documentos.</em></li>`;
+            } else {
+              clientDocs.forEach(doc => {
+                const isAlreadyLinked = alreadyLinkedKeys.includes(doc.nombre);
+                const uniqueId = `chk-${doc.id || doc.nombre.replace(/[^a-zA-Z0-9]/g, "")}`;
+
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.innerHTML = `
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${doc.nombre}" id="${uniqueId}" ${isAlreadyLinked ? 'checked' : ''}>
+                                <label class="form-check-label w-100" for="${uniqueId}">
+                                  ${doc.nombre} <small class="text-muted">(${doc.tipo || 'N/A'} - ${doc.tamano || 'N/A'})</small>
+                                </label>
+                              </div>
+                          `;
+                modalClientDocList.appendChild(li);
+              });
+            }
+            linkClientDocModalInstance.show();
+          });
+        } else if (linkClientDocBtn) {
+          linkClientDocBtn.disabled = true;
+        }
+
+        if (confirmLinkDocsBtn && linkClientDocModalInstance && currentClientData) {
+          confirmLinkDocsBtn.addEventListener('click', () => {
+            const selectedCheckboxes = modalClientDocList.querySelectorAll('input[type="checkbox"]:checked');
+            const newlyLinkedKeys = Array.from(selectedCheckboxes).map(chk => chk.value);
+
+            console.log("Documentos seleccionados para vincular:", newlyLinkedKeys);
+
+            // Simulación: Actualizar datos locales (solo enlaces PAC)
+            currentPacData.linkedClientDocKeys = newlyLinkedKeys;
+            pacsData[pacId] = currentPacData;
+
+            // Re-renderizar la lista principal
+            renderPacDocumentList(
+              currentPacData.linkedClientDocKeys || [],
+              currentClientData.documentos || []
+            );
+            attachActionListeners();
+
+            linkClientDocModalInstance.hide();
+            // API call para guardar enlaces PAC
+          });
+        }
         populateHistoryList();
         populateValidationsList();
 
         const recommendationsListDiv = document.getElementById("pacRecommendationsListInternal");
-        if (pac.recomendaciones && pac.recomendaciones.length > 0) {
+        if (currentPacData.recomendaciones && currentPacData.recomendaciones.length > 0) {
           recommendationsListDiv.innerHTML = ""; // Limpiar placeholder
-          pac.recomendaciones.forEach(item => {
+          currentPacData.recomendaciones.forEach(item => {
             const a = document.createElement("a");
             a.href = "#";
             a.className = "list-group-item list-group-item-action";
@@ -445,55 +674,222 @@
         } else {
           recommendationsListDiv.innerHTML = '<div class="list-group-item text-center p-3"><em class="text-muted">No hay recomendaciones o alertas.</em></div>';
         }
-        // === FIN: Renderizado de Historial, Validaciones y Recomendaciones ===
-
-        document.getElementById("editPacLink").href = `pac-edit.html?id=${pac.idPac}`;
-        const deletePacLink = document.getElementById("deletePacLink");
-        if (deletePacLink) {
-          deletePacLink.setAttribute('data-pac-id', pac.idPac);
-        }
-
-        const sendPacLinkSGA = document.getElementById("sendPacLinkSGA");
-        if (sendPacLinkSGA) {
-          sendPacLinkSGA.addEventListener('click', function (event) {
-            event.preventDefault();
-            document.getElementById('sgaPacRef').textContent = pac.idPac;
-            // Lógica para mostrar el modal de confirmación de subida SGA
-          });
-        }
-
 
       } else {
+        // PAC no encontrada... (igual que antes)
         document.querySelector(".content-wrapper .container-fluid").innerHTML =
           '<div class="alert alert-danger" role="alert"><h2>PAC no encontrada</h2><p>La referencia de PAC proporcionada no es válida o la PAC no existe.</p><a href="pac-list.html" class="btn btn-primary">Volver a la lista de PACs</a></div>';
       }
-    });
 
-    const deletePacModal = document.getElementById('deletePacModal');
-    if (deletePacModal) {
-      deletePacModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget || document.getElementById('deletePacLink');
-        const pacId = button.getAttribute('data-pac-id');
-        const modalPacRefElement = deletePacModal.querySelector('#pacRefToDelete');
-        if (modalPacRefElement) {
-          modalPacRefElement.textContent = pacId;
+
+      // --- Lógica Simulación Subida / Drag & Drop ---
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const dropZoneStatus = document.getElementById('dropZoneStatus');
+      const uploadStatusModalEl = document.getElementById('uploadStatusModal');
+      let uploadStatusModalInstance = null;
+      let isUploadingOrUpdating = false;
+      let uploadTimeoutId = null;
+
+      if (uploadStatusModalEl) {
+        uploadStatusModalInstance = new bootstrap.Modal(uploadStatusModalEl);
+      }
+
+      function showUploadStatusModal() { if (uploadStatusModalInstance) uploadStatusModalInstance.show(); }
+
+      const setUploadingState = () => {
+        isUploadingOrUpdating = true;
+        if (dropZoneStatus) { dropZoneStatus.textContent = 'Subiendo archivos...'; dropZoneStatus.style.display = 'block'; }
+      };
+      const setUpdatingPacState = () => {
+        isUploadingOrUpdating = true; // Sigue en proceso
+        if (dropZoneStatus) { dropZoneStatus.textContent = 'Actualizando PAC...'; dropZoneStatus.style.display = 'block'; }
+      };
+      const setCompleteState = (uploadedFiles) => { // Recibe los archivos simulados
+        isUploadingOrUpdating = false;
+        if (dropZoneStatus) {
+          dropZoneStatus.textContent = `¡${uploadedFiles.length} archivo(s) añadido(s) al cliente y vinculado(s) a esta PAC!`;
+          dropZoneStatus.style.display = 'block';
+          setTimeout(() => { if (dropZoneStatus) dropZoneStatus.style.display = 'none'; }, 5000);
         }
-      });
-    }
 
-    // Lógica para el modal de confirmación de subida a SGA
-    const uploadConfirmationModalEl = document.getElementById('uploadConfirmationModal');
-    if (uploadConfirmationModalEl) {
-      const confirmSgaUploadButton = document.getElementById('confirmSgaUploadButton');
-      confirmSgaUploadButton.addEventListener('click', () => {
-        const pacId = document.getElementById('sgaPacRef').textContent;
-        console.log(`Confirmado envío a SGA para PAC: ${pacId}`);
-        // Aquí iría la lógica real de envío y luego, por ejemplo, mostrar el modal de estado.
-        var modalInstance = bootstrap.Modal.getInstance(uploadConfirmationModalEl);
-        modalInstance.hide();
-        // Ejemplo: podrías llamar a una función que maneje el modal de estado de subida aquí.
-      });
-    }
+        if (currentPacData && currentClientData && uploadedFiles.length > 0) {
+          const clientId = currentPacData.idClienteAsociado;
+          const pacId = currentPacData.idPac;
+
+          // 1. Asegurarse que las listas existen en los datos
+          if (!clientsData[clientId].documentos) clientsData[clientId].documentos = [];
+          if (!pacsData[pacId].linkedClientDocKeys) pacsData[pacId].linkedClientDocKeys = [];
+
+          uploadedFiles.forEach(fakeDoc => {
+            // 2. Añadir al cliente (evitar duplicados por nombre si es necesario)
+            if (!clientsData[clientId].documentos.some(d => d.nombre === fakeDoc.nombre)) {
+              clientsData[clientId].documentos.push(fakeDoc);
+              console.log(`Documento ${fakeDoc.nombre} añadido al cliente ${clientId}`);
+            } else {
+              console.log(`Documento ${fakeDoc.nombre} ya existía en el cliente ${clientId}`);
+            }
+
+            // 3. Vincular a la PAC actual (evitar duplicados)
+            if (!pacsData[pacId].linkedClientDocKeys.includes(fakeDoc.nombre)) {
+              pacsData[pacId].linkedClientDocKeys.push(fakeDoc.nombre);
+              console.log(`Documento ${fakeDoc.nombre} vinculado a la PAC ${pacId}`);
+            }
+          });
+
+          // 4. Actualizar currentClientData y currentPacData (si es necesario, aunque modificamos el objeto global)
+          currentClientData = clientsData[clientId]; // Refrescar por si acaso
+          // currentPacData = pacsData[pacId]; // Podría ser necesario si no se modificó la referencia
+
+          // 5. Re-renderizar la lista de documentos de la PAC
+          renderPacDocumentList(
+            pacsData[pacId]?.linkedClientDocKeys || [],
+            currentClientData?.documentos || []
+          );
+          attachActionListeners(); // Re-attach listeners
+        } else {
+          console.error("Faltan datos de PAC o Cliente para procesar la subida.");
+        }
+      };
+      const setInitialState = () => {
+        isUploadingOrUpdating = false;
+        if (uploadTimeoutId) clearTimeout(uploadTimeoutId);
+        if (dropZoneStatus) { dropZoneStatus.style.display = 'none'; dropZoneStatus.textContent = ''; }
+      };
+
+      function simulateUploadAndPacUpdate(files) {
+        if (!files || files.length === 0 || !currentClientData || !currentPacData) {
+          console.warn("Subida cancelada: faltan archivos, datos del cliente o datos de la PAC.");
+          if (!currentClientData) alert("Error: No se pueden subir archivos sin un cliente asociado cargado.");
+          return;
+        }
+        const fileCount = files.length;
+        setUploadingState();
+        console.log(`Simulación: Iniciando subida de ${fileCount} archivos para cliente ${currentPacData.idClienteAsociado}.`);
+
+        uploadTimeoutId = setTimeout(() => {
+          console.log("Simulación: Archivos 'subidos'. Creando datos de documento y actualizando...");
+          setUpdatingPacState(); // Cambiar estado a actualizando
+
+          // Crear datos simulados para los archivos subidos
+          let fakeUploadedDocs = [];
+          for (let i = 0; i < fileCount; i++) {
+            const file = files[i]; // Podríamos usar el nombre real
+            fakeUploadedDocs.push({
+              id: `NEWDOC${Date.now() + i}`,
+              nombre: file.name || `Archivo_Subido_${Date.now() + i}.dat`, // Usar nombre real si está disponible
+              tipo: file.type || "Subido Manual", // Usar tipo real si está disponible
+              fechaSubida: new Date().toISOString().split('T')[0],
+              tamano: file.size ? `${(file.size / (1024 * 1024)).toFixed(2)}MB` : "?.?MB", // Calcular tamaño real
+              url: "#" // URL sería definida por el backend
+            });
+          }
+
+          uploadTimeoutId = setTimeout(() => {
+            console.log("Simulación: Actualización completada.");
+            setCompleteState(fakeUploadedDocs); // Pasar los datos simulados
+            if (fileInput) fileInput.value = "";
+          }, 2000);
+        }, 3000);
+      }
+
+      if (dropZone) {
+        // 1. Abrir selector de archivos al hacer clic en la zona
+        dropZone.addEventListener('click', () => {
+          if (!isUploading) { // Evitar abrir si ya está subiendo algo
+            fileInput.click();
+          }
+        });
+
+        // 2. Manejar archivos seleccionados a través del input
+        fileInput.addEventListener('change', (event) => {
+          const files = event.target.files;
+          if (files.length > 0) {
+            console.log("Archivos seleccionados:", files);
+            handleFiles(files);
+          }
+        });
+
+        // 3. Prevenir comportamiento por defecto del navegador
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false); // Prevenir en todo el body también
+        });
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        // 4. Resaltar zona al arrastrar sobre ella
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        // 5. Quitar resaltado al salir de la zona
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+          // Añadimos la clase CSS que definimos antes (o usamos clases de Tailwind)
+          dropZone.classList.add('border-[#1abc9c]', 'bg-green-50');
+          // O si prefieres usar la clase CSS: dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+          // Quitamos la clase CSS
+          dropZone.classList.remove('border-[#1abc9c]', 'bg-green-50');
+          // O si prefieres usar la clase CSS: dropZone.classList.remove('dragover');
+        }
+
+        // 6. Manejar archivos soltados
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+
+          console.log("Archivos soltados:", files);
+          handleFiles(files);
+        }
+
+        // 7. Función central para procesar los archivos (subida simulada y actualización)
+        function handleFiles(files) {
+          if (isUploading) {
+            console.warn("Ya hay una subida en progreso.");
+            return; // Evitar subidas múltiples simultáneas
+          }
+
+          // Mostrar mensaje inicial en la zona de drop
+          dropZoneStatus.textContent = 'Iniciando subida...';
+          dropZoneStatus.style.display = 'block';
+
+          // Reutilizar la lógica del icono de estado general (arriba a la derecha)
+          simulateUploadAndPacUpdate(files);
+        }
+
+        // 8. Simulación adaptada para incluir "Actualizando PAC"
+        let isUploading = false; // Mover la variable de estado aquí para que sea accesible
+        let uploadTimeoutId = null;
+
+        // Añadir listener al botón cancelar del modal (si existe)
+        const cancelUploadButton = document.getElementById('cancelUploadButton');
+        if (cancelUploadButton) {
+          cancelUploadButton.addEventListener('click', () => {
+            if (isUploading) {
+              console.log("Subida/Actualización cancelada por el usuario.");
+              setInitialState(); // Resetear estado
+            }
+            var modalInstance = bootstrap.Modal.getInstance(uploadStatusModalEl);
+            if (modalInstance) modalInstance.hide();
+          });
+        }
+
+      } else {
+        console.error("Elemento #dropZone no encontrado en el DOM.");
+      }
+    });
 
   </script>
   <script>

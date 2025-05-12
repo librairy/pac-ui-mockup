@@ -498,6 +498,10 @@ h1.h3,
   margin-right: 0.6rem;
 }
 
+.btn:hover i {
+  color: #fff !important; /* Color más oscuro al pasar el ratón */
+}
+
 .card-body {
   padding: 1.5rem; /* Más padding en el cuerpo */
   color: #555; /* Color de texto principal dentro de las tarjetas */
@@ -560,12 +564,22 @@ h1.h3,
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.btn-primary:hover,
-.page-link:hover,
-.active-nav-link:hover {
-  background-color: #16a085; /* Versión más oscura del color activo */
-  border-color: #16a085;
+.btn-primary:disabled,
+.active .page-link:disabled,
+.list-group-item.active:disabled,
+.message.user-message:disabled,
+.active-nav-link:disabled {
+  background-color: #7aaca1;
+  border-color: #7aaca1;
   color: #ffffff;
+}
+
+.btn-primary:hover,
+.active .page-link:hover,
+.active-nav-link:hover {
+  background-color: #16a085 !important; /* Color más oscuro al pasar el ratón */
+  border-color: #16a085 !important;
+  color: #ffffff !important;
 }
 
 .btn-primary:focus,
@@ -594,9 +608,10 @@ h1.h3,
   color: #1abc9c !important;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:hover,
+.page-link:hover {
   background-color: #1abc9c;
-  color: #ffffff;
+  color: #ffffff !important;
   border-color: #1abc9c;
 }
 
@@ -606,6 +621,7 @@ h1.h3,
   box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.25); /* Sombra de enfoque */
   background-color: #1abc9c !important;
   border-color: #1abc9c !important;
+  color: #ffffff !important;
 }
 
 /* Selector de Año */

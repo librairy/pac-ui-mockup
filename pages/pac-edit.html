@@ -259,7 +259,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="users.html">
+        <a class="nav-link" href="customers.html">
           <i class="fas fa-users"></i>
           <span class="link-text">Clientes</span>
         </a>
@@ -1558,6 +1558,9 @@
     </div>
     <div id="validationsList" class="space-y-3">
     </div>
+    <div id="loadingValidations" class='text-center hidden'>
+      <p class='text-gray-500'>Validación en proceso...</p>
+    </div>
   </div>
 
 
@@ -1862,20 +1865,16 @@
 
     function validateForm() {
       const validationsList = document.getElementById("validationsList");
+      const loadingValidations = document.getElementById("loadingValidations");
       const validationTimestamp = document.getElementById("validationTimestamp");
       const validationDate = document.getElementById("validationDate");
       const validationButton = document.getElementById("validateButton");
 
-      let currentValidations;
-
-      // Mostrar un mensaje de carga
       if (validationsList) {
-        currentValidations = validationsList.innerHTML;
-
-        validationsList.innerHTML = "\n" +
-          "<div class='text-center'>\n" +
-          "<p class='text-gray-500'>Validación en proceso...</p>\n" +
-          "</div>";
+        validationsList.classList.add("hidden");
+      }
+      if (loadingValidations) {
+        loadingValidations.classList.remove("hidden");
       }
       if (validationTimestamp) {
         validationTimestamp.classList.add("hidden");
@@ -1888,7 +1887,7 @@
       // Tras un tiempo, volver a mostrar la información de validación
       setTimeout(() => {
         if (validationsList) {
-          validationsList.innerHTML = currentValidations;
+          validationsList.classList.remove("hidden");
         }
         if (validationTimestamp) {
           validationTimestamp.classList.remove("hidden");

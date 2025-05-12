@@ -101,7 +101,7 @@ function populateHistoryList() {
       userIconClass = "fas fa-desktop text-primary";
       userText = "Sistema";
     } else if (entry.user.toLowerCase() === "asistente") {
-      userIconClass = "fas fa-robot text-purple"; // Un color personalizado o de Bootstrap
+      userIconClass = "fas fa-robot text-[#6f42c1]";
       userText = "Asistente";
     }
 
@@ -135,7 +135,7 @@ function populateHistoryList() {
         applyHistoryEntry(entry);
       }
       if (typeof toggleHistoryPanel === "function") {
-        // toggleHistoryPanel(); // Descomentar si quieres que el panel se cierre al hacer clic
+        // toggleHistoryPanel();
       }
     });
     historyListUl.appendChild(listItem);
