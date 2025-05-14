@@ -498,7 +498,8 @@ h1.h3,
   margin-right: 0.6rem;
 }
 
-.btn:hover i {
+.btn:hover i,
+.btn:focus i {
   color: #fff !important; /* Color más oscuro al pasar el ratón */
 }
 

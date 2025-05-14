@@ -170,13 +170,6 @@
               <i class="fas fa-history me-2"></i>Historial
             </button>
           </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pac-recommendations-tab" data-bs-toggle="tab"
-              data-bs-target="#pac-recommendations-content" type="button" role="tab"
-              aria-controls="pac-recommendations-content" aria-selected="false">
-              <i class="fas fa-lightbulb me-2"></i>Recomendaciones
-            </button>
-          </li>
         </ul>
 
         <div class="tab-content" id="pacDetailsTabContent">
@@ -251,20 +244,6 @@
               </div>
             </div>
           </div>
-
-          <div class="tab-pane fade" id="pac-recommendations-content" role="tabpanel"
-            aria-labelledby="pac-recommendations-tab">
-            <div class="card">
-              <div class="card-header">Recomendaciones</div>
-              <div class="card-body p-0">
-                <div class="list-group list-group-flush" id="pacRecommendationsListInternal">
-                  <div class="list-group-item text-center p-3"><em class="text-muted">Cargando recomendaciones...</em>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -395,20 +374,12 @@
           "Solicitud_PAC2025_JuanPerez.pdf", // Vinculado (posiblemente subido desde aquí)
           "Anexo_Ayudas_Agroambientales.pdf" // Vinculado (posiblemente subido desde aquí)
         ],
-        recomendaciones: [ // Usaremos la estructura que tenías en tu pac-details original para 'icono'
-          { texto: "Revisar posible nueva ayuda para jóvenes agricultores.", icono: "fas fa-info-circle text-info" },
-          { texto: "Planificar siembra directa para próxima campaña para mejora de puntuación eco-régimen.", icono: "fas fa-leaf text-success" }
-        ]
       },
       "PAC2024-005": {
         idPac: "PAC2024-005", campana: "2024", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
         fechaCreacion: "2024-01-15", fechaUltimaModificacion: "2024-03-10", estado: "Completada",
         descripcionBreve: "PAC 2024 para cultivos de cereal.", importeSolicitado: "12,800.00€",
         linkedClientDocKeys: ["DNI Juan Perez.pdf"], // Solo el DNI vinculado aquí
-        recomendaciones: [
-          { texto: "Considerar diversificación de cultivos para mejorar sostenibilidad.", icono: "fas fa-info-circle text-info" },
-          { texto: "Revisar normativa de ayudas para cultivos de secano.", icono: "fas fa-exclamation-triangle text-warning" }
-        ]
       },
       "PAC2025-002": {
         idPac: "PAC2025-002", campana: "2025", idClienteAsociado: "USR002", nombreSolicitante: "Agropecuaria La Esperanza S.L.",
@@ -418,10 +389,6 @@
           "Escrituras_Agroesperanza.pdf",
           "Memoria_Tecnica_Cultivos_2025.pdf" // Vinculado (posiblemente subido desde aquí)
         ],
-        recomendaciones: [
-          { texto: "Revisar requisitos de documentación para cultivos de leguminosas.", icono: "fas fa-info-circle text-info" },
-          { texto: "Considerar asesoría para optimización de ayudas.", icono: "fas fa-exclamation-triangle text-warning" }
-        ]
       }
     };
 
@@ -536,7 +503,7 @@
         document.title = `${currentPacData.idPac} - Detalles - Dashboard`;
         document.getElementById("topNavPacId").textContent = `Detalles PAC: ${currentPacData.idPac}`;
 
-        // Poblar cabecera... (igual que antes)
+        // Poblar cabecera... 
         document.getElementById("detailPacRef").textContent = currentPacData.idPac;
         document.getElementById("detailPacRef").parentElement.onclick = () => location.href = `pac-edit.html?id=${currentPacData.idPac}`;
         document.getElementById("detailPacCampaign").textContent = currentPacData.campana;
@@ -549,7 +516,7 @@
         statusBadge.className = `badge fs-6 me-2 ${statusData.badgeClass}`;
         document.getElementById("detailPacLastMod").textContent = currentPacData.fechaUltimaModificacion;
 
-        // Poblar pestaña Resumen... (igual que antes)
+        // Poblar pestaña Resumen... 
         document.getElementById("summaryPacRef").textContent = currentPacData.idPac;
         document.getElementById("summaryPacCampaign").textContent = currentPacData.campana;
         const summaryClientLink = document.getElementById("summaryPacClientLink");
@@ -661,22 +628,9 @@
         populateHistoryList();
         populateValidationsList();
 
-        const recommendationsListDiv = document.getElementById("pacRecommendationsListInternal");
-        if (currentPacData.recomendaciones && currentPacData.recomendaciones.length > 0) {
-          recommendationsListDiv.innerHTML = ""; // Limpiar placeholder
-          currentPacData.recomendaciones.forEach(item => {
-            const a = document.createElement("a");
-            a.href = "#";
-            a.className = "list-group-item list-group-item-action";
-            a.innerHTML = `<i class="${item.icono} me-2"></i> ${item.texto}`;
-            recommendationsListDiv.appendChild(a);
-          });
-        } else {
-          recommendationsListDiv.innerHTML = '<div class="list-group-item text-center p-3"><em class="text-muted">No hay recomendaciones o alertas.</em></div>';
-        }
 
       } else {
-        // PAC no encontrada... (igual que antes)
+        // PAC no encontrada... 
         document.querySelector(".content-wrapper .container-fluid").innerHTML =
           '<div class="alert alert-danger" role="alert"><h2>PAC no encontrada</h2><p>La referencia de PAC proporcionada no es válida o la PAC no existe.</p><a href="pac-list.html" class="btn btn-primary">Volver a la lista de PACs</a></div>';
       }

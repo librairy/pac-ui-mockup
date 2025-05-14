@@ -86,7 +86,12 @@
               <div class="col">
                 <h2 class="card-title" style="font-weight: 700; font-size: 1.5rem;" id="detailUserName">Cargando
                   nombre...</h2>
-                <p class="text-muted mb-0" id="detailUserNifCif">NIF/CIF: Cargando...</p>
+                <div class="d-flex flex-row gap-3 align-items-center">
+                  <p class="text-muted" id="detailUserNifCif">NIF/CIF: Cargando...</p>
+                  <a href="#" class="btn btn-outline-primary btn-sm" id="goToLastPacBtn">
+                    <i class="fas fa-arrow-right me-2"></i>Ir a última PAC
+                  </a>
+                </div>
               </div>
               <div class="col-md-auto text-md-end d-flex align-items-center">
                 <span class="badge fs-6 me-2" id="detailUserStatus">Cargando...</span>
@@ -131,6 +136,13 @@
             <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-content"
               type="button" role="tab" aria-controls="documents-content" aria-selected="false">
               <i class="fas fa-folder-open me-2"></i>Documentos (<span id="documentCount">0</span>)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pac-recommendations-tab" data-bs-toggle="tab"
+              data-bs-target="#pac-recommendations-content" type="button" role="tab"
+              aria-controls="pac-recommendations-content" aria-selected="false">
+              <i class="fas fa-lightbulb me-2"></i>Recomendaciones
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -210,9 +222,9 @@
           <div class="tab-pane fade" id="pacs-content" role="tabpanel" aria-labelledby="pacs-tab">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h4 class="mb-0">PACs del Cliente</h4>
-              <button class="btn btn-success btn-sm" id="createNewPacForUserBtn">
+              <a class="btn btn-success btn-sm" id="createNewPacForUserBtn" href="#">
                 <i class="fas fa-plus me-2"></i>Asignar/Crear Nueva PAC
-              </button>
+              </a>
             </div>
             <div class="card">
               <div class="card-body p-0">
@@ -256,6 +268,19 @@
                   <li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos para este
                       cliente.</em></li>
                 </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pac-recommendations-content" role="tabpanel"
+            aria-labelledby="pac-recommendations-tab">
+            <div class="card">
+              <div class="card-header">Recomendaciones</div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="pacRecommendationsListInternal">
+                  <div class="list-group-item text-center p-3"><em class="text-muted">Cargando recomendaciones...</em>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -356,6 +381,10 @@
           { id: "PACDOC001", nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
           { id: "PACDOC002", nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
         ],
+        recomendaciones: [
+          { texto: "Revisar posible nueva ayuda para jóvenes agricultores.", icono: "fas fa-info-circle text-info" },
+          { texto: "Planificar siembra directa para próxima campaña para mejora de puntuación eco-régimen.", icono: "fas fa-leaf text-success" }
+        ],
         notas: [
           { id: "N001", fecha: "2025-04-10", autor: "Ana G.", texto: "Cliente contactó para preguntar sobre la nueva normativa de eco-regímenes. Se le envió documentación." },
           { id: "N002", fecha: "2025-02-15", autor: "Carlos M.", texto: "Revisión de la PAC 2025. Todo correcto. Pendiente de firma." }
@@ -368,6 +397,10 @@
           { id: "CLIDOC004", nombre: "Escrituras_Agroesperanza.pdf", tipo: "Constitución", fechaSubida: "2022-11-05", tamano: "3.1MB", url: "#" },
           { id: "CLIDOC005", nombre: "CIF_Agroesperanza.pdf", tipo: "Identificación Fiscal", fechaSubida: "2022-11-05", tamano: "0.5MB", url: "#" },
           { id: "PACDOC003", nombre: "Memoria_Tecnica_Cultivos_2025.pdf", tipo: "Memoria Técnica", fechaSubida: "2025-02-01", tamano: "4.2MB", url: "#" }
+        ],
+        recomendaciones: [
+          { texto: "Considerar diversificación de cultivos para mejorar sostenibilidad.", icono: "fas fa-info-circle text-info" },
+          { texto: "Revisar normativa de ayudas para cultivos de secano.", icono: "fas fa-exclamation-triangle text-warning" }
         ],
         notas: []
       },
@@ -523,6 +556,7 @@
         document.getElementById("topNavUserName").textContent = `Cliente: ${currentClientData.nombreCompleto}`;
         document.getElementById("detailUserName").textContent = currentClientData.nombreCompleto;
         document.getElementById("detailUserNifCif").textContent = `NIF/CIF: ${currentClientData.nifCif || 'No especificado'}`;
+        document.getElementById("goToLastPacBtn").href = `pac-details.html?id=${currentClientData.pacs[0]?.idPac || ''}`;
         const statusBadge = document.getElementById("detailUserStatus");
         statusBadge.textContent = currentClientData.estado || 'No especificado';
         statusBadge.className = `badge fs-6 me-2 ${getStatusBadgeClass(currentClientData.estado)}`;
@@ -542,7 +576,7 @@
         document.getElementById("infoDescription").textContent = currentClientData.descripcion || 'No hay descripción disponible.';
 
 
-        // Poblar pestaña de PACs... (igual que antes)
+        // Poblar pestaña de PACs
         const pacsTableBody = document.getElementById("userPacsTableBody");
         const pacCountSpan = document.getElementById("pacCount");
         if (currentClientData.pacs && currentClientData.pacs.length > 0) {
@@ -571,10 +605,23 @@
         // --- Pestaña de Documentos (Ahora con renderizado dinámico y borrado) ---
         renderClientDocumentList(currentClientData.documentos || []);
         attachClientActionListeners(); // Añadir listeners después del renderizado inicial
-        // --- Fin Pestaña Documentos ---
 
+        // Poblar pestaña de Recomendaciones
+        const recommendationsListDiv = document.getElementById("pacRecommendationsListInternal");
+        if (currentClientData.recomendaciones && currentClientData.recomendaciones.length > 0) {
+          recommendationsListDiv.innerHTML = "";
+          currentClientData.recomendaciones.forEach(item => {
+            const a = document.createElement("a");
+            a.href = "#";
+            a.className = "list-group-item list-group-item-action";
+            a.innerHTML = `<i class="${item.icono} me-2"></i> ${item.texto}`;
+            recommendationsListDiv.appendChild(a);
+          });
+        } else {
+          recommendationsListDiv.innerHTML = '<div class="list-group-item text-center p-3"><em class="text-muted">No hay recomendaciones o alertas.</em></div>';
+        }
 
-        // Poblar pestaña de Notas... (igual que antes)
+        // Poblar pestaña de Notas
         const notesContainer = document.getElementById("userNotesContainer");
         if (currentClientData.notas && currentClientData.notas.length > 0) {
           notesContainer.innerHTML = ""; // Limpiar
@@ -597,13 +644,12 @@
         }
 
 
-        // Configurar enlaces de acciones y modales... (igual que antes)
+        // Configurar enlaces de acciones y modales
         document.getElementById("editUserLink").href = `user-edit.html?id=${currentClientData.id}`;
         const createUserPacBtn = document.getElementById("createUserPacLink");
-        const createNewPacForUserBtnModal = document.getElementById("createNewPacForUserBtn");
-        const managePacModalTrigger = () => { /* ... mostrar modal PAC ... */ };
-        if (createUserPacBtn) createUserPacBtn.addEventListener('click', managePacModalTrigger);
-        if (createNewPacForUserBtnModal) createNewPacForUserBtnModal.addEventListener('click', managePacModalTrigger);
+        const createNewPacForUserBtn = document.getElementById("createNewPacForUserBtn");
+        if (createUserPacBtn) createUserPacBtn.href = `pac-create.html?id=${currentClientData.id}`;
+        if (createNewPacForUserBtn) createNewPacForUserBtn.href = `pac-create.html?id=${currentClientData.id}`;
         const deleteUserLink = document.getElementById("deleteUserLink");
         if (deleteUserLink) { /* ... set attributes ... */ }
 
