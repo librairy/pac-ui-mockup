@@ -123,7 +123,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="users.html">
+        <a class="nav-link" href="customers.html">
           <i class="fas fa-users"></i>
           <span class="link-text">Clientes</span>
         </a>
@@ -172,12 +172,10 @@
                 <div class="card-body">
                   <div id="clientSelectionArea">
                     <div class="mb-3" id="existingClientInfo" style="display: none;">
-                      <h5>Cliente Seleccionado:</h5>
+                      <h5 class="fw-bold ">Cliente Seleccionado:</h5>
                       <div class="client-info-display">
-                        <p class="mb-1"><strong>Nombre:</strong> <span id="selectedClientName"
-                            class="fw-semibold"></span></p>
-                        <p class="mb-0"><strong>NIF/CIF:</strong> <span id="selectedClientNif"
-                            class="fw-semibold"></span></p>
+                        <span id="selectedClientName"></span>
+                        <span id="selectedClientNif" class="text-muted"></span>
                       </div>
                       <input type="hidden" id="selectedClientId" name="clienteId">
                       <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="changeClientBtn"><i
@@ -190,8 +188,8 @@
                         <div class="input-group">
                           <input type="text" class="form-control" id="searchClientInput"
                             placeholder="Buscar por nombre, NIF...">
-                          <button class="btn btn-outline-secondary" type="button" id="searchClientBtn"><i
-                              class="fas fa-search"></i></button>
+                          <button class="btn btn-outline-secondary" type="button" id="searchClientBtn"
+                            style="border-color: rgb(219, 225, 231) !important;"><i class="fas fa-search"></i></button>
                         </div>
                         <div id="clientSearchResults" class="list-group mt-2 border rounded"
                           style="max-height: 150px; overflow-y:auto;">
@@ -206,7 +204,7 @@
                         <button class="btn btn-primary w-100" type="button" data-bs-toggle="collapse"
                           data-bs-target="#newClientFormCollapse" aria-expanded="false"
                           aria-controls="newClientFormCollapse" id="toggleNewClientFormBtn">
-                          <i class="fas fa-user-plus me-2"></i>Registrar Nuevo Cliente Directamente
+                          <i class="fas fa-user-plus me-2"></i>Registrar Nuevo Cliente
                         </button>
                         <div class="collapse mt-3" id="newClientFormCollapse">
                           <div class="new-client-form-section">
@@ -244,7 +242,7 @@
                               <input class="form-check-input" type="checkbox" id="getClientDataFromDocs"
                                 name="getClientDataFromDocs">
                               <label class="form-check-label small" for="getClientDataFromDocs">
-                                Intentar obtener/verificar datos del cliente a partir de los documentos adjuntos para la
+                                Intentar obtener datos del cliente a partir de los documentos adjuntos para la
                                 PAC
                               </label>
                             </div>
@@ -278,11 +276,11 @@
                     <div class="col-md-8 mb-3">
                       <label for="pacAlias" class="form-label">Alias/Referencia Interna PAC</label>
                       <input type="text" class="form-control" id="pacAlias" name="aliasPac"
-                        placeholder="Ej: Trigo Finca Grande 2025">
+                        placeholder="Ej: PAC202X-001">
                     </div>
                   </div>
                   <div class="mb-3">
-                    <label for="pacInitialNotes" class="form-label">Notas Iniciales / Descripción Breve</label>
+                    <label for="pacInitialNotes" class="form-label">Descripción Breve</label>
                     <textarea class="form-control" id="pacInitialNotes" name="notasIniciales" rows="3"
                       placeholder="Cualquier detalle relevante para esta solicitud..."></textarea>
                   </div>
@@ -367,7 +365,7 @@
       if (!campaignSelect) return;
       const currentYear = new Date().getFullYear();
       const years = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2];
-      campaignSelect.innerHTML = '<option selected disabled value="">Selecciona...</option>'; // Placeholder
+      campaignSelect.innerHTML = '<option selected disabled value="">Selecciona...</option>';
       years.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
@@ -381,9 +379,13 @@
       const client = clientsData[clientId];
       if (client) {
         currentSelectedClientId = clientId;
-        document.getElementById('selectedClientName').textContent = client.nombreCompleto;
-        document.getElementById('selectedClientNif').textContent = client.nifCif;
-        document.getElementById('selectedClientId').value = client.id;
+        if (!client.fromDocs) {
+          document.getElementById('selectedClientName').textContent = client.nombreCompleto;
+          document.getElementById('selectedClientNif').textContent = "(" + client.nifCif + ")";
+        } else {
+          document.getElementById('selectedClientName').textContent = "Se obtendrán sus datos de documentos";
+          document.getElementById('selectedClientNif').textContent = "";
+        }
         document.getElementById('existingClientInfo').style.display = 'block';
         document.getElementById('findOrCreateClientSection').style.display = 'none'; // Ocultar la búsqueda/creación
         document.getElementById('clientSearchResults').innerHTML = '';
@@ -512,31 +514,46 @@
       const newClientFormCollapseEl = document.getElementById('newClientFormCollapse');
       const newClientNameInput = document.getElementById('newClientName');
       const newClientNifInput = document.getElementById('newClientNif');
+      const newClientEmailInput = document.getElementById('newClientEmail');
+      const newClientPhoneInput = document.getElementById('newClientPhone');
+      const getFromDocs = document.getElementById('getClientDataFromDocs');
 
-      if (saveNewClientBtn && newClientFormCollapseEl && newClientNameInput && newClientNifInput) {
+      if (getFromDocs) {
+        getFromDocs.addEventListener('change', function () {
+          const isChecked = this.checked;
+          newClientNameInput.disabled = isChecked;
+          newClientNifInput.disabled = isChecked;
+          newClientEmailInput.disabled = isChecked;
+          newClientPhoneInput.disabled = isChecked;
+        });
+      }
+
+
+      if (saveNewClientBtn) {
         saveNewClientBtn.addEventListener('click', function () {
           const name = newClientNameInput.value.trim();
           const nif = newClientNifInput.value.trim();
-          const email = document.getElementById('newClientEmail').value.trim();
-          const phone = document.getElementById('newClientPhone').value.trim();
-          const getFromDocs = document.getElementById('getClientDataFromDocs').checked;
+          const email = newClientEmailInput.value.trim();
+          const phone = newClientPhoneInput.value.trim();
 
           let isValid = true;
-          if (!name) {
-            newClientNameInput.classList.add('is-invalid');
-            isValid = false;
-          } else { newClientNameInput.classList.remove('is-invalid'); }
-          if (!nif) { // Añadir más validaciones de NIF si es necesario
-            newClientNifInput.classList.add('is-invalid');
-            isValid = false;
-          } else { newClientNifInput.classList.remove('is-invalid'); }
+          if (!getFromDocs.checked) {
+            if (!name) {
+              newClientNameInput.classList.add('is-invalid');
+              isValid = false;
+            } else { newClientNameInput.classList.remove('is-invalid'); }
+            if (!nif) {
+              newClientNifInput.classList.add('is-invalid');
+              isValid = false;
+            } else { newClientNifInput.classList.remove('is-invalid'); }
+          }
 
           if (!isValid) return;
 
           const newClientId = `USR${Date.now().toString().slice(-4)}`;
           clientsData[newClientId] = {
             id: newClientId, nombreCompleto: name, nifCif: nif, email: email, telefono: phone,
-            estado: "Potencial", documentos: [], pacs: []
+            estado: "Potencial", documentos: [], pacs: [], fromDocs: getFromDocs.checked
           };
           console.log("Nuevo cliente creado (simulación):", clientsData[newClientId]);
           displayClientInfo(newClientId);
@@ -547,18 +564,12 @@
           newClientNameInput.value = ''; newClientNifInput.value = '';
           document.getElementById('newClientEmail').value = ''; document.getElementById('newClientPhone').value = '';
           document.getElementById('getClientDataFromDocs').checked = false;
-
-          alert(`Cliente "${name}" creado y seleccionado.`);
-
-          if (getFromDocs && pacInitialSelectedFiles.length > 0) {
-            alert("Simulación: Se intentaría extraer datos del cliente de los documentos adjuntos.");
-          }
         });
       }
 
-      const pacDropZoneElement = document.getElementById("pacInitialDropZone");
-      const pacInputElement = document.getElementById("pacInitialFilesInput");
-      const pacPreviewContainer = document.getElementById("pacInitialFilesPreview");
+      const pacDropZoneElement = document.getElementById("dropZone");
+      const pacInputElement = document.getElementById("fileInput");
+      const pacPreviewContainer = document.getElementById("userDocumentList");
 
       if (pacDropZoneElement && pacInputElement && pacPreviewContainer) {
         pacDropZoneElement.addEventListener("click", (e) => pacInputElement.click());
@@ -589,7 +600,7 @@
       function renderPacFilesPreview() {
         pacPreviewContainer.innerHTML = "";
         if (pacInitialSelectedFiles.length === 0) {
-          pacPreviewContainer.innerHTML = '<p class="text-muted small fst-italic m-0">Ningún archivo seleccionado para la PAC.</p>';
+          pacPreviewContainer.innerHTML = '<p class="text-muted small fst-italic p-2 pb-3 text-center">Ningún archivo seleccionado para la PAC.</p>';
           return;
         }
         pacInitialSelectedFiles.forEach((file, index) => {
