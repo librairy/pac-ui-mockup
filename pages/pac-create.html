@@ -188,8 +188,8 @@
                         <div class="input-group">
                           <input type="text" class="form-control" id="searchClientInput"
                             placeholder="Buscar por nombre, NIF...">
-                          <button class="btn btn-outline-secondary" type="button" id="searchClientBtn"
-                            style="border-color: rgb(219, 225, 231) !important;"><i class="fas fa-search"></i></button>
+                          <button class="btn btn-outline-secondary" type="button" id="searchClientBtn"><i
+                              class="fas fa-search"></i></button>
                         </div>
                         <div id="clientSearchResults" class="list-group mt-2 border rounded"
                           style="max-height: 150px; overflow-y:auto;">
@@ -333,9 +333,7 @@
                     <input type="file" id="fileInput" multiple class="hidden" />
                     <p id="dropZoneStatus" class="text-sm text-[#1abc9c] mt-2 font-medium" style="display: none;"></p>
                   </div>
-                  <ul class="list-group list-group-flush" id="userDocumentList">
-                    <li class="list-group-item text-center p-4"><em class="text-muted">No hay documentos para este
-                        cliente.</em></li>
+                  <ul class="list-group list-group-flush p-3" id="userDocumentList">
                   </ul>
                 </div>
               </div>
@@ -600,7 +598,7 @@
       function renderPacFilesPreview() {
         pacPreviewContainer.innerHTML = "";
         if (pacInitialSelectedFiles.length === 0) {
-          pacPreviewContainer.innerHTML = '<p class="text-muted small fst-italic p-2 pb-3 text-center">Ningún archivo seleccionado para la PAC.</p>';
+          pacPreviewContainer.innerHTML = '<p class="text-muted small fst-italic text-center">Ningún archivo seleccionado para la PAC.</p>';
           return;
         }
         pacInitialSelectedFiles.forEach((file, index) => {

@@ -671,6 +671,10 @@ h1.h3,
   box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.25); /* Sombra de enfoque */
 }
 
+.input-group .btn-outline-secondary {
+  border-color: rgb(219, 225, 231) !important;
+}
+
 /* Selector de Año */
 .year-select {
   border: 1px solid #ced4da;

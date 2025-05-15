@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Nuevo Cliente - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"
+    defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .file-preview-container {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      font-size: 0.875em;
+    }
+
+    .file-preview-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      background-color: #e9ecef;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .file-preview-item .file-icon {
+      margin-right: 0.5rem;
+      color: #495057;
+    }
+
+    .file-preview-item .file-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+      margin-right: 0.5rem;
+    }
+
+    .file-preview-item .file-size {
+      color: #6c757d;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .file-preview-item .remove-file-btn {
+      color: #dc3545;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+
+    .password-peek {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="sidebar">
+    <div class="logo-section d-flex align-items-center justify-content-center">
+      <img src="../img/laiw_color.png" alt="LAIW Logo" />
+    </div>
+    <ul class="nav flex-column flex-grow-1">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-home"></i><span class="link-text">Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="pac-list.html">
+          <i class="fas fa-file-alt"></i><span class="link-text">PAC</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="activity.html">
+          <i class="fas fa-chart-line"></i><span class="link-text">Actividad</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="users.html"> <i class="fas fa-users"></i><span
+            class="link-text">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="chatbot.html">
+          <i class="fas fa-robot"></i><span class="link-text">Asistente</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav flex-column mt-auto mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-cog"></i><span class="link-text">Configuración</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <nav class="top-nav">
+      <div class="d-flex align-items-center me-auto">
+        <a href="users.html" class="text-decoration-none d-flex align-items-center text-muted me-3"
+          title="Volver a Lista de Clientes">
+          <i class="fas fa-arrow-left fs-5"></i>
+        </a>
+        <span class="navbar-brand">Crear Nuevo Cliente</span>
+      </div>
+      <div class="nav-icons d-flex align-items-center">
+        <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
+        <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
+      </div>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <form id="createCustomerForm" class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-user-edit me-2"></i>Información Principal del Cliente</div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8 mb-3">
+                      <label for="customerName" class="form-label">Nombre Completo / Razón Social <span
+                          class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="customerName" name="nombreCompleto" required>
+                      <div class="invalid-feedback">El nombre es obligatorio.</div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label for="customerNifCif" class="form-label">NIF/CIF <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="customerNifCif" name="nifCif" maxlength="9" required>
+                      <div class="invalid-feedback">El NIF/CIF es obligatorio y debe ser válido.</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="customerEmail" class="form-label">Email de Contacto</label>
+                      <input type="email" class="form-control" id="customerEmail" name="email">
+                      <div class="invalid-feedback">Introduce un email válido.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="customerPhone" class="form-label">Teléfono de Contacto</label>
+                      <input type="tel" class="form-control" id="customerPhone" name="telefono">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="customerType" class="form-label">Tipo de Cliente</label>
+                    <select class="form-select" id="customerType" name="tipoCliente">
+                      <option value="" disabled selected>Selecciona un tipo...</option>
+                      <option value="agricultor_individual">Agricultor Individual</option>
+                      <option value="sociedad_limitada">Sociedad Limitada (S.L.)</option>
+                      <option value="sociedad_anonima">Sociedad Anónima (S.A.)</option>
+                      <option value="cooperativa">Cooperativa</option>
+                      <option value="comunidad_bienes">Comunidad de Bienes (C.B.)</option>
+                      <option value="otro">Otro</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="customerDescription" class="form-label">Descripción / Notas Adicionales</label>
+                    <textarea class="form-control" id="customerDescription" name="descripcion" rows="3"
+                      placeholder="Breve perfil del cliente, tipo de explotación, etc."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-map-marked-alt me-2"></i>Información de Dirección</div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="customerAddress" class="form-label">Dirección (Calle, Número, Puerta, etc.)</label>
+                    <input type="text" class="form-control" id="customerAddress" name="direccion">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="customerCity" class="form-label">Localidad</label>
+                      <input type="text" class="form-control" id="customerCity" name="localidad">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="customerProvince" class="form-label">Provincia</label>
+                      <input type="text" class="form-control" id="customerProvince" name="provincia">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="customerZipCode" class="form-label">Código Postal</label>
+                      <input type="text" class="form-control" id="customerZipCode" name="codigoPostal" maxlength="5">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="customerCountry" class="form-label">País</label>
+                      <input type="text" class="form-control" id="customerCountry" name="pais" value="España" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-key me-2"></i>Credenciales de Acceso SGA (Opcional)</div>
+                <div class="card-body">
+                  <p class="small text-muted">Guarda aquí de forma segura las credenciales del cliente para acceder a la
+                    plataforma SGA y agilizar trámites.</p>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="sgaUsername" class="form-label">Usuario SGA</label>
+                      <input type="text" class="form-control" id="sgaUsername" name="sgaUsername" autocomplete="off">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="sgaPassword" class="form-label">Contraseña SGA</label>
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="sgaPassword" name="sgaPassword"
+                          autocomplete="new-password">
+                        <button class="btn btn-outline-secondary password-peek" type="button" id="toggleSgaPassword"><i
+                            class="fas fa-eye"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-folder-open me-2"></i>Documentos del Cliente</div>
+                <div class="card-body p-0">
+                  <div id="dropZone"
+                    class="border-2 border-dashed border-gray-300 rounded-md p-8 text-center my-4 mx-3 cursor-pointer hover:border-[#1abc9c] hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                    <p class="text-gray-600">Arrastra y suelta archivos aquí o haz clic para seleccionarlos.</p>
+                    <input type="file" id="fileInput" multiple class="hidden" />
+                    <p id="dropZoneStatus" class="text-sm text-[#1abc9c] mt-2 font-medium" style="display: none;"></p>
+                  </div>
+                  <ul class="list-group list-group-flush p-3 text-center" id="customerFilesPreview">
+                  </ul>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg" id="saveCustomerBtn"><i
+                    class="fas fa-save me-2"></i>Guardar Cliente</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script>
+    let customerSelectedFiles = []; // Para almacenar los archivos seleccionados para el cliente
+
+    function getFileIconClass(fileName) {
+      if (!fileName) return 'fas fa-file';
+      const extension = fileName.split('.').pop().toLowerCase();
+      switch (extension) {
+        case 'pdf': return 'fas fa-file-pdf text-danger';
+        case 'doc': case 'docx': return 'fas fa-file-word text-primary';
+        case 'xls': case 'xlsx': return 'fas fa-file-excel text-success';
+        case 'zip': case 'rar': return 'fas fa-file-archive text-secondary';
+        case 'jpg': case 'jpeg': case 'png': case 'gif': return 'fas fa-file-image text-info';
+        default: return 'fas fa-file text-secondary';
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const customerDropZoneElement = document.getElementById("dropZone");
+      const customerInputElement = document.getElementById("fileInput");
+      const customerPreviewContainer = document.getElementById("customerFilesPreview");
+
+      if (customerDropZoneElement && customerInputElement && customerPreviewContainer) {
+        customerDropZoneElement.addEventListener("click", (e) => customerInputElement.click());
+        customerInputElement.addEventListener("change", (e) => handleCustomerFiles(e.target.files));
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          customerDropZoneElement.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => customerDropZoneElement.addEventListener(eventName, () => customerDropZoneElement.classList.add("drop-zone--over"), false));
+        ['dragleave', 'drop'].forEach(eventName => customerDropZoneElement.addEventListener(eventName, () => customerDropZoneElement.classList.remove("drop-zone--over"), false));
+        customerDropZoneElement.addEventListener("drop", (e) => {
+          preventDefaults(e);
+          handleCustomerFiles(e.dataTransfer.files);
+        }, false);
+      }
+
+      function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+      function handleCustomerFiles(files) {
+        for (const file of files) {
+          if (!customerSelectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+            customerSelectedFiles.push(file);
+          }
+        }
+        renderCustomerFilesPreview();
+      }
+
+      function renderCustomerFilesPreview() {
+        customerPreviewContainer.innerHTML = "";
+        if (customerSelectedFiles.length === 0) {
+          customerPreviewContainer.innerHTML = '<p class="text-muted small fst-italic m-0">Ningún documento adjunto.</p>';
+          return;
+        }
+        customerSelectedFiles.forEach((file, index) => {
+          const fileSize = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB";
+          const iconClass = getFileIconClass(file.name);
+          const itemHTML = `
+                    <div class="file-preview-item" data-file-index="${index}">
+                        <i class="${iconClass} file-icon"></i>
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size d-none d-sm-inline">${fileSize}</span>
+                        <button type="button" class="remove-file-btn" title="Quitar archivo">&times;</button>
+                    </div>`;
+          customerPreviewContainer.insertAdjacentHTML('beforeend', itemHTML);
+        });
+        customerPreviewContainer.querySelectorAll('.remove-file-btn').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const itemElement = this.closest('.file-preview-item');
+            const fileIndexToRemove = parseInt(itemElement.getAttribute('data-file-index'));
+            customerSelectedFiles.splice(fileIndexToRemove, 1);
+            renderCustomerFilesPreview();
+          });
+        });
+      }
+      renderCustomerFilesPreview(); // Llamada inicial
+
+      // Toggle visibilidad contraseña SGA
+      const toggleSgaPassword = document.getElementById('toggleSgaPassword');
+      if (toggleSgaPassword) {
+        toggleSgaPassword.addEventListener('click', function () {
+          const passwordInput = document.getElementById('sgaPassword');
+          const icon = this.querySelector('i');
+          if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+          } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+          }
+        });
+      }
+
+      // Bootstrap validation y submit
+      const form = document.getElementById('createCustomerForm');
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+
+        if (form.checkValidity()) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          customerSelectedFiles.forEach((file, index) => {
+            formData.append(`customerFile_${index}`, file, file.name);
+          });
+
+          const data = Object.fromEntries(formData.entries());
+          delete data.customerFilesInput; // input de archivos no es necesario en el data final
+          data.documentFileNames = customerSelectedFiles.map(f => f.name); // Solo guardamos nombres para simulación
+
+          console.log("Formulario de Cliente a enviar:", data);
+          // window.location.href = `user-details.html?id=NUEVO_ID_CLIENTE`;
+          // O a la lista:
+          // window.location.href = 'users.html'; 
+        }
+      }, false);
+    });
+  </script>
+</body>
+
+</html>
