@@ -1277,8 +1277,73 @@
               <div id="section-documentacion" class="form-section">
                 <fieldset>
                   <legend>Documentación</legend>
-                  <p>Contenido de la sección Documentación...</p>
+                  <div class="space-y-3" id="documentListContainer">
+                  </div>
                 </fieldset>
+
+                <div class="modal fade" id="uploadDocumentModal" tabindex="-1"
+                  aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="uploadDocumentModalLabel">Subir Documento: <span
+                            id="documentNameToUpload"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form id="uploadDocumentForm">
+                          <input type="hidden" id="documentIdentifier" name="documentIdentifier">
+                          <div class="mb-3">
+                            <label for="documentDescription" class="form-label">Descripción del Documento</label>
+                            <textarea class="form-control" id="documentDescription" name="documentDescription" rows="2"
+                              placeholder="Descripción breve del contenido o propósito del archivo..."></textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label">Archivo</label>
+                            <div id="documentDropZone"
+                              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition-colors">
+                              <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                              <p class="text-gray-600 small">Arrastra y suelta el archivo aquí o haz clic para
+                                seleccionarlo.</p>
+                              <input type="file" id="documentFileInput" class="hidden" />
+                              <p id="documentDropZoneStatus" class="text-sm text-blue-600 mt-1 font-medium"
+                                style="display: none;"></p>
+                            </div>
+                            <div id="documentFilePreviewContainer" class="mt-2">
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="documentObservations" class="form-label">Observaciones Adicionales</label>
+                            <textarea class="form-control" id="documentObservations" name="documentObservations"
+                              rows="3" placeholder="Cualquier observación relevante sobre el documento..."></textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label">Origen del Documento</label>
+                            <div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="documentOrigin" id="originCitizen"
+                                  value="ciudadano" checked>
+                                <label class="form-check-label" for="originCitizen">Ciudadano</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="documentOrigin"
+                                  id="originAdministration" value="administracion">
+                                <label class="form-check-label" for="originAdministration">Administración</label>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="saveDocumentButton">Guardar Documento</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div id="section-derechos" class="form-section">
@@ -1958,6 +2023,889 @@
         pacForm.addEventListener("submit", function (event) {
           event.preventDefault();
           alert("Formulario guardado (simulación).");
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const documentsInfo = [
+        {
+          "document_name": "Alta Terceros",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a una Entidad Colaboradora para el acceso a los datos de sus solicitudes de la campaña anterior, y en su caso, para la firma y/o entrega en el Registro.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a Funcionario Público para cumplimentación de trámite telemático",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a un solicitante para recuperar la solicitud y tipo de otro solicitante en caso de Cambio de titularidad",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a un solicitante para recuperar los datos de la solicitud del mismo tipo de la campaña anterior de otro solicitante en caso de Subrogaciones/Cesiones de compromiso de PDR",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "NIF del solicitante",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "CIF del solicitante",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "CIF/NIF del representante legal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Acreditación del representante legal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "CIF/NIF del tercero en caso de que se haya autorizado la firma a dicho tercero",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de estar al corriente de las obligaciones tributarias",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Declaración informativa anual de entidades en régimen de atribución de rentas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Certificado de estar al corriente en el pago en la Seguridad Social",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Declaración del Impuesto sobre la Renta de las Personas Físicas del solicitante y del cónyuge, en caso de declaración conjunta. Si no se ha hecho nunca declaración de renta, aportar el impreso de alta censal (Mod. 036 ó 037).",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Modelo 190 de la Agencia Tributaria último año",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia del contrato de suministro con la industria azucarera",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado oficial sobre rendimiento lechero vacuno",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de que realiza labores de mantenimiento de pastos en la superficie de pastos declarada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento de autorización en caso de que la solicitud la tenga que firmar un tercero",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Facturas de venta de la producción agraria",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que acredite poseer un nivel de capacitación agraria suficiente, acorde al exigido en los programas de DR de su C.A, mediante formación lectiva y/o experiencia profesional",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Copia de la sentencia o del acto administrativo firme.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la fecha de alta en la seguridad social, correspondiente a la actividad agraria que determinó su incorporación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Análisis físico-químico de los suelos de las parcelas objeto de ayuda",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Libros de registro de explotación establecidos en base a la normativa sectorial",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la inscripción de los animales objeto de la ayuda en el Libro Oficial de la raza.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de disponer de asesoramiento técnico para líneas de ayudas de agroambiente y clima y/o apicultura Ecológica",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Modelo 50 de tasas en inscripción de operadores, titulares de fincas Agropecuarias de producción ecológica",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la Tesorería Territorial de la Seguridad Social (Vida laboral)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado empadronamiento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de retenciones e ingresos a cuenta de la sociedad",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contratos de trabajo",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento acreditativo de arrendamiento, aparcería o asignación de superficies",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "TC-2/8",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Entidades asociadas: Documentación acreditativa del objeto social (Estatutos...)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de la escritura pública de constitución de la sociedad o transformación de la anterior",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique la pertenencia de los socios al cebadero comunitario",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Etiquetas de forestación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la pertenencia un organismo técnico competente debidamente reconocido que registra y lleva el Libro Genealógico o Libro Zootécnico de la raza.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado oficial sobre rendimiento lechero ovino/caprino",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Otra documentación no definida en el reglamento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia del contrato suscrito con la industria que va a realizar la transformación (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización de la AEMPS (Cáñamo)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato con la industria transformadora (Cáñamo)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Etiquetas de envases de semilla del cáñamo",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Agroambientales - Compromiso en 2 Anualidades",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Agroambientales - Comunicación Rotación Total.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificación en Producción Integrada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Fotografías georreferenciadas",
+          "can_be_attached_to_form": false,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Informe de obligaciones de condicionalidad",
+          "can_be_attached_to_form": false,
+          "can_be_uploaded": false,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique la aplicación de la gestión sostenible de insumos",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias explotaciones ganaderas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias empresas fabricantes de productos para la alimentación animal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Compromiso de entrega de alfalfa a figura asociativa",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias empresas deshidratadoras de forrajes",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable de la empresa deshidratadora de forrajes",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la empresa productora de semilla certificada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la figura asociativa (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato suscrito con la industria transformadora (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la figura asociativa (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable del solicitante respecto al cumplimiento de la gestión y fertilización del suelo y/o gestión de plagas y malas hierbas conforme al REGLAMENTO (UE) 2018/848 DEL PARLAMENTO EUROPEO Y DEL CONSEJO de 30 de mayo de 2018 sobre producción ecológica y etiquetado de los productos ecológicos gestión",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado Asociación de cría de razas autóctonas en peligro de extinción",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Justificación exceso de rotación en Producción Integrada de Tabaco",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Acuerdo entre el titular y el joven agricultor según el cual este último compartirá las responsabilidades gerenciales, los resultados económicos de la explotación, los riesgos inherentes a su gestión y las inversiones que se realicen, en una proporción mínima del 50%",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento mediante el cual el titular transmita al joven agricultor, al menos, un tercio de su propiedad en los elementos que constituyen su explotación, uso y aprovechamiento en la que continuarán integrados.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Informe de la vida laboral",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Plan empresarial",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de haber iniciado el proceso de instalación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización del socio a la Administración para consultar sus datos de la SS",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización del socio a la Administración para consultar sus datos de la AEAT",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado emitido por técnico competente sobre cumplimiento de los requisitos de la Intervención Apicultura para la Biodiversidad y con el Real Decreto 209/2002 de 22 de febrero de 2002, sobre la Ordenación de las explotaciones apícolas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de los Dni de todos los herederos en vigor",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique el cumplimiento de los requisitos de Joven Agricultor o Resolución del servicio competente",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de la Resolución judicial firme que declare su disolución",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Fallecimiento: Certificado de defunción o denuncia de la desaparición, declaración de ausencia o declaración de fallecimiento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Testamento y declaración de herederos que demuestre el derecho de uso de la explotación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación de acuerdo de reparto entre los herederos que permita identificar el reparto de la explotación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento de adjudicación o concesión para la realización del aprovechamiento de rastrojeras, barbechos y restos hortofrutícolas en pastos de uso común",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Incapacidad: Certificado del centro gestor de la Seguridad Social sobre incapacidad de larga duración",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Escritura pública de la compraventa de tierras",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable de disponer en la explotación las instalaciones adecuadas para la realización de transformación de la uva",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de arrendamiento, aparcería o documento privado suscrito por el propietario que le otorgue la capacidad de uso y disfrute de su aprovechamiento, con referencia catastral, liquidado de impuesto y en vigor",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Escritura pública o documento privado liquidado de impuestos del arrendamiento de tierras",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que acredite que la parcela está a disposición y existe derecho al uso del recinto",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración Responsable de procedencia del tomate",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "NIF del socio",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización de socios a la Administración para consultar sus datos de identidad en la Policía",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Comunicaciones al Registro de Explotaciones",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable que justifica la aplicación puntual de herbicidas al tercer año de realización de la práctica de cubiertas vegetales, por imposibilidad de erradicarla por medios mecánicos o mediante ganado",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de inscripción en el Registro de Operadores de Producción Integrada de Euskadi a fecha de finalización del plazo de modificación de la solicitud de ayuda",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato firmado con un técnico asesor acreditado",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización que permite el uso de montes de utilidad pública para actividades agropecuarias",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que detalla las actuaciones anuales a realizar para gestión sostenible de pastos",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        }
+      ]
+
+      const documentListContainer = document.getElementById('documentListContainer');
+      const uploadModalElement = document.getElementById('uploadDocumentModal');
+      const uploadModal = new bootstrap.Modal(uploadModalElement);
+      const documentNameToUploadSpan = document.getElementById('documentNameToUpload');
+      const documentIdentifierInput = document.getElementById('documentIdentifier'); // Para saber qué documento se está subiendo
+
+      // --- Inicio: Lógica del Dropzone para el modal ---
+      const docDropZone = document.getElementById('documentDropZone');
+      const docFileInput = document.getElementById('documentFileInput');
+      const docPreviewContainer = document.getElementById('documentFilePreviewContainer');
+      const docDropZoneStatus = document.getElementById('documentDropZoneStatus');
+      let selectedFileForUpload = null;
+
+      if (docDropZone && docFileInput && docPreviewContainer) {
+        docDropZone.addEventListener('click', () => docFileInput.click());
+        docFileInput.addEventListener('change', (e) => handleDocFile(e.target.files[0]));
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false); // Evita que el navegador abra el archivo
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.add('border-blue-500', 'bg-gray-100'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.remove('border-blue-500', 'bg-gray-100'), false);
+        });
+
+        docDropZone.addEventListener('drop', (e) => {
+          preventDefaults(e);
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            handleDocFile(files[0]); // Solo tomamos el primer archivo para este modal
+          }
+        }, false);
+      }
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      function getFileIconClass(fileName) {
+        if (!fileName) return 'fas fa-file';
+        const extension = fileName.split('.').pop().toLowerCase();
+        switch (extension) {
+          case 'pdf': return 'fas fa-file-pdf text-danger';
+          case 'doc': case 'docx': return 'fas fa-file-word text-primary';
+          case 'xls': case 'xlsx': return 'fas fa-file-excel text-success';
+          case 'ppt': case 'pptx': return 'fas fa-file-powerpoint text-warning';
+          case 'zip': case 'rar': return 'fas fa-file-archive text-secondary';
+          case 'txt': return 'fas fa-file-alt text-muted';
+          case 'jpg': case 'jpeg': case 'png': case 'gif': return 'fas fa-file-image text-info';
+          default: return 'fas fa-file text-secondary';
+        }
+      }
+
+      function handleDocFile(file) {
+        if (!file) return;
+        selectedFileForUpload = file; // Guardamos el archivo seleccionado
+        docDropZoneStatus.textContent = `Archivo seleccionado: ${file.name}`;
+        docDropZoneStatus.style.display = 'block';
+
+        docPreviewContainer.innerHTML = ''; // Limpiar vista previa anterior
+        const fileSize = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB";
+        const iconClass = getFileIconClass(file.name);
+        const itemHTML = `
+            <div class="file-preview-item d-flex align-items-center justify-content-between p-2 bg-light border rounded mb-2">
+                <div>
+                    <i class="${iconClass} me-2"></i>
+                    <span class="file-name">${file.name}</span>
+                    <small class="text-muted ms-2">(${fileSize})</small>
+                </div>
+                <button type="button" class="btn-close btn-sm remove-doc-preview" aria-label="Quitar"></button>
+            </div>`;
+        docPreviewContainer.insertAdjacentHTML('beforeend', itemHTML);
+
+        docPreviewContainer.querySelector('.remove-doc-preview').addEventListener('click', function () {
+          selectedFileForUpload = null;
+          docFileInput.value = ''; // Resetear el input file
+          docPreviewContainer.innerHTML = '';
+          docDropZoneStatus.style.display = 'none';
+          docDropZoneStatus.textContent = '';
+        });
+      }
+      // --- Fin: Lógica del Dropzone para el modal ---
+
+      function renderDocuments() {
+        if (!documentListContainer) return;
+        documentListContainer.innerHTML = ''; // Limpiar antes de renderizar
+
+        documentsInfo.forEach((doc, index) => {
+          const canBeAttached = doc.can_be_attached_to_form;
+          const isRequired = doc.is_required;
+          const isValidated = doc.is_validated;
+          const canBeUploaded = doc.can_be_uploaded;
+
+          let attachedHtml = canBeAttached ?
+            `<span><i class="fas fa-paperclip text-secondary me-1"></i> Adjuntable</span>` :
+            `<span><i class="fas fa-ban text-muted me-1"></i> No adjuntable</span>`;
+
+          let requiredHtml = isRequired ?
+            `<span><i class="fas fa-exclamation-circle text-warning me-1"></i> Requerido</span>` :
+            `<span><i class="fas fa-info-circle text-info me-1"></i> Opcional</span>`;
+
+          let validatedHtml = isValidated ?
+            `<span><i class="fas fa-check-circle text-success me-1"></i> Validado</span>` :
+            `<span><i class="fas fa-times-circle text-danger me-1"></i> No validado</span>`;
+
+          // Botón de subida
+          let uploadButtonHtml = '';
+          if (canBeUploaded) {
+            uploadButtonHtml = `
+                    <button type="button" class="btn btn-outline-primary btn-sm open-upload-modal-btn" 
+                            title="Subir archivo para ${doc.document_name}"
+                            data-bs-toggle="modal" data-bs-target="#uploadDocumentModal"
+                            data-doc-name="${doc.document_name}"
+                            data-doc-id="doc_${index}">
+                        <i class="fas fa-upload"></i>
+                    </button>`;
+          }
+
+          const documentElement = `
+                <div class="d-flex align-items-center gap-3 border rounded-lg p-3 bg-gray-50">
+                    <div class="flex-grow-1">
+                        <strong>${doc.document_name}</strong>
+                        <div class="text-muted small mt-1">
+                            ${attachedHtml} &nbsp;|&nbsp;
+                            ${requiredHtml} &nbsp;|&nbsp;
+                            ${validatedHtml}
+                        </div>
+                    </div>
+                    ${uploadButtonHtml}
+                </div>`;
+          documentListContainer.insertAdjacentHTML('beforeend', documentElement);
+        });
+
+        // Añadir event listeners a los nuevos botones
+        document.querySelectorAll('.open-upload-modal-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const docName = this.dataset.docName;
+            const docId = this.dataset.docId; // Un identificador único si lo necesitas
+
+            documentNameToUploadSpan.textContent = docName;
+            documentIdentifierInput.value = docId; // Guardar el ID del documento en el form del modal
+
+            // Resetear el formulario del modal
+            document.getElementById('uploadDocumentForm').reset();
+            selectedFileForUpload = null;
+            docFileInput.value = '';
+            docPreviewContainer.innerHTML = '';
+            docDropZoneStatus.style.display = 'none';
+            docDropZoneStatus.textContent = '';
+
+            uploadModal.show();
+          });
+        });
+      }
+
+      // Inicializar la carga de documentos
+      if (documentsInfo.length > 0) {
+        renderDocuments();
+      } else {
+        if (documentListContainer) {
+          documentListContainer.innerHTML = '<p class="text-muted">No hay información de documentos disponible.</p>';
+        }
+      }
+
+      // Manejar el guardado del documento desde el modal
+      const saveDocumentButton = document.getElementById('saveDocumentButton');
+      if (saveDocumentButton) {
+        saveDocumentButton.addEventListener('click', function () {
+          const docId = documentIdentifierInput.value;
+          const description = document.getElementById('documentDescription').value;
+          const observations = document.getElementById('documentObservations').value;
+          const origin = document.querySelector('input[name="documentOrigin"]:checked').value;
+
+          if (!selectedFileForUpload) {
+            alert('Por favor, selecciona un archivo para subir.');
+            return;
+          }
+
+          // Aquí iría tu lógica para subir el archivo (selectedFileForUpload) y los datos del formulario
+          console.log("Guardando documento para:", docId);
+          console.log("Descripción:", description);
+          console.log("Observaciones:", observations);
+          console.log("Origen:", origin);
+          console.log("Archivo:", selectedFileForUpload.name, selectedFileForUpload.size, selectedFileForUpload.type);
+
+          // Simulación de subida exitosa:
+          alert(`Documento '${selectedFileForUpload.name}' para '${documentNameToUploadSpan.textContent}' guardado (simulación).`);
+
+          // Cambiar el botón de subida del documento
+          const buttonElement = document.querySelector(`[data-doc-id="${docId}"]`);
+          if (buttonElement) {
+            buttonElement.innerHTML = `
+                <i class="fas fa-check me-2" title="Subido"></i>Subido`;
+            buttonElement.classList.remove('btn-outline-primary');
+            buttonElement.classList.add('btn-outline-secondary');
+          }
+          uploadModal.hide();
+          // Resetear el formulario y el archivo seleccionado para la próxima vez
+          document.getElementById('uploadDocumentForm').reset();
+          selectedFileForUpload = null;
+          docFileInput.value = '';
+          docPreviewContainer.innerHTML = '';
+          docDropZoneStatus.style.display = 'none';
         });
       }
     });
