@@ -676,7 +676,7 @@ h1.h3,
 }
 
 .ai-button {
-  border: 2px solid transparent;
+  border: 3px solid transparent;
 
   background-image: linear-gradient(white, white),
     linear-gradient(to right, #28e1bd, #7e5cd4, #d34c8b, #e79d36);
@@ -721,6 +721,24 @@ h1.h3,
 .ai-button:focus {
   outline: none;
   box-shadow: 0 0 0 2px #2c3e5067;
+}
+
+.ai-text {
+  color: linear-gradient(to right, #28e1bd, #7e5cd4, #d34c8b, #e79d36);
+  background-clip: text;
+}
+
+input[type="text"]:focus {
+  box-shadow: #1abc9c 0 0 0 2px;
+}
+/* Cuando se haga focus en un input de texto, aplicar box-shadow al input-group padre del input */
+.input-group:focus-within {
+  box-shadow: #1abc9c 0 0 0 2px;
+}
+
+.input-group input[type="text"]:focus {
+  box-shadow: none; /* Eliminar el box-shadow del input */
+  border: none; /* Eliminar el borde del input */
 }
 
 /* Selector de Año */
