@@ -675,6 +675,54 @@ h1.h3,
   border-color: rgb(219, 225, 231) !important;
 }
 
+.ai-button {
+  border: 2px solid transparent;
+
+  background-image: linear-gradient(white, white),
+    linear-gradient(to right, #28e1bd, #7e5cd4, #d34c8b, #e79d36);
+
+  background-origin: border-box;
+
+  background-clip: padding-box, border-box;
+
+  color: #34495e;
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+
+  transition: color 0.3s ease, box-shadow 0.3s ease;
+
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+}
+
+.ai-button:hover {
+  background-image: linear-gradient(white, white),
+    linear-gradient(to left, #28e1bd, #7e5cd4, #d34c8b, #e79d36);
+}
+
+.ai-button:active {
+  background-image: linear-gradient(
+    to right,
+    #28e1bd,
+    #7e5cd4,
+    #d34c8b,
+    #e79d36
+  );
+
+  background-clip: border-box;
+
+  color: white;
+  border-color: transparent;
+}
+
+.ai-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #2c3e5067;
+}
+
 /* Selector de Año */
 .year-select {
   border: 1px solid #ced4da;

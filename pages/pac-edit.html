@@ -137,7 +137,6 @@
       color: rgb(13, 202, 240) !important;
     }
 
-    /*Tipico boton de generar por IA, con anillo con degradado. Al pulsar, todo el boton tiene ese degradado    */
 
     .ai-button-background {
       background: linear-gradient(to right, #28E1BD, #7e5cd4, #d34c8b, #e79d36);
@@ -207,6 +206,15 @@
       padding-left: 1rem;
       /* pl-4 */
     }
+
+    .show {
+      visibility: visible !important;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: #1abc9c;
+      color: #fff !important;
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -241,6 +249,12 @@
         <a class="nav-link" href="customers.html">
           <i class="fas fa-users"></i>
           <span class="link-text">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="documentation.html">
+          <i class="fas fa-book"></i>
+          <span class="link-text">Documentación</span>
         </a>
       </li>
       <li class="nav-item">
@@ -1291,51 +1305,112 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <form id="uploadDocumentForm">
-                          <input type="hidden" id="documentIdentifier" name="documentIdentifier">
-                          <div class="mb-3">
-                            <label for="documentDescription" class="form-label">Descripción del Documento</label>
-                            <textarea class="form-control" id="documentDescription" name="documentDescription" rows="2"
-                              placeholder="Descripción breve del contenido o propósito del archivo..."></textarea>
-                          </div>
-
-                          <div class="mb-3">
-                            <label class="form-label">Archivo</label>
-                            <div id="documentDropZone"
-                              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:border-blue-500 hover:bg-gray-50 transition-colors">
-                              <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                              <p class="text-gray-600 small">Arrastra y suelta el archivo aquí o haz clic para
-                                seleccionarlo.</p>
-                              <input type="file" id="documentFileInput" class="hidden" />
-                              <p id="documentDropZoneStatus" class="text-sm text-blue-600 mt-1 font-medium"
-                                style="display: none;"></p>
-                            </div>
-                            <div id="documentFilePreviewContainer" class="mt-2">
-                            </div>
-                          </div>
-
-                          <div class="mb-3">
-                            <label for="documentObservations" class="form-label">Observaciones Adicionales</label>
-                            <textarea class="form-control" id="documentObservations" name="documentObservations"
-                              rows="3" placeholder="Cualquier observación relevante sobre el documento..."></textarea>
-                          </div>
-
-                          <div class="mb-3">
-                            <label class="form-label">Origen del Documento</label>
-                            <div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="documentOrigin" id="originCitizen"
-                                  value="ciudadano" checked>
-                                <label class="form-check-label" for="originCitizen">Ciudadano</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="documentOrigin"
-                                  id="originAdministration" value="administracion">
-                                <label class="form-check-label" for="originAdministration">Administración</label>
+                        <div class="accordion" id="uploadDocumentAccordion">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingExistingDocs">
+                              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseExistingDocs" aria-expanded="true"
+                                aria-controls="collapseExistingDocs">
+                                Seleccionar Documentos Existentes del Cliente
+                              </button>
+                            </h2>
+                            <div id="collapseExistingDocs" class="accordion-collapse collapse show"
+                              aria-labelledby="headingExistingDocs" data-bs-parent="#uploadDocumentAccordion">
+                              <div class="accordion-body">
+                                <div id="existingClientDocuments" class="list-group mb-3"
+                                  style="max-height: 200px; overflow-y: auto;">
+                                  <label class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox" value="dni_cliente.pdf"
+                                      name="existingDocs">
+                                    DNI Juan Perez.pdf
+                                  </label>
+                                  <label class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox" value="contrato_servicio.docx"
+                                      name="existingDocs">
+                                    Contrato Arrendamiento Finca_ElRobledal.pdf
+                                  </label>
+                                  <label class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox" value="justificante_pago.png"
+                                      name="existingDocs">
+                                    Solicitud_PAC2025_JuanPerez.pdf
+                                  </label>
+                                  <label class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <input class="form-check-input me-2" type="checkbox"
+                                      value="escrituras_propiedad.pdf" name="existingDocs">
+                                    Anexo_Ayudas_Agroambientales.pdf
+                                  </label>
+                                </div>
+                                <small class="form-text text-muted">Selecciona los documentos que deseas adjuntar desde
+                                  los archivos existentes del cliente.</small>
                               </div>
                             </div>
                           </div>
-                        </form>
+
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingUploadNew">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseUploadNew" aria-expanded="false"
+                                aria-controls="collapseUploadNew">
+                                O Subir un Nuevo Documento
+                              </button>
+                            </h2>
+                            <div id="collapseUploadNew" class="accordion-collapse collapse"
+                              aria-labelledby="headingUploadNew" data-bs-parent="#uploadDocumentAccordion">
+                              <div class="accordion-body">
+                                <form id="uploadDocumentForm">
+                                  <input type="hidden" id="documentIdentifier" name="documentIdentifier">
+                                  <div class="mb-3">
+                                    <label for="documentDescription" class="form-label">Descripción del
+                                      Documento</label>
+                                    <textarea class="form-control" id="documentDescription" name="documentDescription"
+                                      rows="2"
+                                      placeholder="Descripción breve del contenido o propósito del archivo..."></textarea>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label class="form-label">Archivo</label>
+                                    <div id="documentDropZone"
+                                      class="border-2 border-dashed border-gray-300 rounded-md p-8 text-center my-4 mx-3 cursor-pointer hover:border-[#1abc9c] hover:bg-gray-50 transition-colors">
+                                      <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                      <p class="text-gray-600 small">Arrastra y suelta el archivo aquí o haz clic para
+                                        seleccionarlo.</p>
+                                      <input type="file" id="documentFileInput" class="hidden" />
+                                      <p id="documentDropZoneStatus" class="text-sm text-[#1abc9c] mt-1 font-medium"
+                                        style="display: none;"></p>
+                                    </div>
+                                    <div id="documentFilePreviewContainer" class="mt-2">
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="documentObservations" class="form-label">Observaciones
+                                      Adicionales</label>
+                                    <textarea class="form-control" id="documentObservations" name="documentObservations"
+                                      rows="3"
+                                      placeholder="Cualquier observación relevante sobre el documento..."></textarea>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label class="form-label">Origen del Documento</label>
+                                    <div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="documentOrigin"
+                                          id="originCitizen" value="ciudadano" checked>
+                                        <label class="form-check-label" for="originCitizen">Ciudadano</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="documentOrigin"
+                                          id="originAdministration" value="administracion">
+                                        <label class="form-check-label"
+                                          for="originAdministration">Administración</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -2720,11 +2795,11 @@
         });
 
         ['dragenter', 'dragover'].forEach(eventName => {
-          docDropZone.addEventListener(eventName, () => docDropZone.classList.add('border-blue-500', 'bg-gray-100'), false);
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.add('border-[#1abc9c]', 'bg-gray-100'), false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-          docDropZone.addEventListener(eventName, () => docDropZone.classList.remove('border-blue-500', 'bg-gray-100'), false);
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.remove('border-[#1abc9c]', 'bg-gray-100'), false);
         });
 
         docDropZone.addEventListener('drop', (e) => {
@@ -2796,17 +2871,13 @@
           const isValidated = doc.is_validated;
           const canBeUploaded = doc.can_be_uploaded;
 
-          let attachedHtml = canBeAttached ?
-            `<span><i class="fas fa-paperclip text-secondary me-1"></i> Adjuntable</span>` :
-            `<span><i class="fas fa-ban text-muted me-1"></i> No adjuntable</span>`;
-
           let requiredHtml = isRequired ?
             `<span><i class="fas fa-exclamation-circle text-warning me-1"></i> Requerido</span>` :
-            `<span><i class="fas fa-info-circle text-info me-1"></i> Opcional</span>`;
+            ``;
 
           let validatedHtml = isValidated ?
-            `<span><i class="fas fa-check-circle text-success me-1"></i> Validado</span>` :
-            `<span><i class="fas fa-times-circle text-danger me-1"></i> No validado</span>`;
+            `<i class="fas fa-check-circle text-success ms-2" title="Validado"></i>` :
+            ``;
 
           // Botón de subida
           let uploadButtonHtml = '';
@@ -2824,11 +2895,10 @@
           const documentElement = `
                 <div class="d-flex align-items-center gap-3 border rounded-lg p-3 bg-gray-50">
                     <div class="flex-grow-1">
-                        <strong>${doc.document_name}</strong>
+                        ${doc.document_name}
+                        ${validatedHtml}
                         <div class="text-muted small mt-1">
-                            ${attachedHtml} &nbsp;|&nbsp;
-                            ${requiredHtml} &nbsp;|&nbsp;
-                            ${validatedHtml}
+                            ${requiredHtml}
                         </div>
                     </div>
                     ${uploadButtonHtml}
