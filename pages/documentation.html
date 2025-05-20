@@ -12,81 +12,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    /* Tus estilos existentes de styles.css y específicos de la página */
-    .document-card {
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-    .document-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .15) !important;
-    }
-
-    .document-card .badge {
-      margin-right: 0.25rem;
-    }
-
-    /* Estilos para la nueva barra de búsqueda híbrida */
-    .search-bar-container {
-      background-color: #f8f9fa;
-      padding: 1.5rem;
-      border-radius: 0.375rem;
-      margin-bottom: 1rem;
-      /* Reducido para dar espacio al contenedor de resultados */
-      position: relative;
-      /* Para el posicionamiento del desplegable */
-    }
-
-    .search-input-group {
-      border: 1px solid #dee2e6;
-      border-radius: 0.375rem;
-      display: flex;
-      /* Para alinear icono e input */
-    }
-
-    .search-input-group .form-control {
-      border-left: none;
-      /* Para que no haya doble borde con el icono */
-    }
-
-    .search-input-group .input-group-text {
-      background-color: #fff;
-      /* O el color que prefieras */
-      border-right: none;
-      /* Para que no haya doble borde con el input */
-    }
-
-    /* Estilos para los ítems dentro del desplegable */
-    #search-results-dropdown .dropdown-item {
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-    }
-
-    #search-results-dropdown .dropdown-item:hover {
-      background-color: #e9ecef;
-    }
-
-    #search-results-dropdown .dropdown-divider {
-      margin: 0.25rem 0;
-    }
-
-    /* Estilo específico para el botón de IA en el desplegable */
-    #ai-ask-option-button {
-      font-weight: 500;
-      color: #0d6efd;
-      /* Color primario de Bootstrap */
-    }
-
-    #ai-ask-option-button i {
-      margin-right: 0.5rem;
-    }
-
-    #search-results-dropdown:not(.show) {
-      display: none;
-    }
-  </style>
 </head>
 
 <body>
@@ -95,58 +20,28 @@
       <img src="../img/laiw_color.png" alt="LAIW Logo" />
     </div>
     <ul class="nav flex-column flex-grow-1">
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-home"></i>
-          <span class="link-text">Inicio</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pac-list.html">
-          <i class="fas fa-file-alt"></i>
-          <span class="link-text">PACs</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="activity.html">
-          <i class="fas fa-chart-line"></i>
-          <span class="link-text">Actividad</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="customers.html">
-          <i class="fas fa-users"></i>
-          <span class="link-text">Clientes</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="documentation.html">
-          <i class="fas fa-book"></i>
-          <span class="link-text">Documentación</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="chatbot.html">
-          <i class="fas fa-robot"></i>
-          <span class="link-text">Asistente</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span
+            class="link-text">Inicio</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="pac-list.html"><i class="fas fa-file-alt"></i><span
+            class="link-text">PACs</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="activity.html"><i class="fas fa-chart-line"></i><span
+            class="link-text">Actividad</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="customers.html"><i class="fas fa-users"></i><span
+            class="link-text">Clientes</span></a></li>
+      <li class="nav-item"><a class="nav-link active" aria-current="page" href="documentation.html"><i
+            class="fas fa-book"></i><span class="link-text">Documentación</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="chatbot.html"><i class="fas fa-robot"></i><span
+            class="link-text">Asistente</span></a></li>
     </ul>
     <ul class="nav flex-column mt-auto mb-3">
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-cog"></i>
-          <span class="link-text">Configuración</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-cog"></i><span
+            class="link-text">Configuración</span></a></li>
     </ul>
   </nav>
 
   <div class="main-content">
     <nav class="top-nav">
-      <div class="d-flex align-items-center me-auto">
-        <span class="navbar-brand">Documentación Normativa PAC</span>
-      </div>
+      <div class="d-flex align-items-center me-auto"><span class="navbar-brand">Documentación Normativa PAC</span></div>
       <div class="nav-icons d-flex align-items-center">
         <a href="#" title="Notificaciones"><i class="fas fa-bell"></i></a>
         <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
@@ -175,6 +70,29 @@
 
         <div class="row mb-3">
           <div class="col-12">
+            <div id="ai-response-area" class="d-none">
+              <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Respuesta de la IA</h5>
+                  <button type="button" class="btn-close" aria-label="Cerrar respuesta IA"
+                    id="close-ai-response"></button>
+                </div>
+                <div class="card-body">
+                  <div id="ai-thinking-indicator" class="text-center my-3 d-none">
+                    <div class="spinner-border text-[#1abc9c]" role="status">
+                      <span class="visually-hidden">Consultando...</span>
+                    </div>
+                    <p class="mt-2 text-muted small">Consultando a la IA, un momento por favor...</p>
+                  </div>
+                  <div id="ai-response-text" class="mb-0"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
             <div id="no-documents-initial" class="alert alert-info d-none">No hay documentos para mostrar.</div>
           </div>
         </div>
@@ -189,18 +107,16 @@
               <div class="card-body">
                 <h5 class="card-title">Real Decreto 1048/2022</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Gestión y control de las intervenciones</h6>
-                <p class="card-text small">
-                  Este real decreto establece las disposiciones para la aplicación en España de la normativa de la Unión
-                  Europea relativa a la gestión y control de las intervenciones del Plan Estratégico de la PAC.
-                </p>
+                <p class="card-text small">Este real decreto establece las disposiciones para la aplicación en España de
+                  la normativa de la Unión Europea relativa a la gestión y control de las intervenciones del Plan
+                  Estratégico de la PAC.</p>
               </div>
               <div class="d-flex row card-footer text-muted small align-items-center">
-                <p class="col-auto mb-0 me-auto">Publicado: 30/11/2022 </p>
-                <span class="col-auto badge bg-primary">Real Decreto</span>
+                <p class="col-auto mb-0 me-auto">Publicado: 30/11/2022</p><span class="col-auto badge bg-primary">Real
+                  Decreto</span>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 mb-4 document-item" data-id="doc002" data-title="Reglamento (UE) 2021/2115"
             data-subtitle="Planes Estratégicos de la PAC"
             data-text="Establece normas sobre la ayuda a los planes estratégicos que deben elaborar los Estados miembros en el marco de la política agrícola común (planes estratégicos de la PAC).">
@@ -208,18 +124,15 @@
               <div class="card-body">
                 <h5 class="card-title">Reglamento (UE) 2021/2115</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Planes Estratégicos de la PAC</h6>
-                <p class="card-text small">
-                  Establece normas sobre la ayuda a los planes estratégicos que deben elaborar los Estados miembros en
-                  el marco de la política agrícola común (planes estratégicos de la PAC).
-                </p>
+                <p class="card-text small">Establece normas sobre la ayuda a los planes estratégicos que deben elaborar
+                  los Estados miembros en el marco de la política agrícola común (planes estratégicos de la PAC).</p>
               </div>
               <div class="d-flex row card-footer text-muted small align-items-center">
-                <p class="col-auto mb-0 me-auto">Publicado: 02/12/2021 </p>
-                <span class="col-auto badge bg-success">Reglamento</span>
+                <p class="col-auto mb-0 me-auto">Publicado: 02/12/2021</p><span
+                  class="col-auto badge bg-success">Reglamento</span>
               </div>
             </div>
           </div>
-
           <div class="col-lg-4 col-md-6 mb-4 document-item" data-id="doc003" data-title="Guía sobre Ecorregímenes 2024"
             data-subtitle="Ayudas directas PAC"
             data-text="Documento orientativo sobre la aplicación de los ecorregímenes en el marco de las ayudas directas de la Política Agrícola Común para la campaña 2024. Incluye información sobre requisitos.">
@@ -227,14 +140,13 @@
               <div class="card-body">
                 <h5 class="card-title">Guía sobre Ecorregímenes 2024</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Ayudas directas PAC</h6>
-                <p class="card-text small">
-                  Documento orientativo sobre la aplicación de los ecorregímenes en el marco de las ayudas directas de
-                  la Política Agrícola Común para la campaña 2024. Incluye información sobre requisitos.
-                </p>
+                <p class="card-text small">Documento orientativo sobre la aplicación de los ecorregímenes en el marco de
+                  las ayudas directas de la Política Agrícola Común para la campaña 2024. Incluye información sobre
+                  requisitos.</p>
               </div>
               <div class="d-flex row card-footer text-muted small align-items-center">
-                <p class="col-auto mb-0 me-auto">Actualizado: 15/01/2024 </p>
-                <span class="col-auto badge bg-info">Guía</span>
+                <p class="col-auto mb-0 me-auto">Actualizado: 15/01/2024</p><span
+                  class="col-auto badge bg-info">Guía</span>
               </div>
             </div>
           </div>
@@ -257,7 +169,12 @@
       const searchHelpText = document.getElementById("search-help-text");
       const noDocumentsInitialMessage = document.getElementById("no-documents-initial");
 
-      // Obtener datos de los documentos para la búsqueda desde los atributos data-*
+      const aiResponseArea = document.getElementById('ai-response-area');
+      const aiResponseTextElement = document.getElementById('ai-response-text');
+      const closeAiResponseButton = document.getElementById('close-ai-response');
+      const aiThinkingIndicator = document.getElementById('ai-thinking-indicator');
+      const mainContentWrapper = document.querySelector('.content-wrapper');
+
       const documentsData = Array.from(documentCardsContainer.querySelectorAll(".document-item")).map(cardElement => {
         const title = cardElement.dataset.title || cardElement.querySelector('.card-title')?.textContent || '';
         const subtitle = cardElement.dataset.subtitle || cardElement.querySelector('.card-subtitle')?.textContent || '';
@@ -287,24 +204,138 @@
         }
       }
 
+      let typingTimeout;
+      function typeWriter(text, element, speed = 30, callback) {
+        clearTimeout(typingTimeout);
+        element.innerHTML = '';
+        element.classList.add('typing'); // Añadir clase para mostrar cursor
+        let i = 0;
+        function type() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            typingTimeout = setTimeout(type, speed);
+          } else {
+            element.classList.remove('typing'); // Quitar clase cuando termina
+            if (callback) callback();
+          }
+        }
+        type();
+      }
+
+      function handleAiQuery(query) {
+        hideDropdown(); // Ocultar el desplegable de búsqueda
+        aiResponseTextElement.innerHTML = ''; // Limpiar respuesta anterior
+        aiResponseTextElement.classList.remove('typing'); // Asegurarse que no hay cursor si hubo un cierre abrupto
+        aiThinkingIndicator.classList.remove('d-none');
+        aiResponseArea.classList.remove('d-none');
+
+        // Desplazar la vista para que el área de respuesta sea visible si es necesario
+        aiResponseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+
+        if (mainContentWrapper) mainContentWrapper.classList.add('focused-on-ai');
+
+        // Ocultar resultados de documentos y título para dar foco a la IA
+        documentCardsContainer.classList.add('d-none');
+        documentResultsTitle.classList.add('d-none');
+        noDocumentsInitialMessage.classList.add('d-none'); // También ocultar este mensaje
+
+        console.log(`Consultando a la IA sobre: "${query}"`);
+        setTimeout(() => {
+          aiThinkingIndicator.classList.add('d-none');
+          const simulatedResponse = `Respuesta sobre "${query}":\n\nLa Política Agrícola Común (PAC) establece varios mecanismos de apoyo para los agricultores. En relación con '${query}', es importante considerar los siguientes aspectos:\n\n1.  **Elegibilidad:** Verificar los criterios específicos definidos en los Reales Decretos y Reglamentos de la UE aplicables.\n2.  **Plazos de Solicitud:** Suelen ser estrictos y varían según la ayuda o intervención. Consulte el calendario oficial.\n3.  **Documentación Requerida:** Preparar toda la documentación necesaria, como identificaciones, registros de parcelas (SIGPAC), y planes de explotación si aplica.\n\nPara 'jóvenes agricultores', existen ayudas complementarias que buscan fomentar el relevo generacional en el campo. Estas ayudas pueden incluir un pago adicional por hectárea o primas de instalación.\n\nLe recomiendo consultar el Real Decreto 1048/2022 y la Guía sobre Ecorregímenes para obtener información detallada y actualizada. Puede encontrar estos documentos en la sección de normativa.`;
+
+          typeWriter(simulatedResponse, aiResponseTextElement, 25, () => {
+            console.log("Respuesta de IA completada.");
+          });
+
+          // Mostrar documentos relevantes de la consulta
+          const relevantDocs = documentsData.filter(doc => doc.searchableContent.includes(query.toLowerCase()));
+          if (relevantDocs.length > 0) {
+            relevantDocs.forEach(doc => {
+              doc.element.classList.remove('d-none');
+            });
+            documentResultsTitle.textContent = `Documentos relevantes (${relevantDocs.length})`;
+            documentResultsTitle.classList.remove('d-none');
+            documentCardsContainer.classList.remove('d-none');
+          } else {
+            documentResultsTitle.textContent = 'No se encontraron documentos relevantes para tu búsqueda.';
+            documentResultsTitle.classList.remove('d-none');
+            documentCardsContainer.classList.add('d-none'); // Mantener oculto si no hay resultados
+          }
+        }, 2000);
+      }
+
+      closeAiResponseButton.addEventListener('click', function () {
+        clearTimeout(typingTimeout);
+        searchInput.value = ''; // Limpiar el campo de búsqueda
+        hideDropdown();
+
+        aiResponseArea.classList.add('d-none');
+        aiResponseTextElement.innerHTML = '';
+        aiResponseTextElement.classList.remove('typing');
+        if (mainContentWrapper) mainContentWrapper.classList.remove('focused-on-ai');
+
+        // Restaurar la visibilidad de los documentos según el estado de la búsqueda
+        const currentQuery = searchInput.value.trim().toLowerCase();
+        if (currentQuery) {
+          let foundDocs = false;
+          documentsData.forEach(doc => {
+            if (doc.searchableContent.includes(currentQuery)) {
+              doc.element.classList.remove('d-none');
+              foundDocs = true;
+            } else {
+              doc.element.classList.add('d-none');
+            }
+          });
+          if (foundDocs) {
+            documentResultsTitle.textContent = `Documentos encontrados (${documentsData.filter(d => !d.element.classList.contains('d-none')).length})`;
+            documentResultsTitle.classList.remove('d-none');
+            documentCardsContainer.classList.remove('d-none');
+          } else {
+            documentResultsTitle.textContent = 'No se encontraron documentos para tu búsqueda.';
+            documentResultsTitle.classList.remove('d-none');
+            documentCardsContainer.classList.add('d-none'); // Mantener oculto si no hay resultados
+          }
+        } else { // Si no había query, mostrar todos los documentos destacados
+          documentsData.forEach(doc => doc.element.classList.remove('d-none'));
+          documentResultsTitle.textContent = "Documentos Destacados de la Normativa";
+          documentResultsTitle.classList.remove('d-none');
+          documentCardsContainer.classList.remove('d-none');
+        }
+        if (documentsData.length > 0 && !documentCardsContainer.classList.contains('d-none')) {
+          noDocumentsInitialMessage.classList.add('d-none');
+        }
+
+
+        searchInput.focus();
+      });
+
       function filterAndPopulateDropdown() {
-        const query = searchInput.value.trim().toLowerCase();
-        searchResultsDropdown.innerHTML = ''; // Limpiar desplegable
+        const query = searchInput.value.trim();
+        const queryLowerCase = query.toLowerCase();
+        searchResultsDropdown.innerHTML = '';
+
+        // No mostrar/manipular tarjetas si el área de IA está activa
+        if (!aiResponseArea.classList.contains('d-none')) {
+          hideDropdown(); // Solo ocultar el dropdown, no tocar las tarjetas
+          return;
+        }
 
         let filteredDocumentCount = 0;
-
-        // Filtrar tarjetas de documentos y contar coincidencias
         documentsData.forEach(doc => {
-          const isMatch = doc.searchableContent.includes(query);
-          doc.element.classList.toggle('d-none', !isMatch && query); // Ocultar si no coincide Y hay query
-          if (isMatch && query) { // Solo contar si hay una query activa y coincide
+          const isMatch = doc.searchableContent.includes(queryLowerCase);
+          doc.element.classList.toggle('d-none', !isMatch && query);
+          if (isMatch && query) {
             filteredDocumentCount++;
-          } else if (!query) { // Si no hay query, todos son "visibles" conceptualmente
+          } else if (!query) {
             doc.element.classList.remove('d-none');
           }
         });
 
-        // Actualizar título de resultados de documentos basado en el filtro VISIBLE
+        documentCardsContainer.classList.remove('d-none'); // Asegurar que el contenedor sea visible si no está la IA
+
         if (query) {
           if (filteredDocumentCount > 0) {
             documentResultsTitle.textContent = `Documentos encontrados (${filteredDocumentCount})`;
@@ -312,11 +343,10 @@
             noDocumentsInitialMessage.classList.add('d-none');
           } else {
             documentResultsTitle.textContent = 'No se encontraron documentos para tu búsqueda.';
-            documentResultsTitle.classList.remove('d-none'); // Mostrar mensaje de no encontrados
+            documentResultsTitle.classList.remove('d-none');
             noDocumentsInitialMessage.classList.add('d-none');
           }
         } else {
-          // Estado inicial o input vacío
           documentResultsTitle.textContent = "Documentos Destacados de la Normativa";
           if (documentsData.length > 0) {
             documentResultsTitle.classList.remove('d-none');
@@ -327,10 +357,7 @@
           }
         }
 
-
-        // Popular el desplegable
         if (query) {
-          // Opción para confirmar/ver los resultados filtrados (si hay)
           if (filteredDocumentCount > 0) {
             const resultsItem = document.createElement('a');
             resultsItem.classList.add('dropdown-item');
@@ -338,70 +365,63 @@
             resultsItem.innerHTML = `<i class="fas fa-file-alt me-2"></i> Ver ${filteredDocumentCount} documento(s) encontrado(s)`;
             resultsItem.addEventListener('click', function (e) {
               e.preventDefault();
-              hideDropdown(); // Simplemente oculta el dropdown, los filtros ya están aplicados
-              searchInput.focus(); // Opcional: devolver foco al input
+              hideDropdown();
+              searchInput.focus();
             });
             searchResultsDropdown.appendChild(resultsItem);
-
             const divider = document.createElement('hr');
             divider.classList.add('dropdown-divider');
             searchResultsDropdown.appendChild(divider);
           }
 
-          // Opción de "Preguntar a la IA"
           const aiOption = document.createElement('a');
           aiOption.classList.add('dropdown-item');
           aiOption.href = '#';
-          aiOption.id = 'ai-ask-option-button'; // Para estilos específicos
-          aiOption.innerHTML = `<i class="fas fa-magic"></i> Preguntar a la IA: "<strong>${searchInput.value.trim()}</strong>"`;
+          aiOption.id = 'ai-ask-option-button';
+          aiOption.innerHTML = `<i class="fas fa-magic"></i> Preguntar a la IA: "<strong>${query}</strong>"`; // Usar 'query' que mantiene el case original
           aiOption.addEventListener('click', function (e) {
             e.preventDefault();
-            hideDropdown();
-            alert(`Consultando a la IA sobre "${searchInput.value.trim()}" en el contexto de la documentación general. (Simulación)`);
-            // Aquí iría la lógica real para interactuar con la IA
+            handleAiQuery(query);
           });
           searchResultsDropdown.appendChild(aiOption);
-
           showDropdown();
         } else {
-          hideDropdown(); // Ocultar si no hay query
+          hideDropdown();
         }
       }
 
       searchInput.addEventListener('input', filterAndPopulateDropdown);
-
       searchInput.addEventListener('focus', function () {
         const query = searchInput.value.trim();
-        if (query) {
-          filterAndPopulateDropdown(); // Repopular y mostrar si hay query
-        } else if (documentsData.length > 0) {
-          searchHelpText.classList.remove('d-none'); // Mostrar ayuda si input vacío y hay docs
+        if (aiResponseArea.classList.contains('d-none')) { // Solo reabrir dropdown si IA no está activa
+          if (query) {
+            filterAndPopulateDropdown();
+          } else if (documentsData.length > 0) {
+            searchHelpText.classList.remove('d-none');
+          }
         }
       });
 
       document.addEventListener('click', function (event) {
         const isClickInsideSearchContainer = event.target.closest('.search-bar-container');
-        if (!isClickInsideSearchContainer) {
+        const isClickInsideAiResponseArea = event.target.closest('#ai-response-area');
+        if (!isClickInsideSearchContainer && !isClickInsideAiResponseArea) {
           hideDropdown();
         }
       });
 
-      // Llamada inicial para establecer el estado si el input tiene valor o para mostrar/ocultar mensajes iniciales
       filterAndPopulateDropdown();
-      // Asegurarse de que el título y mensaje de "no documentos" se muestren correctamente al inicio
       if (documentsData.length === 0) {
         noDocumentsInitialMessage.classList.remove('d-none');
         documentResultsTitle.classList.add('d-none');
         searchHelpText.classList.add('d-none');
-        searchInput.disabled = true; // Deshabilitar búsqueda si no hay nada que buscar
+        if (searchInput) searchInput.disabled = true;
       } else if (!searchInput.value.trim()) {
         documentResultsTitle.textContent = "Documentos Destacados de la Normativa";
         documentResultsTitle.classList.remove('d-none');
         noDocumentsInitialMessage.classList.add('d-none');
         searchHelpText.classList.remove('d-none');
       }
-
-
     });
   </script>
 </body>
