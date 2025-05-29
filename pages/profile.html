@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfilado del Cliente - LAS TALARRUBIAS S.L.</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Estilos adicionales específicos para esta página si son necesarios */
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #34495e;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #1abc9c;
+      padding-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .badge {
+      background-color: #1abc9c;
+      color: white;
+      padding: 0.3em 0.75em;
+      border-radius: 0.25rem;
+      font-size: 0.85em;
+    }
+
+    .alert-custom {
+      background-color: #e8f6f3;
+      border-left: 5px solid #1abc9c;
+      padding: 1.25rem;
+      border-radius: 6px;
+      color: #16a085;
+      font-weight: 500;
+    }
+
+    .table th {
+      background-color: #f8f9fa;
+      color: #34495e;
+    }
+
+    .list-group-item strong {
+      color: #34495e;
+    }
+
+    .list-group-item {
+      border-color: #f0f0f0;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="sidebar">
+    <div class="logo-section d-flex align-items-center justify-content-center">
+      <img src="../img/laiw_color.png" alt="LAIW Logo" />
+    </div>
+    <ul class="nav flex-column flex-grow-1">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-home"></i>
+          <span class="link-text">Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-file-alt"></i>
+          <span class="link-text">PACs</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-chart-line"></i>
+          <span class="link-text">Actividad</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="customer-details.html"> <i class="fas fa-users"></i>
+          <span class="link-text">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="#">
+          <i class="fas fa-book"></i>
+          <span class="link-text">Documentación</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-robot"></i>
+          <span class="link-text">Asistente</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav flex-column mt-auto mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-cog"></i>
+          <span class="link-text">Configuración</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <nav class="top-nav">
+      <div class="d-flex align-items-center me-auto">
+        <a href="#" onclick="history.back()" class="text-decoration-none d-flex align-items-center text-muted me-3"
+          title="Volver a Detalles del Cliente">
+          <i class="fas fa-arrow-left fs-5"></i>
+        </a>
+        <span class="navbar-brand">Perfilado Cliente: LAS TALARRUBIAS S.L.</span>
+      </div>
+      <div class="nav-icons d-flex align-items-center">
+        <a href="#" title="Notificaciones" class="me-2"><i class="fas fa-bell"></i></a>
+        <a href="#" title="Perfil de Usuario"><i class="fas fa-user-circle"></i></a>
+      </div>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="container-fluid">
+
+        <div class="card mb-4 rounded-lg">
+          <div class="card-body  text-center p-4">
+            <h1 class="h2 mb-2" style="color: #2c3e50;">LAS TALARRUBIAS S.L.</h1>
+            <p class="lead text-muted">Gran explotación agroganadera diversificada, orientada a la sostenibilidad (PAC
+              2024).</p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-id-card me-2"></i>1. Identificación y Localización</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Solicitante:</strong> LAS TALARRUBIAS S.L. (CIF: B28209658)</li>
+                  <li class="list-group-item"><strong>Forma jurídica:</strong> Sociedad Limitada</li>
+                  <li class="list-group-item"><strong>Gestor/Representante:</strong> Gonzalo Hernando Arcal (NIF:
+                    51407511G)</li>
+                  <li class="list-group-item"><strong>Comunidad Autónoma:</strong> Extremadura</li>
+                  <li class="list-group-item"><strong>Dirección notificaciones:</strong> Madrigalejo (Cáceres)</li>
+                  <li class="list-group-item"><strong>Residencia:</strong> Madrid capital</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Zona principal:</strong> Badajoz</li>
+                  <li class="list-group-item"><strong>Recintos adicionales:</strong> Cáceres (sin activos)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-tractor me-2"></i>2. Caracterización de la Explotación</div>
+          <div class="card-body">
+            <h5 class="card-subtitle mb-3"><strong>A. Superficie Agraria y Cultivos</strong></h5>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><strong>Ubicación principal:</strong> Casas de Don Pedro y Navalvillar de Pela
+                (Badajoz)</li>
+              <li class="list-group-item"><strong>Superficie total agrícola declarada:</strong> ≈118 ha</li>
+              <li class="list-group-item">Pastos permanentes: ≈25 ha</li>
+              <li class="list-group-item">Almendro en regadío (variedad AVIJOR): 8,86 ha &mdash; <span
+                  class="badge">Ecológico (en conversión)</span></li>
+            </ul>
+            <h5 class="card-subtitle my-3">B. Aprovechamientos</h5>
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item">Avena (variedad HAMEL) para semilla y consumo animal.</li>
+              <li class="list-group-item">Barbecho tradicional con manejo de cubierta vegetal.</li>
+              <li class="list-group-item">Pastos permanentes para pastoreo extensivo.</li>
+            </ul>
+            <h5 class="card-subtitle my-3">C. Producción Ecológica</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Almendro en regadío certificado en conversión a ecológico &ndash; Línea
+                <em>Agricultura ecológica. Cultivos leñosos</em> del PDR Extremadura.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-paw me-2"></i>3. Gestión Ganadera</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><strong>Código REGEPA:</strong> 1106030659</li>
+              <li class="list-group-item"><strong>Explotación ganadera principal:</strong> ES060910000017 (Navalvillar
+                de Pela)</li>
+            </ul>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Especie</th>
+                    <th>N.º Animales</th>
+                    <th>Sistema</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Bovino</td>
+                    <td>176</td>
+                    <td rowspan="3">Pastoreo extensivo</td>
+                  </tr>
+                  <tr>
+                    <td>Ovino</td>
+                    <td>1.260</td>
+                  </tr>
+                  <tr>
+                    <td>Cerdos</td>
+                    <td>1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p><strong>Ayudas solicitadas:</strong> Pago vacuno de carne (extensivo), ovino extensivo, engorde de
+              terneros.</p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-hand-holding-usd me-2"></i>4. Ayudas Solicitadas PAC y PDR</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-header bg-light">PAGOS DIRECTOS</div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Ayuda básica a la renta para la
+                        sostenibilidad (ABRS)</li>
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Ayuda redistributiva</li>
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Ayuda al pastoreo extensivo/pastos
+                        permanentes</li>
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Ayuda sector vacuno de carne (extensivo)
+                      </li>
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Ayuda al ovino extensivo</li>
+                      <li><i class="fas fa-check-circle text-success me-2"></i>Engorde de terneros en explotación de
+                        nacimiento</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-header bg-light">Eco‑regímenes</div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li><i class="fas fa-leaf text-success me-2"></i>Pastoreo extensivo en pastos permanentes</li>
+                      <li><i class="fas fa-leaf text-success me-2"></i>Cubiertas vegetales (barbecho, almendros)</li>
+                      <li><i class="fas fa-leaf text-success me-2"></i>Espacios de biodiversidad</li>
+                    </ul>
+                    <p class="text-muted mt-2"><small>No declara prácticas de rotación, siembra directa, ni
+                        siega.</small></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-header bg-light">PDR Extremadura</div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li><i class="fas fa-seedling text-success me-2"></i>Agricultura ecológica (almendro)</li>
+                      <li><i class="fas fa-seedling text-success me-2"></i>Fomento de razas autóctonas en peligro</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-header bg-light">Compromisos adicionales</div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li><i class="fas fa-star text-warning me-2"></i>Explotación prioritaria &amp; ATP</li>
+                      <li><i class="fas fa-book-open text-info me-2"></i>Uso cuaderno digital</li>
+                      <li><i class="fas fa-shopping-basket text-info me-2"></i>Venta en canal corto</li>
+                      <li><i class="fas fa-flask text-info me-2"></i>Multiplicador de semilla</li>
+                      <li><i class="fas fa-dna text-info me-2"></i>Conocimiento de OGM</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-balance-scale me-2"></i>5. Otros Elementos de Relevancia</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-success">
+                  <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-thumbs-up me-2"></i>Fortalezas</h5>
+                    <ul>
+                      <li>Explotación diversificada: ganadería extensiva, cereal, almendro ecológico.</li>
+                      <li>Alto nivel de cumplimiento de requisitos PAC y PDR.</li>
+                      <li>Compromisos agroambientales sólidos.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-warning">
+                  <div class="card-body">
+                    <h5 class="card-title text-warning"><i class="fas fa-exclamation-triangle me-2"></i>Alertas / Mejora
+                    </h5>
+                    <ul>
+                      <li>Ingresos agrarios bajaron un 63% (2022 &rarr; 2023).</li>
+                      <li>Baja proporción de trabajo del gerente (&lt;25% jornales).</li>
+                      <li>Control documental estricto necesario (analíticas, eco, SIGPAC).</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-clipboard-check me-2"></i>Conclusión / Resumen Ejecutivo</div>
+          <div class="card-body">
+            <p>LAS TALARRUBIAS S.L. gestiona una explotación agroganadera modelo de diversificación y sostenibilidad en
+              Badajoz, combinando cereal, barbecho, pastos y un bloque leñoso ecológico de almendro. Solicita las ayudas
+              PAC, eco-regímenes y PDR pertinentes, cumpliendo requisitos de Eco, ATP y Prioritaria. La gestión es
+              correcta, pero debe vigilar la estabilidad de ingresos y la acreditación de la carga laboral del gerente.
+            </p>
+            <div class="alert alert-custom mt-3" role="alert">
+              <i class="fas fa-info-circle me-2"></i>¿Necesitas recomendaciones concretas de mejora, alertas de control
+              o recordatorios de fechas y obligaciones? ¡Consúltanos!
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-tasks me-2"></i>Plan de Mejora PAC/PDR 2025</div>
+          <div class="card-body">
+            <div class="accordion" id="planMejoraAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <strong>1. Revisión y Optimización ATP / Explotación Prioritaria</strong> (Enero—Febrero 2025)
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                  data-bs-parent="#planMejoraAccordion">
+                  <div class="accordion-body">
+                    <ul>
+                      <li>Simular contabilidad y cargas laborales &ge;50% para reforzar ATP.</li>
+                      <li>Ajustar documentación y evidencias de participación real.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <strong>2. Consolidación Producción Ecológica</strong> (Dic 2024—Feb 2025)
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                  data-bs-parent="#planMejoraAccordion">
+                  <div class="accordion-body">
+                    <ul>
+                      <li>Revisar calendario de conversión y solicitar ayuda de mantenimiento.</li>
+                      <li>Estudiar ampliación de superficie ecológica.</li>
+                      <li>Actualizar registros y analíticas.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <strong>3. Gestión Cubiertas Vegetales y Pastos</strong> (Otoño 2024 & Ene—Mar 2025)
+                  </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                  data-bs-parent="#planMejoraAccordion">
+                  <div class="accordion-body">
+                    <ul>
+                      <li>Planificar implantación/mantenimiento con técnico.</li>
+                      <li>Documentar con fotos georreferenciadas y partes de trabajo.</li>
+                      <li>Registrar movimientos de ganado en cuaderno digital.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-calendar-alt me-2"></i>9. Temporalización de Tareas Clave</div>
+          <div class="card-body px-3">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Tarea clave</th>
+                    <th>Plazo óptimo</th>
+                    <th>Responsable / Observaciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Simulación ATP/prioritaria y revisión de cargas laborales</td>
+                    <td>Enero—Febrero 2025</td>
+                    <td>Gestor asesor / firma</td>
+                  </tr>
+                  <tr>
+                    <td>Registro y actualización eco y PDR</td>
+                    <td>Dic 2024—Mar 2025</td>
+                    <td>Técnico eco</td>
+                  </tr>
+                  <tr>
+                    <td>Alegaciones SIGPAC y revisión recintos</td>
+                    <td>Nov—Dic 2024, Feb 2025</td>
+                    <td>Titular / asesor</td>
+                  </tr>
+                  <tr>
+                    <td>Planificación cultivos y rotaciones</td>
+                    <td>Nov 2024—Mar 2025</td>
+                    <td>Técnico agrícola</td>
+                  </tr>
+                  <tr>
+                    <td>Digitalización y Cuaderno Digital actualizado</td>
+                    <td>Continuo (revisión trimestral)</td>
+                    <td>Titular / administrador</td>
+                  </tr>
+                  <tr>
+                    <td>Preparación justificación ingresos</td>
+                    <td>Dic 2024—Ene 2025</td>
+                    <td>Asesor fiscal</td>
+                  </tr>
+                  <tr>
+                    <td>Preinscripción nuevas líneas PAC/PDR</td>
+                    <td>Sep 2024—Ene 2025</td>
+                    <td>Gestor asesor</td>
+                  </tr>
+                  <tr>
+                    <td>Revisión contratos / asesoría / docs</td>
+                    <td>Inicio campaña &amp; antes solicitud PAC</td>
+                    <td>Titular / admin</td>
+                  </tr>
+                  <tr>
+                    <td>Solicitud PAC 2025</td>
+                    <td>Abril—Mayo 2025</td>
+                    <td>Asesor gestor</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-folder-open me-2"></i>10. Documentos y Evidencias a Preparar</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="fas fa-file-invoice-dollar me-2 text-info"></i>Contratos, nóminas y
+                evidencias de carga de trabajo agraria.</li>
+              <li class="list-group-item"><i class="fas fa-certificate me-2 text-success"></i>Certificados y analíticas
+                de ecológico, asesorías y suelos.</li>
+              <li class="list-group-item"><i class="fas fa-camera me-2 text-secondary"></i>Informes y registros de
+                cubiertas vegetales y pastoreo.</li>
+              <li class="list-group-item"><i class="fas fa-book me-2 text-primary"></i>Registros REGEPA/REGA y
+                justificantes ganaderos.</li>
+              <li class="list-group-item"><i class="fas fa-chart-line me-2 text-danger"></i>Explicación de caídas de
+                renta, si la hubiera.</li>
+              <li class="list-group-item"><i class="fas fa-user-graduate me-2 text-warning"></i>Certificados de
+                formación y asesoría técnica.</li>
+              <li class="list-group-item"><i class="fas fa-laptop-code me-2 text-dark"></i>Cuaderno digital y copias de
+                seguridad (2024‑2025).</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

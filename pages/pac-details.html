@@ -365,8 +365,15 @@
           { id: "PACDOC003", nombre: "Memoria_Tecnica_Cultivos_2025.pdf", tipo: "Memoria Técnica", fechaSubida: "2025-02-01", tamano: "4.2MB", url: "#" }
         ]
         // ...otros datos del cliente
+      },
+      "USR003": {
+        id: "USR003", nombreCompleto: "LAS TALARRUBIAS S.L.",
+        documentos: [
+          { id: "CLIDOC006", nombre: "DNI Gonzalo Hernando Arcal.pdf", tipo: "Identificación", fechaSubida: "2022-05-10", tamano: "1.5MB", url: "#" },
+          { id: "CLIDOC007", nombre: "Contrato Arrendamiento Finca_Talarrubias.pdf", tipo: "Contrato", fechaSubida: "2022-05-15", tamano: "900KB", url: "#" },
+          { id: "PACDOC004", nombre: "Solicitud_PAC2025_Talarrubias.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-03-01", tamano: "2.8MB", url: "#" }
+        ],
       }
-      // ...otros clientes
     };
 
     const pacsData = {
@@ -394,6 +401,15 @@
         linkedClientDocKeys: [
           "Escrituras_Agroesperanza.pdf",
           "Memoria_Tecnica_Cultivos_2025.pdf" // Vinculado (posiblemente subido desde aquí)
+        ],
+      },
+      "PAC2025-003": {
+        idPac: "PAC2025-003", campana: "2025", idClienteAsociado: "USR003", nombreSolicitante: "LAS TALARRUBIAS S.L.",
+        fechaCreacion: "2025-03-01", fechaUltimaModificacion: "2025-05-05", estado: "Nueva",
+        descripcionBreve: "Solicitud PAC para explotación de olivar y secano.", importeSolicitado: "20,000.00€",
+        linkedClientDocKeys: [
+          "DNI Gonzalo Hernando Arcal.pdf",
+          "Solicitud_PAC2025_Talarrubias.pdf" // Vinculado (posiblemente subido desde aquí)
         ],
       }
     };

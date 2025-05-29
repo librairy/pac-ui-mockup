@@ -183,6 +183,73 @@
       background-color: #1abc9c;
       color: #fff !important;
     }
+
+    .search-bar-container {
+      position: relative;
+    }
+
+    /* Bootstrap debería manejar la mayoría de los estilos del dropdown,
+       pero puedes añadir aquí personalizaciones si es necesario, como:
+    #form-search-results-dropdown {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    */
+
+    .relevant-field-extract {
+      /* Para los elementos clickeables que representan campos */
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .relevant-field-extract:hover {
+      background-color: #e9ecef;
+      border-color: #ced4da;
+    }
+
+    .highlighted-by-ai-click-form-field {
+      /* Estilo para resaltar campos de formulario */
+      border: 2px solid #1abc9c !important;
+      /* Tailwind verde principal */
+      box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.35) !important;
+      background-color: #e8f8f5 !important;
+      transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    label.highlighted-by-ai-click-form-label {
+      /* Estilo para resaltar etiquetas de campos */
+      color: #17a2b8 !important;
+      /* Un color que destaque, puedes ajustarlo */
+      font-weight: 600 !important;
+      transition: color 0.3s ease-in-out;
+    }
+
+    #ai-response-text-form.typing::after {
+      /* Animación de cursor para la IA */
+      content: '▋';
+      animation: blink 1s step-end infinite;
+      margin-left: 0.25em;
+      font-size: 1.1em;
+      /* Ajusta si es necesario */
+      color: #6c757d;
+      /* Color del cursor */
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -261,7 +328,6 @@
 
         <div class="flex justify-between items-center p-4 relative">
           <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center lg:text-left"> Solicitud Única PAC 2025
-            (Editable)
           </h1>
           <div id="formActions" class="absolute right-0 top-0 bottom-0 flex items-center pr-4">
             <button id="aiGenerationButton" title="Cumplimentar con IA" class="ai-button rounded-full">
@@ -275,6 +341,51 @@
               class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
               <i class="fas fa-history"></i>
             </button>
+          </div>
+        </div>
+
+        <div class="row px-4">
+          <div class="col-12">
+            <div class="search-bar-container">
+              <div class="input-group search-input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control form-control-lg" id="form-search-input"
+                  placeholder="Buscar en este formulario o preguntar a la IA..." aria-label="Buscar en formulario o IA"
+                  aria-haspopup="true" aria-expanded="false">
+              </div>
+              <div id="form-search-results-dropdown" class="dropdown-menu w-100 mt-1">
+              </div>
+              <small class="form-text text-muted mt-2 d-block px-2" id="form-search-help-text">
+                Ej: "IBAN", "¿Qué es el código REGEPA?", "Ayuda para jóvenes agricultores"
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row px-4">
+          <div class="col-12">
+            <div id="ai-response-area" class="d-none">
+              <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Respuesta de la IA</h5>
+                  <button type="button" class="btn-close" aria-label="Cerrar respuesta IA"
+                    id="close-ai-response-form"></button>
+                </div>
+                <div class="card-body">
+                  <div id="ai-thinking-indicator-form" class="text-center my-3 d-none">
+                    <div class="spinner-border text-[#1abc9c]" role="status">
+                      <span class="visually-hidden">Consultando...</span>
+                    </div>
+                    <p class="mt-2 text-muted small">Consultando a la IA y analizando el formulario...</p>
+                  </div>
+                  <div id="ai-response-text-form" class="mb-3"></div>
+                  <p id="relevant-fields-title-form" class="d-none text-muted small mb-2">Pulsa en un campo para ir a su
+                    ubicación:</p>
+                  <div id="relevant-fields-container-form" class="mt-1">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2942,6 +3053,471 @@
           docPreviewContainer.innerHTML = '';
           docDropZoneStatus.style.display = 'none';
         });
+      }
+    });
+  </script>
+  <script>
+    // Lógica para la búsqueda en formulario y respuesta de IA
+    document.addEventListener("DOMContentLoaded", function () {
+      const formSearchInput = document.getElementById('form-search-input');
+      const formSearchResultsDropdown = document.getElementById('form-search-results-dropdown');
+      const formSearchHelpText = document.getElementById('form-search-help-text');
+
+      const aiResponseAreaForm = document.getElementById('ai-response-area');
+      const aiResponseTextElementForm = document.getElementById('ai-response-text-form');
+      const closeAiResponseButtonForm = document.getElementById('close-ai-response-form');
+      const aiThinkingIndicatorForm = document.getElementById('ai-thinking-indicator-form');
+      const relevantFieldsContainerForm = document.getElementById('relevant-fields-container-form');
+      const relevantFieldsTitleForm = document.getElementById('relevant-fields-title-form');
+
+      const pacForm = document.getElementById('pac-form');
+      const formNavigationLinksSide = document.querySelectorAll("#form-navigation .nav-link");
+      const formSectionsAll = document.querySelectorAll(".form-section");
+
+      let typingTimeoutForm;
+      let allIndexedFormFields = [];
+
+      function indexPacFormFields() {
+        allIndexedFormFields = [];
+        if (!pacForm) return;
+
+        const elements = pacForm.elements;
+        for (let i = 0; i < elements.length; i++) {
+          const element = elements[i];
+          if (element.id || element.name) {
+            let labelText = '';
+            let labelElement = null;
+            if (element.id) {
+              labelElement = pacForm.querySelector(`label[for="${element.id}"]`);
+              if (labelElement) {
+                labelText = labelElement.textContent.trim();
+              }
+            }
+            // Si no hay label, intentar obtenerlo del legend del fieldset padre si es único
+            if (!labelText && element.closest('fieldset') && element.closest('fieldset').querySelectorAll('input, select, textarea').length === 1) {
+              const legend = element.closest('fieldset').querySelector('legend');
+              if (legend) labelText = legend.textContent.trim();
+            }
+            // Si aún no hay labelText y es un checkbox/radio, buscar label hermano o padre
+            if (!labelText && (element.type === 'checkbox' || element.type === 'radio')) {
+              let current = element.nextElementSibling;
+              if (current && current.tagName === 'LABEL') labelText = current.textContent.trim();
+              else if (element.parentElement && element.parentElement.tagName === 'LABEL') labelText = element.parentElement.textContent.trim();
+              else if (element.parentElement.closest('label')) labelText = element.parentElement.closest('label').textContent.trim();
+
+            }
+            if (!labelText) labelText = element.placeholder || element.name || element.id;
+
+
+            let parentSectionElement = element.closest('.form-section');
+            let sectionId = null;
+            if (parentSectionElement && parentSectionElement.id) {
+              sectionId = parentSectionElement.id.replace('section-', '');
+            }
+
+            allIndexedFormFields.push({
+              id: element.id,
+              name: element.name,
+              type: element.type,
+              labelText: labelText,
+              element: element,
+              labelElement: labelElement,
+              sectionId: sectionId
+            });
+          }
+        }
+      }
+      if (pacForm) {
+        indexPacFormFields(); // Indexar al cargar
+        // Considerar re-indexar si el formulario cambia dinámicamente (ej. añadir recintos)
+        // new MutationObserver(indexPacFormFields).observe(pacForm, { childList: true, subtree: true });
+      }
+
+
+      function showFormSearchDropdown() {
+        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.add('show');
+        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'true');
+        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
+      }
+
+      function hideFormSearchDropdown() {
+        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.remove('show');
+        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'false');
+        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
+        }
+      }
+
+      function typeWriterForForm(text, element, speed = 20, callback) {
+        clearTimeout(typingTimeoutForm);
+        if (!element) return;
+        element.innerHTML = '';
+        element.classList.add('typing');
+        let i = 0;
+        function type() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            typingTimeoutForm = setTimeout(type, speed);
+          } else {
+            element.classList.remove('typing');
+            if (callback) callback();
+          }
+        }
+        type();
+      }
+
+      function clearAllAiHighlightsFromForm() {
+        if (!pacForm) return;
+        const highlightedFields = pacForm.querySelectorAll('.highlighted-by-ai-click-form-field');
+        highlightedFields.forEach(el => el.classList.remove('highlighted-by-ai-click-form-field'));
+
+        const highlightedLabels = pacForm.querySelectorAll('.highlighted-by-ai-click-form-label');
+        highlightedLabels.forEach(el => el.classList.remove('highlighted-by-ai-click-form-label'));
+      }
+
+      // Adaptación de la función showSection de pac-edit.html
+      function navigateToFormSection(sectionIdToShow) {
+        let sectionFound = false;
+        formSectionsAll.forEach(section => {
+          if (section.id === "section-" + sectionIdToShow) {
+            section.classList.add("active");
+            sectionFound = true;
+          } else {
+            section.classList.remove("active");
+          }
+        });
+
+        formNavigationLinksSide.forEach(link => {
+          if (link.dataset.section === sectionIdToShow) {
+            link.classList.add("active-nav-link"); // Usa la clase de tu app para el link activo
+            // Scroll al link en la navegación lateral si está fuera de vista
+            link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            link.classList.remove("active-nav-link");
+          }
+        });
+        if (sectionFound) {
+          const mainFormArea = document.querySelector('div.main-content main.w-full'); // Selector más específico para el panel principal del form
+          if (mainFormArea) mainFormArea.scrollTop = 0; // Scroll al inicio del panel del formulario
+        }
+        return sectionFound;
+      }
+
+      function findAndDisplayRelevantFormFields(query) {
+        if (!relevantFieldsContainerForm || !relevantFieldsTitleForm) return;
+        relevantFieldsContainerForm.innerHTML = '';
+        relevantFieldsTitleForm.classList.add('d-none');
+
+        const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        let foundFieldsCount = 0;
+        const MAX_FIELDS_TO_SHOW = 6;
+        const displayedFields = new Set();
+
+        allIndexedFormFields.forEach(fieldInfo => {
+          if (foundFieldsCount >= MAX_FIELDS_TO_SHOW || !fieldInfo.id) return; // Solo campos con ID para el target
+          if (displayedFields.has(fieldInfo.id)) return;
+
+
+          const fieldSearchableText = `${fieldInfo.labelText} ${fieldInfo.name} ${fieldInfo.id} ${fieldInfo.sectionId}`.toLowerCase();
+
+          let matchScore = 0;
+          queryWords.forEach(word => {
+            if (fieldInfo.labelText.toLowerCase().includes(word)) matchScore += 3; // Mayor peso a la etiqueta
+            if (fieldInfo.id.toLowerCase().includes(word)) matchScore += 2;
+            if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(word)) matchScore += 1;
+            if (fieldInfo.sectionId && fieldInfo.sectionId.replace('-', ' ').toLowerCase().includes(word)) matchScore += 1;
+          });
+
+
+          if (matchScore > 0) {
+            foundFieldsCount++;
+            displayedFields.add(fieldInfo.id);
+            const fieldExtractDiv = document.createElement('div');
+            fieldExtractDiv.classList.add('relevant-field-extract', 'p-3', 'mb-2', 'rounded', 'small'); // Aumentado padding
+            fieldExtractDiv.setAttribute('data-target-field-id', fieldInfo.id);
+            if (fieldInfo.sectionId) fieldExtractDiv.setAttribute('data-target-section-id', fieldInfo.sectionId);
+
+            let displayText = fieldInfo.labelText || fieldInfo.name || fieldInfo.id;
+            // Resaltar palabras de la query en el texto del extracto
+            queryWords.forEach(word => {
+              const regex = new RegExp('(' + word.replace(
+                '/[.*+?^<span class="math-inline">\{\}\(\)\|\[\\\]\\\\\]/g', '\\\\</span>&') + ')', 'gi');
+              displayText = displayText.replace(regex, '<mark>$1</mark>');
+            });
+
+            const sectionName = fieldInfo.sectionId ? fieldInfo.sectionId.replace(/-/g, ' ') : "Formulario Principal";
+            const capitalizedSectionName = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+
+
+            fieldExtractDiv.innerHTML = `
+                    <p class="mb-1 font-medium">${displayText}</p>
+                    <small class="text-muted"><i>Sección: ${capitalizedSectionName}</i></small>
+                `;
+
+            fieldExtractDiv.addEventListener('click', function () {
+              clearAllAiHighlightsFromForm();
+              const targetFieldId = this.getAttribute('data-target-field-id');
+              const targetSectionId = this.getAttribute('data-target-section-id');
+              const targetFieldObject = allIndexedFormFields.find(f => f.id === targetFieldId);
+
+
+              if (targetFieldObject && targetFieldObject.element) {
+                if (targetSectionId) {
+                  navigateToFormSection(targetSectionId);
+                }
+                // Pequeña demora para asegurar que la sección es visible, especialmente si se cambió
+                setTimeout(() => {
+                  targetFieldObject.element.classList.add('highlighted-by-ai-click-form-field');
+                  if (targetFieldObject.labelElement) {
+                    targetFieldObject.labelElement.classList.add('highlighted-by-ai-click-form-label');
+                  } else { // Intentar encontrar label de nuevo si no estaba en el index
+                    const label = pacForm.querySelector(`label[for="${targetFieldId}"]`);
+                    if (label) label.classList.add('highlighted-by-ai-click-form-label');
+                  }
+                  targetFieldObject.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  if (typeof targetFieldObject.element.focus === 'function' &&
+                    !['button', 'submit', 'reset'].includes(targetFieldObject.element.type)) { // No enfocar botones
+                    targetFieldObject.element.focus({ preventScroll: true });
+                  }
+                }, targetSectionId ? 150 : 50); // Mayor demora si se cambió de sección
+              }
+            });
+            relevantFieldsContainerForm.appendChild(fieldExtractDiv);
+          }
+        });
+
+        if (foundFieldsCount > 0) {
+          relevantFieldsTitleForm.classList.remove('d-none');
+        } else {
+          relevantFieldsContainerForm.innerHTML = '<p class="text-muted small fst-italic px-2">No se encontraron campos que coincidan directamente con tu consulta en el formulario.</p>';
+        }
+      }
+
+      function handleAiQueryForForm(query) {
+        hideFormSearchDropdown();
+        if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
+        if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
+        if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
+        if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
+        clearAllAiHighlightsFromForm();
+
+        if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.remove('d-none');
+        if (aiResponseAreaForm) aiResponseAreaForm.classList.remove('d-none');
+
+        aiResponseAreaForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // 'start' para que el área de IA quede arriba
+
+        console.log(`Simulando consulta a la IA sobre: "${query}" en el formulario PAC.`);
+        // Simulación de respuesta de IA
+        setTimeout(() => {
+          if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.add('d-none');
+          let simulatedResponse = `En relación a tu consulta sobre "${query}" para el formulario PAC, aquí tienes información relevante:`;
+
+          typeWriterForForm(simulatedResponse, aiResponseTextElementForm, 20, () => {
+            findAndDisplayRelevantFormFields(query); // Mostrar campos relevantes después de la respuesta
+          });
+        }, 1200); // Reducido tiempo de simulación
+      }
+
+      if (closeAiResponseButtonForm) {
+        closeAiResponseButtonForm.addEventListener('click', function () {
+          clearTimeout(typingTimeoutForm);
+          if (formSearchInput) formSearchInput.value = '';
+
+          if (aiResponseAreaForm) aiResponseAreaForm.classList.add('d-none');
+          if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
+          if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
+          if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
+          if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
+
+          clearAllAiHighlightsFromForm();
+          hideFormSearchDropdown();
+          if (formSearchHelpText && pacForm) formSearchHelpText.classList.remove('d-none');
+          if (formSearchInput) formSearchInput.focus();
+        });
+      }
+
+      function populateFormSearchDropdown(query) {
+        if (!formSearchResultsDropdown || !pacForm || (aiResponseAreaForm && !aiResponseAreaForm.classList.contains('d-none'))) {
+          hideFormSearchDropdown();
+          return;
+        }
+        formSearchResultsDropdown.innerHTML = '';
+        if (!query) {
+          hideFormSearchDropdown();
+          return;
+        }
+
+        let hasResults = false;
+        const queryLowerCase = query.toLowerCase();
+        const uniqueSuggestions = new Map(); // Usar Map para asociar sugerencia con info del campo
+        const MAX_SUGGESTIONS_DROPDOWN = 5;
+
+        allIndexedFormFields.forEach(fieldInfo => {
+          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
+          let suggestionText = null;
+          let match = false;
+
+          if (fieldInfo.labelText && fieldInfo.labelText.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText;
+            match = true;
+          } else if (fieldInfo.id && fieldInfo.id.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText || fieldInfo.id;
+            match = true;
+          } else if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText || fieldInfo.name;
+            match = true;
+          }
+
+          if (match && suggestionText && !uniqueSuggestions.has(suggestionText.toLowerCase())) {
+            uniqueSuggestions.set(suggestionText.toLowerCase(), { text: suggestionText, field: fieldInfo });
+          }
+        });
+
+        // Palabras clave generales adicionales (no directamente ligadas a un campo, pero pueden iniciar una búsqueda IA)
+        const generalKeywords = [
+          "Ayuda jóvenes", "Ecorregímenes", "Datos Fiscales", "Representante Legal", "Condicionalidad", "SIGPAC"
+        ];
+        generalKeywords.forEach(keyword => {
+          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
+          if (keyword.toLowerCase().includes(queryLowerCase) && !uniqueSuggestions.has(keyword.toLowerCase())) {
+            uniqueSuggestions.set(keyword.toLowerCase(), { text: keyword, field: null }); // field: null para keywords generales
+          }
+        });
+
+
+        uniqueSuggestions.forEach(suggestion => {
+          hasResults = true;
+          const item = document.createElement('a');
+          item.classList.add('dropdown-item');
+          item.href = '#';
+          item.innerHTML = `<i class="fas fa-search me-2 text-muted"></i> "${suggestion.text.replace(new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<strong class="text-primary">$1</strong>')}"`;
+
+          item.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (formSearchInput) formSearchInput.value = suggestion.text;
+            clearAllAiHighlightsFromForm();
+
+            if (suggestion.field && suggestion.field.element) { // Si la sugerencia está ligada a un campo específico
+              const targetField = suggestion.field;
+              if (targetField.sectionId) {
+                navigateToFormSection(targetField.sectionId);
+              }
+              setTimeout(() => {
+                targetField.element.classList.add('highlighted-by-ai-click-form-field');
+                if (targetField.labelElement) targetField.labelElement.classList.add('highlighted-by-ai-click-form-label');
+                else { const label = pacForm.querySelector(`label[for="${targetField.id}"]`); if (label) label.classList.add('highlighted-by-ai-click-form-label'); }
+
+                targetField.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (typeof targetField.element.focus === 'function' && !['button', 'submit', 'reset'].includes(targetField.element.type)) {
+                  targetField.element.focus({ preventScroll: true });
+                }
+              }, targetField.sectionId ? 150 : 50);
+            } else {
+              // Si es una keyword general, podríamos directamente llamar a la IA, o dejar que el usuario pulse enter/botón IA
+              // Por ahora, solo rellena el input, el usuario decidirá si pregunta a la IA.
+            }
+            hideFormSearchDropdown();
+          });
+          if (formSearchResultsDropdown) formSearchResultsDropdown.appendChild(item);
+        });
+
+        if (formSearchResultsDropdown && formSearchResultsDropdown.children.length > 0) { // Solo añadir IA si hay alguna sugerencia
+          const divider = document.createElement('hr');
+          divider.classList.add('dropdown-divider', 'my-1');
+          formSearchResultsDropdown.appendChild(divider);
+
+          const aiOption = document.createElement('a');
+          aiOption.classList.add('dropdown-item', 'fw-bold'); // Más destacado
+          aiOption.href = '#';
+          aiOption.id = 'ai-ask-option-button-form';
+          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
+          aiOption.addEventListener('click', function (e) {
+            e.preventDefault();
+            handleAiQueryForForm(query); // Usar la query actual del input
+          });
+          formSearchResultsDropdown.appendChild(aiOption);
+          showFormSearchDropdown();
+        } else if (!hasResults) { // Si no hay ninguna sugerencia pero el usuario escribió algo
+          const aiOption = document.createElement('a');
+          aiOption.classList.add('dropdown-item', 'fw-bold');
+          aiOption.href = '#';
+          aiOption.id = 'ai-ask-option-button-form';
+          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
+          aiOption.addEventListener('click', function (e) {
+            e.preventDefault();
+            handleAiQueryForForm(query);
+          });
+          if (formSearchResultsDropdown) {
+            formSearchResultsDropdown.appendChild(aiOption);
+            showFormSearchDropdown();
+          }
+        } else {
+          hideFormSearchDropdown();
+        }
+      }
+
+      if (formSearchInput) {
+        formSearchInput.addEventListener('input', function () {
+          const query = formSearchInput.value.trim();
+          if (query.length > 1) { // Empezar a buscar con al menos 2 caracteres
+            populateFormSearchDropdown(query);
+          } else {
+            hideFormSearchDropdown();
+            if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+              clearAllAiHighlightsFromForm();
+            }
+          }
+        });
+
+        formSearchInput.addEventListener('focus', function () {
+          const query = formSearchInput.value.trim();
+          if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) { // Solo mostrar si la IA no está activa
+            if (query.length > 1) {
+              populateFormSearchDropdown(query);
+            } else if (formSearchHelpText && pacForm) {
+              formSearchHelpText.classList.remove('d-none');
+            }
+          }
+        });
+
+        formSearchInput.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault(); // Evitar submit del formulario si la búsqueda está dentro de <form>
+            const query = formSearchInput.value.trim();
+            if (query) {
+              // Si hay un dropdown visible y un item "Preguntar a la IA" podríamos simular su click
+              // o directamente llamar a handleAiQueryForForm
+              const aiButton = formSearchResultsDropdown.querySelector('#ai-ask-option-button-form');
+              if (formSearchResultsDropdown.classList.contains('show') && aiButton) {
+                aiButton.click();
+              } else {
+                handleAiQueryForForm(query);
+              }
+            }
+          }
+        });
+      }
+
+      document.addEventListener('click', function (event) {
+        const searchContainer = document.querySelector('.search-bar-container');
+        const isClickInsideSearchContainer = searchContainer ? searchContainer.contains(event.target) : false;
+        // No cerramos el panel de IA al hacer clic fuera, solo el dropdown
+        if (!isClickInsideSearchContainer) {
+          hideFormSearchDropdown();
+        }
+      });
+
+      // Inicialización de visibilidad del texto de ayuda
+      if (!pacForm) {
+        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
+        if (formSearchInput) formSearchInput.disabled = true;
+      } else {
+        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
+        } else if (formSearchHelpText) {
+          formSearchHelpText.classList.add('d-none');
+        }
       }
     });
   </script>

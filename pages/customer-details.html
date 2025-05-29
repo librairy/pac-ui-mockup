@@ -168,6 +168,10 @@
                 </div>
                 <div class="card-body">
                   <p id="infoDescription" class="text-muted">Cargando...</p>
+                  <a href="profile.html" class="btn btn-outline-secondary btn-sm mt-4 d-none" id="viewFullProfileLink">
+                    <i class="fas fa-arrow-right"></i>
+                    Ver perfilado completo
+                  </a>
                 </div>
               </div>
             </div>
@@ -410,14 +414,33 @@
         ],
         notas: []
       },
-      "USR003": { /* ... */ }
+      "USR003": {
+        id: "USR003", nombreCompleto: "LAS TALARRUBIAS S.L.", nifCif: "B12345678", email: "talarrubias@email.es", telefono: "601234567", direccion: "Madrigalejo (Cáceres)", localidad: "Madrigalejo", provincia: "Cáceres", codigoPostal: "10180", tipoCliente: "Cooperativa Agraria", fechaAlta: "2022-05-10", estado: "Activo", descripcion: "Gran explotación agroganadera diversificada, orientada a la sostenibilidad",
+        pacs: [
+          { idPac: "PAC2025-003", campana: "2025", fechaCreacion: "2025-03-01", estado: "En Proceso" },
+        ],
+        documentos: [
+          { id: "CLIDOC006", nombre: "DNI Gonzalo Hernando Arcal.pdf", tipo: "Identificación", fechaSubida: "2022-05-10", tamano: "1.5MB", url: "#" },
+          { id: "CLIDOC007", nombre: "Contrato Arrendamiento Finca_Talarrubias.pdf", tipo: "Contrato", fechaSubida: "2022-05-15", tamano: "900KB", url: "#" },
+          { id: "PACDOC004", nombre: "Solicitud_PAC2025_Talarrubias.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-03-01", tamano: "2.8MB", url: "#" }
+        ],
+        recomendaciones: [
+          { texto: "Explorar nuevas ayudas para cultivos sostenibles.", icono: "fas fa-info-circle text-info" },
+          { texto: "Revisar eco-regímenes aplicables a cultivos de secano.", icono: "fas fa-leaf text-success" }
+        ],
+        notas: [
+          { id: "N003", fecha: "2025-04-15", autor: "Laura T.", texto: "Cliente ha solicitado información sobre eco-regímenes. Se le envió enlace a normativa." },
+          { id: "N004", fecha: "2025-03-10", autor: "Miguel R.", texto: "Revisión de PAC 2025. Pendiente de firma y envío." }
+        ]
+      }
     };
 
     // Datos PAC necesarios para comprobar vinculaciones al borrar documentos de cliente
     const pacsData = {
       "PAC2025-001": { idPac: "PAC2025-001", idClienteAsociado: "USR001", linkedClientDocKeys: ["DNI Juan Perez.pdf", "Solicitud_PAC2025_JuanPerez.pdf", "Anexo_Ayudas_Agroambientales.pdf"] },
       "PAC2024-005": { idPac: "PAC2024-005", idClienteAsociado: "USR001", linkedClientDocKeys: ["DNI Juan Perez.pdf"] },
-      "PAC2025-002": { idPac: "PAC2025-002", idClienteAsociado: "USR002", linkedClientDocKeys: ["Escrituras_Agroesperanza.pdf", "Memoria_Tecnica_Cultivos_2025.pdf"] }
+      "PAC2025-002": { idPac: "PAC2025-002", idClienteAsociado: "USR002", linkedClientDocKeys: ["Escrituras_Agroesperanza.pdf", "Memoria_Tecnica_Cultivos_2025.pdf"] },
+      "PAC2025-003": { idPac: "PAC2025-003", idClienteAsociado: "USR003", linkedClientDocKeys: ["DNI Gonzalo Hernando Arcal.pdf", "Solicitud_PAC2025_Talarrubias.pdf"] },
     };
 
 
@@ -567,8 +590,11 @@
         statusBadge.textContent = currentClientData.estado || 'No especificado';
         statusBadge.className = `badge fs-6 me-2 ${getStatusBadgeClass(currentClientData.estado)}`;
 
+        if (clientId === "USR003") {
+          document.getElementById("viewFullProfileLink").classList.remove("d-none");
+        }
+
         // Poblar pestaña de Información General... (igual que antes)
-        // ... (código para rellenar #infoFullName, #infoNifCif, etc.) ...
         document.getElementById("infoFullName").textContent = currentClientData.nombreCompleto;
         document.getElementById("infoNifCif").textContent = currentClientData.nifCif || 'No especificado';
         document.getElementById("infoEmail").textContent = currentClientData.email || 'No especificado';

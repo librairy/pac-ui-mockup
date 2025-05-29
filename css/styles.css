@@ -469,7 +469,11 @@ body,
 }
 
 /* Títulos */
-h1.h3,
+h1,
+h2,
+h3,
+h4,
+h5,
 .card-title {
   color: #34495e; /* Un gris azulado oscuro para títulos */
   font-weight: 600; /* Hacerlos destacar */
