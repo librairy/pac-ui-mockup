@@ -215,7 +215,10 @@
       // Grupo: BCAM
       { group: 'BCAM', name: "Verificación del cumplimiento de BCAM 2 (Protección de humedales y turberas)", display_message: "BCAM 2: No aplica - sin recintos en zonas de humedales o turberas.", severity: "success", failed: false, involved_fields: { field_data: [] } },
       { group: 'BCAM', name: "Verificación del cumplimiento de BCAM 9 (Prohibición de convertir o arar pastos)", display_message: "BCAM 9: Sin recintos declarados - no aplica la validación.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'BCAM', name: "Verificación del cumplimiento de BCAM 7 (Rotación de cultivos y/o Diversificación)", display_message: "CUMPLE BCAM 7 (por exención): Explotación exenta: Superficie de tierra de cultivo (0.00 ha) es inferior o igual a 10 ha.", severity: "success", failed: false, involved_fields: { field_data: [] } }
+      {
+        group: 'BCAM', name: "Verificación del cumplimiento de BCAM 7 (Rotación de cultivos y/o Diversificación)",
+        display_message: "CUMPLE BCAM 7. La explotación no está exenta de la BCAM 7. Rotación: No evaluado (faltan datos de años anteriores) | Diversificación: CUMPLE: 5 cultivos. Principal: 49.53%, 2 Principales: 81.36%.", severity: "success", failed: false, involved_fields: { field_data: [] }
+      }
     ];
 
     const groupDetails = {
