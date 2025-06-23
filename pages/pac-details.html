@@ -242,7 +242,12 @@
           </div>
           <div class="tab-pane fade" id="pac-validations-content" role="tabpanel" aria-labelledby="pac-validations-tab">
             <div class="card h-100">
-              <div class="card-header">Validaciones</div>
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Resultados de Validación</h4>
+                <a href="./all-validations.html" class="btn btn-outline-primary btn-sm">
+                  <i class="fas fa-external-link-alt me-2"></i>Ver Todas las Validaciones
+                </a>
+              </div>
               <div class="card-body p-0">
                 <ul class="list-group list-group-flush" id="validationsList">
                   <li class="list-group-item text-center p-4"><em class="text-muted">Cargando validaciones...</em></li>
@@ -413,6 +418,70 @@
         ],
       }
     };
+
+    const mockValidationsData = [
+      { group: 'fields', name: "Autorización comunicación por SMS", display_message: "Se recomienda autorizar la comunicación por SMS", severity: "info", failed: true },
+      { group: 'fields', name: "Autorización comunicación por correo", display_message: "Se recomienda autorizar la comunicación por correo electrónico", severity: "info", failed: true },
+      { group: 'fields', name: "El teléfono móvil debe tener 9 dígitos", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Completitud de datos básicos del solicitante", display_message: "Domicilio de notificaciones es un campo obligatorio.", severity: "error", failed: true },
+      { group: 'fields', name: "IBAN del solicitante válido", display_message: "El formato del IBAN (ES123456789) no es válido.", severity: "error", failed: true },
+      { group: 'fields', name: "Tipo de persona (física/jurídica) es obligatorio", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Validación de Código de Explotación Agraria (CEA) y REA", display_message: "Código de Explotación Agraria (CEA) no informado. Verificar si es obligatorio para este caso.", severity: "warning", failed: true },
+      { group: 'fields', name: "Validación de ayuda a jóvenes agricultores", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Datos de entidad colaboradora", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Verificación de Agricultor Activo (RD 1048/2022)", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Verificación de requisitos de ayudas asociadas agrícolas", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'fields', name: "Validación de NIF/CIF del solicitante", display_message: "Validación correcta", severity: "success", failed: false },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de pastoreo extensivo", display_message: "PASTOREO EXTENSIVO - INCUMPLE. ERRORES: No se han declarado recintos válidos para pastoreo extensivo.", severity: "error", failed: true },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de siega sostenible", display_message: "SIEGA SOSTENIBLE - No solicitada - NO ELEGIBLE.", severity: "success", failed: false },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Islas de biodiversidad en pastos", display_message: "ISLAS DE BIODIVERSIDAD EN PASTOS - No solicitada - NO ELEGIBLE.", severity: "success", failed: false },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Siembra directa", display_message: "SIEMBRA DIRECTA - No solicitada - NO ELEGIBLE.", severity: "success", failed: false },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Espacios de biodiversidad en cultivos", display_message: "ESPACIOS DE BIODIVERSIDAD - INCUMPLE. ERRORES: No se han declarado recintos válidos.", severity: "error", failed: true },
+      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Rotación de cultivos", display_message: "ROTACIÓN ESPECIES MEJORANTES - INCUMPLE: No se han declarado recintos compatibles.", severity: "error", failed: true },
+      { group: 'BCAM', name: "Verificación BCAM 2", display_message: "BCAM 2: No aplica.", severity: "success", failed: false },
+      { group: 'BCAM', name: "Verificación BCAM 9", display_message: "BCAM 9: Sin recintos declarados.", severity: "success", failed: false },
+      { group: 'BCAM', name: "Verificación BCAM 7", display_message: "CUMPLE BCAM 7 (por exención).", severity: "success", failed: false }
+    ];
+    const typeToColor = {
+      error: { text: "text-danger", icon: "fas fa-times-circle" },
+      warning: { text: "text-warning", icon: "fas fa-exclamation-triangle" },
+      info: { text: "text-info", icon: "fas fa-info-circle" },
+      success: { text: "text-success", icon: "fas fa-check-circle" }
+    };
+
+    function populateValidationsList() {
+      const validationsListUl = document.getElementById("validationsList");
+      if (!validationsListUl) return;
+
+      validationsListUl.innerHTML = ""; // Limpiar
+
+      if (!mockValidationsData || mockValidationsData.length === 0) {
+        validationsListUl.innerHTML = `<li class="list-group-item text-center p-4"><em class="text-muted">No hay validaciones disponibles.</em></li>`;
+        return;
+      }
+
+      mockValidationsData.forEach(val => {
+        const colorInfo = typeToColor[val.severity] || { text: 'text-secondary', icon: 'fas fa-question-circle' };
+        const statusBadge = val.failed
+          ? `<span class="badge bg-danger">Fallida</span>`
+          : `<span class="badge bg-success">Exitosa</span>`;
+
+        const listItem = `
+          <li class="list-group-item d-flex align-items-start validation-item">
+            <div class="validation-icon me-3 ${colorInfo.text}" style="padding-top: 0.25rem;">
+              <i class="${colorInfo.icon}"></i>
+            </div>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between">
+                <strong class="mb-1">${val.name}</strong>
+              </div>
+              <small class="text-muted">${val.display_message}</small>
+            </div>
+          </li>
+        `;
+        validationsListUl.insertAdjacentHTML('beforeend', listItem);
+      });
+    }
 
 
     // --- FUNCIONES HELPER ---

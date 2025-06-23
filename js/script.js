@@ -183,75 +183,75 @@ const formValidations = [
   },
 ];
 
-function populateValidationsList() {
-  const validationsListUl = document.getElementById("validationsList"); // Asumimos que ahora es un UL
-  if (!validationsListUl) {
-    console.error("Elemento #validationsList (debe ser UL) no encontrado.");
-    return;
-  }
+// function populateValidationsList() {
+//   const validationsListUl = document.getElementById("validationsList"); // Asumimos que ahora es un UL
+//   if (!validationsListUl) {
+//     console.error("Elemento #validationsList (debe ser UL) no encontrado.");
+//     return;
+//   }
 
-  // Aplicar clases de list-group al UL
-  validationsListUl.className = "list-group list-group-flush";
-  validationsListUl.innerHTML = ""; // Limpiar lista
+//   // Aplicar clases de list-group al UL
+//   validationsListUl.className = "list-group list-group-flush";
+//   validationsListUl.innerHTML = ""; // Limpiar lista
 
-  if (formValidations.length === 0) {
-    validationsListUl.innerHTML =
-      '<li class="list-group-item text-center p-4"><em class="text-muted">No hay validaciones pendientes.</em></li>';
-    return;
-  }
+//   if (formValidations.length === 0) {
+//     validationsListUl.innerHTML =
+//       '<li class="list-group-item text-center p-4"><em class="text-muted">No hay validaciones pendientes.</em></li>';
+//     return;
+//   }
 
-  formValidations.forEach((val) => {
-    const listItem = document.createElement("li");
-    listItem.className = "list-group-item list-group-item-action"; // list-group-item-action para efecto hover y cursor
-    listItem.style.cursor = "pointer"; // Asegurar cursor pointer
+//   formValidations.forEach((val) => {
+//     const listItem = document.createElement("li");
+//     listItem.className = "list-group-item list-group-item-action"; // list-group-item-action para efecto hover y cursor
+//     listItem.style.cursor = "pointer"; // Asegurar cursor pointer
 
-    let iconClass = "";
-    let textColorClass = ""; // Usaremos textColorClass para el texto y el icono para consistencia
-    let typeText = "";
+//     let iconClass = "";
+//     let textColorClass = ""; // Usaremos textColorClass para el texto y el icono para consistencia
+//     let typeText = "";
 
-    switch (val.type) {
-      case "error":
-        iconClass = "fas fa-times-circle";
-        textColorClass = "text-danger"; // Rojo para errores
-        typeText = "Error";
-        break;
-      case "incidencia":
-        iconClass = "fas fa-exclamation-triangle"; // Cambiado a triángulo para diferenciar de aviso
-        textColorClass = "text-warning"; // Amarillo/Naranja para incidencias
-        typeText = "Incidencia";
-        break;
-      case "aviso":
-        iconClass = "fas fa-info-circle"; // Cambiado a círculo de info para avisos
-        textColorClass = "text-info"; // Azul para avisos
-        typeText = "Aviso";
-        break;
-      default:
-        iconClass = "fas fa-question-circle";
-        textColorClass = "text-secondary";
-        typeText = "Desconocido";
-    }
+//     switch (val.type) {
+//       case "error":
+//         iconClass = "fas fa-times-circle";
+//         textColorClass = "text-danger"; // Rojo para errores
+//         typeText = "Error";
+//         break;
+//       case "incidencia":
+//         iconClass = "fas fa-exclamation-triangle"; // Cambiado a triángulo para diferenciar de aviso
+//         textColorClass = "text-warning"; // Amarillo/Naranja para incidencias
+//         typeText = "Incidencia";
+//         break;
+//       case "aviso":
+//         iconClass = "fas fa-info-circle"; // Cambiado a círculo de info para avisos
+//         textColorClass = "text-info"; // Azul para avisos
+//         typeText = "Aviso";
+//         break;
+//       default:
+//         iconClass = "fas fa-question-circle";
+//         textColorClass = "text-secondary";
+//         typeText = "Desconocido";
+//     }
 
-    listItem.innerHTML = `
-      <div class="d-flex align-items-center">
-        <i class="${iconClass} ${textColorClass} fa-fw me-3 mt-1"></i>
-        <div class="flex-grow-1">
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="mb-0 font-semibold text-sm">${typeText}: ${
-      val.fieldLabel || val.fieldId
-    }</p>
-          </div>
-          <small class="text-muted d-block mt-1">${val.message}</small>
-        </div>
-      </div>
-    `;
-    listItem.addEventListener("click", () => {
-      if (typeof applyValidationFocus === "function") {
-        applyValidationFocus(val);
-      }
-      if (typeof toggleValidationsPanel === "function") {
-        toggleValidationsPanel(); // Descomentar si quieres que el panel se cierre al hacer clic
-      }
-    });
-    validationsListUl.appendChild(listItem);
-  });
-}
+//     listItem.innerHTML = `
+//       <div class="d-flex align-items-center">
+//         <i class="${iconClass} ${textColorClass} fa-fw me-3 mt-1"></i>
+//         <div class="flex-grow-1">
+//           <div class="d-flex justify-content-between align-items-center">
+//             <p class="mb-0 font-semibold text-sm">${typeText}: ${
+//       val.fieldLabel || val.fieldId
+//     }</p>
+//           </div>
+//           <small class="text-muted d-block mt-1">${val.message}</small>
+//         </div>
+//       </div>
+//     `;
+//     listItem.addEventListener("click", () => {
+//       if (typeof applyValidationFocus === "function") {
+//         applyValidationFocus(val);
+//       }
+//       if (typeof toggleValidationsPanel === "function") {
+//         toggleValidationsPanel(); // Descomentar si quieres que el panel se cierre al hacer clic
+//       }
+//     });
+//     validationsListUl.appendChild(listItem);
+//   });
+// }
