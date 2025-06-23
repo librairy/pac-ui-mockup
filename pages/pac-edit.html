@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Edit PAC 123 - Versión Mejorada</title>
+  <title>Edit PAC 123</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -97,8 +97,6 @@
       background: #a3a3a3;
     }
 
-    /* === INICIO: NUEVOS ESTILOS PARA VALIDACIONES === */
-
     /* Estilos para resaltar campos de validación */
     .campo-validacion-error {
       border-color: #ef4444 !important;
@@ -106,8 +104,14 @@
       background-color: #fee2e2 !important;
       /* red-100 */
       box-shadow: 0 0 0 2px #ef4444 !important;
-      transition: all 0.3s;
     }
+
+    .campo-validacion-error+label,
+    label.campo-validacion-error {
+      /* Para destacar el label si es necesario */
+      color: #ef4444 !important;
+    }
+
 
     .campo-validacion-incidencia {
       border-color: #f97316 !important;
@@ -115,20 +119,23 @@
       background-color: #ffedd5 !important;
       /* orange-100 */
       box-shadow: 0 0 0 2px #f97316 !important;
-      transition: all 0.3s;
+    }
+
+    .campo-validacion-incidencia+label,
+    label.campo-validacion-incidencia {
+      color: #f97316 !important;
     }
 
     .campo-validacion-aviso {
-      border-color: #3b82f6 !important;
-      /* blue-500 */
-      background-color: #dbeafe !important;
-      /* blue-100 */
-      box-shadow: 0 0 0 2px #3b82f6 !important;
-      transition: all 0.3s;
+      border-color: rgb(13, 202, 240) !important;
+      background-color: #bbf7f4 !important;
+      box-shadow: 0 0 0 2px rgb(13, 202, 240) !important;
     }
 
-    /* === FIN: NUEVOS ESTILOS PARA VALIDACIONES === */
-
+    .campo-validacion-aviso+label,
+    label.campo-validacion-aviso {
+      color: rgb(13, 202, 240) !important;
+    }
 
     /* Nuevos estilos para la navegación y secciones del formulario */
     .form-section {
@@ -152,7 +159,6 @@
     }
 
     #form-navigation .active-nav-link {
-      background-color: #1abc9c;
       color: white;
     }
 
@@ -177,7 +183,77 @@
       background-color: #1abc9c;
       color: #fff !important;
     }
+
+    .search-bar-container {
+      position: relative;
+    }
+
+    /* Bootstrap debería manejar la mayoría de los estilos del dropdown,
+       pero puedes añadir aquí personalizaciones si es necesario, como:
+    #form-search-results-dropdown {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    */
+
+    .relevant-field-extract {
+      /* Para los elementos clickeables que representan campos */
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .relevant-field-extract:hover {
+      background-color: #e9ecef;
+      border-color: #ced4da;
+    }
+
+    .highlighted-by-ai-click-form-field {
+      /* Estilo para resaltar campos de formulario */
+      border: 2px solid #1abc9c !important;
+      /* Tailwind verde principal */
+      box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.35) !important;
+      background-color: #e8f8f5 !important;
+      transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    label.highlighted-by-ai-click-form-label {
+      /* Estilo para resaltar etiquetas de campos */
+      color: #17a2b8 !important;
+      /* Un color que destaque, puedes ajustarlo */
+      font-weight: 600 !important;
+      transition: color 0.3s ease-in-out;
+    }
+
+    #ai-response-text-form.typing::after {
+      /* Animación de cursor para la IA */
+      content: '▋';
+      animation: blink 1s step-end infinite;
+      margin-left: 0.25em;
+      font-size: 1.1em;
+      /* Ajusta si es necesario */
+      color: #6c757d;
+      /* Color del cursor */
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 
 <body>
@@ -246,25 +322,70 @@
         <a href="#" title="User Profile"><i class="fas fa-user-circle"></i></a>
       </div>
     </nav>
+
     <div class="content-wrapper">
       <div class="container-fluid px-0 sm:px-4">
+
         <div class="flex justify-between items-center p-4 relative">
           <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center lg:text-left"> Solicitud Única PAC 2025
           </h1>
           <div id="formActions" class="absolute right-0 top-0 bottom-0 flex items-center pr-4">
-            <button type="submit" class="btn btn-primary rounded-pill hover:text-white">
-              Guardar Cambios
-            </button>
-            <button id="aiGenerationButton" title="Cumplimentar con IA"
-              class="btn btn-outline-secondary ms-2 rounded-pill">
+            <button id="aiGenerationButton" title="Cumplimentar con IA" class="ai-button rounded-full">
               <i class="fas fa-star"></i>
             </button>
-            <button id="validationsButton" title="Ver Validaciones" class="btn btn-outline-secondary ms-2 rounded-pill">
+            <button id="validationsButton" title="Ver Validaciones"
+              class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
               <i class="fas fa-check-circle"></i>
             </button>
-            <button id="historyButton" title="Ver Historial" class="btn btn-outline-secondary ms-2 rounded-pill">
+            <button id="historyButton" title="Ver Historial"
+              class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
               <i class="fas fa-history"></i>
             </button>
+          </div>
+        </div>
+
+        <div class="row px-4">
+          <div class="col-12">
+            <div class="search-bar-container">
+              <div class="input-group search-input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control form-control-lg" id="form-search-input"
+                  placeholder="Buscar en este formulario o preguntar a la IA..." aria-label="Buscar en formulario o IA"
+                  aria-haspopup="true" aria-expanded="false">
+              </div>
+              <div id="form-search-results-dropdown" class="dropdown-menu w-100 mt-1">
+              </div>
+              <small class="form-text text-muted mt-2 d-block px-2" id="form-search-help-text">
+                Ej: "IBAN", "¿Qué es el código REGEPA?", "Ayuda para jóvenes agricultores"
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row px-4">
+          <div class="col-12">
+            <div id="ai-response-area" class="d-none">
+              <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Respuesta de la IA</h5>
+                  <button type="button" class="btn-close" aria-label="Cerrar respuesta IA"
+                    id="close-ai-response-form"></button>
+                </div>
+                <div class="card-body">
+                  <div id="ai-thinking-indicator-form" class="text-center my-3 d-none">
+                    <div class="spinner-border text-[#1abc9c]" role="status">
+                      <span class="visually-hidden">Consultando...</span>
+                    </div>
+                    <p class="mt-2 text-muted small">Consultando a la IA y analizando el formulario...</p>
+                  </div>
+                  <div id="ai-response-text-form" class="mb-3"></div>
+                  <p id="relevant-fields-title-form" class="d-none text-muted small mb-2">Pulsa en un campo para ir a su
+                    ubicación:</p>
+                  <div id="relevant-fields-container-form" class="mt-1">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -279,8 +400,66 @@
               <li><a href="#" class="nav-link" data-section="recordatorios-reglamentacion">Recordatorios
                   Reglamentación</a></li>
               <li><a href="#" class="nav-link" data-section="documentacion">Documentación</a></li>
+              <li><a href="#" class="nav-link" data-section="derechos">Derechos</a></li>
+              <li><a href="#" class="nav-link" data-section="figuras-calidad">Figuras de Calidad</a></li>
+              <li>
+                <span class="section-group-header">Datos de Recintos</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="recintos">Recintos</a></li>
+                  <li><a href="#" class="nav-link" data-section="lineas-ayuda-recintos">Líneas de Ayuda / Recintos</a>
+                  </li>
+                  <li><a href="#" class="nav-link" data-section="detalle-variedades">Detalle Variedades</a></li>
+                  <li><a href="#" class="nav-link" data-section="datos-adicionales-recintos">Datos Adicionales de
+                      Recintos</a></li>
+                  <li><a href="#" class="nav-link" data-section="productos-horticolas-frutales">Productos Hortícolas y
+                      otros Frutales</a></li>
+                  <li><a href="#" class="nav-link" data-section="recintos-explotaciones-ganaderas">Recintos -
+                      Explotaciones Ganaderas</a></li>
+                  <li><a href="#" class="nav-link" data-section="documentos-asociados-recinto">Documentos asociados por
+                      Recinto</a></li>
+                  <li><a href="#" class="nav-link" data-section="aprovechamientos">Aprovechamientos</a></li>
+                  <li><a href="#" class="nav-link" data-section="lineas-ayuda-aprovechamiento">Líneas Ayuda /
+                      Aprovechamiento</a></li>
+                </ul>
+              </li>
+              <li><a href="#" class="nav-link" data-section="explotaciones-ganaderas">Explotaciones Ganaderas</a></li>
+              <li><a href="#" class="nav-link" data-section="socios">Socios</a></li>
+              <li><a href="#" class="nav-link" data-section="declaracion-responsable-agricultor-activo">Declaración
+                  Responsable (Agricultor Activo)</a></li>
+              <li><a href="#" class="nav-link" data-section="encuesta-responsable-explotacion">Encuesta Responsable
+                  Explotación</a></li>
+              <li>
+                <span class="section-group-header">OPFH - EEPP</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="opfh">OPFH</a></li>
+                </ul>
+              </li>
+              <li>
+                <span class="section-group-header">Datos Específicos PDR</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link"
+                      data-section="solicitante-explotacion-pdr">Solicitante/Explotación</a></li>
+                  <li><a href="#" class="nav-link" data-section="datos-especificos-aprovechamientos-pdr">Datos
+                      Específicos Aprovechamientos</a></li>
+                </ul>
+              </li>
+              <li><a href="#" class="nav-link" data-section="datos-edificios-instalaciones">Datos de Edificios e
+                  Instalaciones</a></li>
+              <li><a href="#" class="nav-link" data-section="cumplimiento-bcams-ecorregimenes">Cumplimiento de BCAMs y
+                  Ecorregímenes</a></li>
+              <li><a href="#" class="nav-link" data-section="resumen-solicitud">Resumen de la solicitud</a></li>
+              <li>
+                <span class="section-group-header">Información Complementaria</span>
+                <ul class="space-y-1">
+                  <li><a href="#" class="nav-link" data-section="impreso-justificante-registro">Impreso y Justificante
+                      Registro</a></li>
+                  <li><a href="#" class="nav-link" data-section="solicitudes-relacionadas">Solicitudes Relacionadas</a>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </aside>
+
           <main class="w-full lg:w-3/4 xl:w-4/5 p-4 lg:pl-8">
             <form id="pac-form">
               <div id="section-datos-generales" class="form-section active">
@@ -296,8 +475,48 @@
                       <input type="text" id="num_solicitud" name="num_solicitud" value="367389" class="bg-gray-200"
                         readonly />
                     </div>
+                    <div>
+                      <label for="estado_actual">Estado actual</label>
+                      <input type="text" id="estado_actual" name="estado_actual" value="Finalizada" class="bg-gray-200"
+                        readonly />
+                    </div>
+                    <div>
+                      <label for="fecha_registro">Fecha Registro</label>
+                      <input type="text" id="fecha_registro" name="fecha_registro" value=""
+                        placeholder="Ej: 17/06/2024" />
+                    </div>
+                    <div>
+                      <label for="num_registro">Número Registro</label>
+                      <input type="text" id="num_registro" name="num_registro" value="2024000000154555" />
+                    </div>
+                    <div>
+                      <label for="ambito_grabacion">Ámbito de Grabación</label>
+                      <input type="text" id="ambito_grabacion" name="ambito_grabacion"
+                        value="AGROAL GESTIÓN INTEGRAL, S.L.U." />
+                    </div>
+                    <div>
+                      <label for="tipo_registro">Tipo de registro</label>
+                      <input type="text" id="tipo_registro" name="tipo_registro" value="" />
+                    </div>
+                    <div>
+                      <label for="codigo_regepa">Código REGEPA</label>
+                      <input type="text" id="codigo_regepa" name="codigo_regepa" value="1106030141" />
+                    </div>
+                    <div>
+                      <label for="cod_explotacion">Cód. Explotación</label>
+                      <input type="text" id="cod_explotacion" name="cod_explotacion" value="" />
+                    </div>
+                    <div>
+                      <label for="comunidad_autonoma">Comunidad Autónoma</label>
+                      <input type="text" id="comunidad_autonoma" name="comunidad_autonoma" value="Extremadura" />
+                    </div>
+                    <div>
+                      <label for="num_expediente">Número Expediente</label>
+                      <input type="text" id="num_expediente" name="num_expediente" value="11039695" />
+                    </div>
                   </div>
                 </fieldset>
+
                 <fieldset>
                   <legend>Datos Personales del Solicitante</legend>
                   <div class="grid grid-cols-form gap-4">
@@ -456,7 +675,7 @@
                     </div>
                     <div>
                       <label for="res_nombre_via">Nombre vía</label>
-                      <input type="text" id="res_nombre_via" name="res_nombre_via" value="" />
+                      <input type="text" id="res_nombre_via" name="res_nombre_via" value="NAC 430" />
                     </div>
                     <div>
                       <label for="res_numero">Número</label>
@@ -510,7 +729,623 @@
                   <div class="grid grid-cols-form gap-4">
                     <div>
                       <label for="iban">IBAN</label>
-                      <input type="text" id="iban" name="iban" value="ES123456789" placeholder="ESXX..." required />
+                      <input type="text" id="iban" name="iban" value="ES6221002027690200037255" placeholder="ESXX..."
+                        required />
+                    </div>
+                    <div>
+                      <label for="entidad">Entidad</label>
+                      <input type="text" id="entidad" name="entidad" value="2100" class="w-1/4 inline-block mr-2" />
+                      <label for="sucursal" class="inline-block mr-2">Sucursal</label>
+                      <input type="text" id="sucursal" name="sucursal" value="2027" class="w-1/4 inline-block mr-2" />
+                      <label for="dc" class="inline-block mr-2">DC</label>
+                      <input type="text" id="dc" name="dc" value="69" class="w-1/6 inline-block" />
+                    </div>
+                    <div>
+                      <label for="num_cuenta">Número de Cuenta</label>
+                      <input type="text" id="num_cuenta" name="num_cuenta" value="0200037255" />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Datos Fiscales del Solicitante</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="fiscal_incorpora" name="fiscal_incorpora" />
+                      <label for="fiscal_incorpora" class="ml-2 mb-0">Solicitante que se incorpora a la actividad
+                        agraria</label>
+                    </div>
+                    <div>
+                      <label for="fiscal_forma_juridica">Forma Jurídica</label>
+                      <input type="text" id="fiscal_forma_juridica" name="fiscal_forma_juridica"
+                        value="Otras personas jurídicas" />
+                    </div>
+                    <div>
+                      <label for="fiscal_cif_integradora">CIF/NIF Integradora de Ganado</label>
+                      <input type="text" id="fiscal_cif_integradora" name="fiscal_cif_integradora" value="" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_integradora_2023">Ingresos Agrarios Integradora Ejercicio 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_integradora_2023"
+                        name="fiscal_ingresos_integradora_2023" value="" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2023">Ingresos Agrarios Ejercicio 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2023"
+                        name="fiscal_ingresos_agrarios_2023" value="13624150.7" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2022">Ingresos Agrarios Ejercicio 2022</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2022"
+                        name="fiscal_ingresos_agrarios_2022" value="15564544.25" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_agrarios_2021">Ingresos Agrarios Ejercicio 2021</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_agrarios_2021"
+                        name="fiscal_ingresos_agrarios_2021" value="13665204.58" />
+                    </div>
+                    <div>
+                      <label for="fiscal_ingresos_totales_2023">Ingresos totales 2023</label>
+                      <input type="number" step="0.01" id="fiscal_ingresos_totales_2023"
+                        name="fiscal_ingresos_totales_2023" value="7069803.74" />
+                    </div>
+                    <div>
+                      <label for="fiscal_costes_laborales">Costes laborales realmente pagados</label>
+                      <input type="number" step="0.01" id="fiscal_costes_laborales" name="fiscal_costes_laborales"
+                        value="" />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Representante</legend>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="rep_cif_nif">CIF/NIF</label>
+                      <input type="text" id="rep_cif_nif" name="rep_cif_nif" value="76226750N" />
+                    </div>
+                    <div>
+                      <label for="rep_nombre">Nombre</label>
+                      <input type="text" id="rep_nombre" name="rep_nombre" value="ATANASIO" />
+                    </div>
+                    <div>
+                      <label for="rep_apellido1">Primer Apellido</label>
+                      <input type="text" id="rep_apellido1" name="rep_apellido1" value="NARANJO" />
+                    </div>
+                    <div>
+                      <label for="rep_apellido2">Segundo Apellido</label>
+                      <input type="text" id="rep_apellido2" name="rep_apellido2" value="HIDALGO" />
+                    </div>
+                    <div>
+                      <label for="rep_fecha_nac">F. Nacimiento</label>
+                      <input type="date" id="rep_fecha_nac" name="rep_fecha_nac" value="1956-07-22" />
+                    </div>
+                    <div>
+                      <label for="rep_genero">Género</label>
+                      <select id="rep_genero" name="rep_genero">
+                        <option value="">Seleccionar...</option>
+                        <option value="Hombre" selected>Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="rep_telefono">Teléfono</label>
+                      <input type="tel" id="rep_telefono" name="rep_telefono" value="" />
+                    </div>
+                    <div>
+                      <label for="rep_movil">Móvil</label>
+                      <input type="tel" id="rep_movil" name="rep_movil" value="" />
+                    </div>
+                    <div>
+                      <label for="rep_email">Email</label>
+                      <input type="email" id="rep_email" name="rep_email" value="" />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Responsabilidad Jurídica de la Explotación</legend>
+                  <p class="mb-4">
+                    La responsabilidad jurídica y económica de la explotación recae
+                    en:
+                  </p>
+                  <div class="mb-4 space-y-2">
+                    <div class="flex items-center">
+                      <input type="radio" id="resp_persona_fisica" name="responsabilidad_tipo" value="fisica"
+                        class="mr-2" />
+                      <label for="resp_persona_fisica" class="mb-0">Una persona física</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="radio" id="resp_persona_juridica" name="responsabilidad_tipo" value="juridica"
+                        class="mr-2" checked />
+                      <label for="resp_persona_juridica" class="mb-0">Una persona jurídica o entidad sin personalidad
+                        jurídica</label>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex items-center">
+                      <label for="resp_gerente_titular" class="mr-2 mb-0">¿Es el titular también el gerente de la
+                        explotación?</label>
+                      <select id="resp_gerente_titular" name="resp_gerente_titular">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_gerente_familiar" class="mr-2 mb-0">¿Es el gerente de la explotación un miembro
+                        de la
+                        familia
+                        del titular?</label>
+                      <select id="resp_gerente_familiar" name="resp_gerente_familiar">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_comparte_familiar" class="mr-2 mb-0">¿El gerente de la explotación comparte
+                        responsabilidad de
+                        la gestión con un familiar?</label>
+                      <select id="resp_comparte_familiar" name="resp_comparte_familiar">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_comparte_conyuge" class="mr-2 mb-0">¿Con el cónyuge del titular?</label>
+                      <select id="resp_comparte_conyuge" name="resp_comparte_conyuge">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_gerente_conyuge" class="mr-2 mb-0">¿Es el gerente de la explotación el cónyuge
+                        del
+                        titular?</label>
+                      <select id="resp_gerente_conyuge" name="resp_gerente_conyuge">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div class="flex items-center">
+                      <label for="resp_grupo_empresarial" class="mr-2 mb-0">¿La explotación agrícola forma parte de un
+                        grupo
+                        empresarial?</label>
+                      <select id="resp_grupo_empresarial" name="resp_grupo_empresarial">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 mt-6 text-gray-700">
+                    Datos del Gerente
+                  </h3>
+                  <div class="grid grid-cols-form gap-4">
+                    <div>
+                      <label for="gerente_nif">NIF gerente Explotación</label>
+                      <input type="text" id="gerente_nif" name="gerente_nif" value="76226750N" />
+                    </div>
+                    <div>
+                      <label for="gerente_nombre">Nombre / Razón Social</label>
+                      <input type="text" id="gerente_nombre" name="gerente_nombre" value="ATANASIO" />
+                    </div>
+                    <div>
+                      <label for="gerente_apellido1">Primer Apellido</label>
+                      <input type="text" id="gerente_apellido1" name="gerente_apellido1" value="NARANJO" />
+                    </div>
+                    <div>
+                      <label for="gerente_apellido2">Segundo Apellido</label>
+                      <input type="text" id="gerente_apellido2" name="gerente_apellido2" value="HIDALGO" />
+                    </div>
+                    <div>
+                      <label for="gerente_fecha_nac">F. Nacimiento</label>
+                      <input type="date" id="gerente_fecha_nac" name="gerente_fecha_nac" value="1956-07-22" />
+                    </div>
+                    <div>
+                      <label for="gerente_genero">Género</label>
+                      <select id="gerente_genero" name="gerente_genero">
+                        <option value="">Seleccionar...</option>
+                        <option value="Hombre" selected>Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="gerente_email">Email</label>
+                      <input type="email" id="gerente_email" name="gerente_email" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_telefono">Teléfono</label>
+                      <input type="tel" id="gerente_telefono" name="gerente_telefono" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_movil">Móvil</label>
+                      <input type="tel" id="gerente_movil" name="gerente_movil" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_jornadas">Porcentaje de jornadas Anuales de trabajo agrario en la
+                        explotación</label>
+                      <input type="text" id="gerente_jornadas" name="gerente_jornadas" value="-50%" />
+                    </div>
+                    <div>
+                      <label for="gerente_ano_inicio">Año en que empezó a trabajar como gerente de
+                        explotación</label>
+                      <input type="number" id="gerente_ano_inicio" name="gerente_ano_inicio" value="1997" />
+                    </div>
+                    <div>
+                      <label for="gerente_formacion">Formación agraria del gerente de explotación</label>
+                      <input type="text" id="gerente_formacion" name="gerente_formacion"
+                        value="Cursos de formación agraria" />
+                    </div>
+                    <div class="flex items-center">
+                      <label for="gerente_cursos_perfeccionamiento" class="mr-2 mb-0">Cursos de perfeccionamiento
+                        realizados
+                        durante los últimos
+                        doce meses</label>
+                      <select id="gerente_cursos_perfeccionamiento" name="gerente_cursos_perfeccionamiento">
+                        <option value="si">Sí</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="gerente_cif_matriz">CIF/NIF Empresa Matriz</label>
+                      <input type="text" id="gerente_cif_matriz" name="gerente_cif_matriz" value="" />
+                    </div>
+                    <div>
+                      <label for="gerente_razon_matriz">Razón Social Empresa Matriz</label>
+                      <input type="text" id="gerente_razon_matriz" name="gerente_razon_matriz" value="" />
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Solicita</legend>
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Solicitud Única
+                  </h3>
+                  <div class="space-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_abrs" name="ayuda_abrs" checked />
+                      <label for="ayuda_abrs" class="ml-2 mb-0">Ayuda básica a la renta para la sostenibilidad
+                        (ABRS)</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_redistributiva" name="ayuda_redistributiva" checked />
+                      <label for="ayuda_redistributiva" class="ml-2 mb-0">Ayuda complementaria redistributiva</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_jovenes" name="ayuda_jovenes" />
+                      <label for="ayuda_jovenes" class="ml-2 mb-0">Ayuda complementaria para jóvenes agricultores y
+                        agricultoras</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Ayudas Asociadas Agrícolas
+                  </h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_proteinas" name="ayuda_proteinas" /><label for="ayuda_proteinas"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de proteínas de origen
+                        vegetal</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_arroz" name="ayuda_arroz" /><label for="ayuda_arroz"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de arroz</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_remolacha" name="ayuda_remolacha" /><label for="ayuda_remolacha"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de remolacha
+                        azucarera</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_tomate" name="ayuda_tomate" /><label for="ayuda_tomate"
+                        class="ml-2 mb-0">Ayuda a la producción sostenible de tomate para
+                        transformación</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_frutos_secos" name="ayuda_frutos_secos" /><label
+                        for="ayuda_frutos_secos" class="ml-2 mb-0">Ayuda a los productores de frutos secos en áreas con
+                        riesgo
+                        de desertificación</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_uva_pasa" name="ayuda_uva_pasa" /><label for="ayuda_uva_pasa"
+                        class="ml-2 mb-0">Ayuda a la producción tradicional de uva pasa</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_olivar" name="ayuda_olivar" /><label for="ayuda_olivar"
+                        class="ml-2 mb-0">Ayuda al olivar con dificultades específicas y alto valor
+                        medioambiental</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_algodon" name="ayuda_algodon" /><label for="ayuda_algodon"
+                        class="ml-2 mb-0">Pago específico al cultivo del algodón</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Ayudas Asociadas de Ganadería
+                  </h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_vacuno_carne" name="ayuda_gan_vacuno_carne" /><label
+                        for="ayuda_gan_vacuno_carne" class="ml-2 mb-0">Ayuda para los ganaderos extensivos de vacuno de
+                        carne</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_terneros_nacimiento"
+                        name="ayuda_gan_terneros_nacimiento" /><label for="ayuda_gan_terneros_nacimiento"
+                        class="ml-2 mb-0">Ayuda para el engorde de terneros en la
+                        explotación de
+                        nacimiento</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_terneros_sostenible"
+                        name="ayuda_gan_terneros_sostenible" /><label for="ayuda_gan_terneros_sostenible"
+                        class="ml-2 mb-0">Ayuda para el engorde sostenible de
+                        terneros</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_leche_vaca" name="ayuda_gan_leche_vaca" /><label
+                        for="ayuda_gan_leche_vaca" class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
+                        vaca</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_ovino_caprino_carne"
+                        name="ayuda_gan_ovino_caprino_carne" /><label for="ayuda_gan_ovino_caprino_carne"
+                        class="ml-2 mb-0">Ayuda para los ganaderos extensivos y
+                        semiextensivos de
+                        ovino y caprino de carne</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="ayuda_gan_leche_oveja_cabra"
+                        name="ayuda_gan_leche_oveja_cabra" /><label for="ayuda_gan_leche_oveja_cabra"
+                        class="ml-2 mb-0">Ayuda para la producción sostenible de leche de
+                        oveja y
+                        cabra</label>
+                    </div>
+                    <div class="flex items-center col-span-full">
+                      <input type="checkbox" id="ayuda_gan_ovino_caprino_sin_pastos"
+                        name="ayuda_gan_ovino_caprino_sin_pastos" /><label for="ayuda_gan_ovino_caprino_sin_pastos"
+                        class="ml-2 mb-0">Ayuda para los ganaderos extensivos y semiextensivos de
+                        ovino y caprino sin pastos a su disposición y que pastorean
+                        superficies de rastrojeras, barbechos y restos
+                        hortícolas</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Eco Regímenes
+                  </h3>
+                  <div class="space-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_pastoreo_siega_biodiversidad"
+                        name="eco_pastoreo_siega_biodiversidad" />
+                      <label for="eco_pastoreo_siega_biodiversidad" class="ml-2 mb-0">Agricultura de carbono y
+                        agroecología:
+                        Pastoreo extensivo,
+                        siega y biodiversidad en las superficies de Pastos (Húmedos
+                        o Mediterráneos)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_pastoreo_extensivo" name="eco_pastoreo_extensivo" /><label
+                        for="eco_pastoreo_extensivo" class="ml-2 mb-0">Pastoreo extensivo</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_siega_sostenible" name="eco_siega_sostenible" /><label
+                        for="eco_siega_sostenible" class="ml-2 mb-0">Siega sostenible</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_islas_biodiversidad" name="eco_islas_biodiversidad" /><label
+                        for="eco_islas_biodiversidad" class="ml-2 mb-0">Islas de biodiversidad en pastos</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_rotaciones_siembra_directa" name="eco_rotaciones_siembra_directa"
+                        checked />
+                      <label for="eco_rotaciones_siembra_directa" class="ml-2 mb-0">Agricultura de carbono y
+                        agroecología:
+                        Rotaciones y siembra
+                        directa en tierras de cultivo (de secano, de secano húmedo o
+                        de regadío)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_rotacion_mejorantes" name="eco_rotacion_mejorantes"
+                        checked /><label for="eco_rotacion_mejorantes" class="ml-2 mb-0">Rotación de cultivos con
+                        especies mejorantes</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_siembra_directa" name="eco_siembra_directa" /><label
+                        for="eco_siembra_directa" class="ml-2 mb-0">Siembra directa</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_cubiertas_lenosos" name="eco_cubiertas_lenosos" checked />
+                      <label for="eco_cubiertas_lenosos" class="ml-2 mb-0">Agricultura de carbono: Cubiertas vegetales y
+                        cubiertas
+                        inertes en cultivos leñosos (en terrenos llanos, en terrenos
+                        de pendiente media o en terrenos de elevada
+                        pendiente)</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_cubierta_vegetal" name="eco_cubierta_vegetal" checked /><label
+                        for="eco_cubierta_vegetal" class="ml-2 mb-0">Cubierta vegetal espontánea o sembrada</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_cubierta_inerte" name="eco_cubierta_inerte" /><label
+                        for="eco_cubierta_inerte" class="ml-2 mb-0">Cubierta inerte de restos de poda</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_espacios_biodiversidad" name="eco_espacios_biodiversidad" />
+                      <label for="eco_espacios_biodiversidad" class="ml-2 mb-0">Agroecología: Espacios de biodiversidad
+                        en
+                        tierras de
+                        cultivo y cultivos permanentes</label>
+                    </div>
+                    <div class="flex items-center ml-6">
+                      <input type="checkbox" id="eco_espacios_biodiversidad_sub"
+                        name="eco_espacios_biodiversidad_sub" /><label for="eco_espacios_biodiversidad_sub"
+                        class="ml-2 mb-0">Espacios de biodiversidad</label>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_nivelacion" name="eco_lamina_nivelacion" /><label
+                        for="eco_lamina_nivelacion" class="ml-2 mb-0">Gestión sostenible de la lámina de agua:
+                        Nivelación
+                        anual
+                        del terreno...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_siembra_seco" name="eco_lamina_siembra_seco" /><label
+                        for="eco_lamina_siembra_seco" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Siembra
+                        en
+                        seco...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_secas" name="eco_lamina_secas" /><label
+                        for="eco_lamina_secas" class="ml-2 mb-0">Gestión sostenible de la lámina de agua: Secas
+                        intermitentes...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="eco_lamina_caballones" name="eco_lamina_caballones" /><label
+                        for="eco_lamina_caballones" class="ml-2 mb-0">Gestión sostenible de la lámina de agua:
+                        Construcción de
+                        caballones...</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Solicitas de Desarrollo Rural dentro Sistema Integrado (FEADER)
+                  </h3>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 mb-6">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_andalucia" name="dr_andalucia" /><label for="dr_andalucia"
+                        class="ml-2 mb-0">Andalucía</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_aragon" name="dr_aragon" /><label for="dr_aragon"
+                        class="ml-2 mb-0">Aragón</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_asturias" name="dr_asturias" /><label for="dr_asturias"
+                        class="ml-2 mb-0">Asturias</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_baleares" name="dr_baleares" /><label for="dr_baleares"
+                        class="ml-2 mb-0">Islas
+                        Baleares</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_canarias" name="dr_canarias" /><label for="dr_canarias"
+                        class="ml-2 mb-0">Canarias</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_cantabria" name="dr_cantabria" /><label for="dr_cantabria"
+                        class="ml-2 mb-0">Cantabria</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_castilla_mancha" name="dr_castilla_mancha" /><label
+                        for="dr_castilla_mancha" class="ml-2 mb-0">Castilla La Mancha</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_castilla_leon" name="dr_castilla_leon" /><label
+                        for="dr_castilla_leon" class="ml-2 mb-0">Castilla
+                        y León</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_cataluna" name="dr_cataluna" /><label for="dr_cataluna"
+                        class="ml-2 mb-0">Cataluña</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_extremadura" name="dr_extremadura" checked /><label
+                        for="dr_extremadura" class="ml-2 mb-0">Extremadura</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_galicia" name="dr_galicia" /><label for="dr_galicia"
+                        class="ml-2 mb-0">Galicia</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_madrid" name="dr_madrid" /><label for="dr_madrid"
+                        class="ml-2 mb-0">Madrid</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_murcia" name="dr_murcia" /><label for="dr_murcia"
+                        class="ml-2 mb-0">Murcia</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_navarra" name="dr_navarra" /><label for="dr_navarra"
+                        class="ml-2 mb-0">Navarra</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_pais_vasco" name="dr_pais_vasco" /><label for="dr_pais_vasco"
+                        class="ml-2 mb-0">País
+                        Vasco</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_rioja" name="dr_rioja" /><label for="dr_rioja" class="ml-2 mb-0">La
+                        Rioja</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="dr_valenciana" name="dr_valenciana" /><label for="dr_valenciana"
+                        class="ml-2 mb-0">C.
+                        Valenciana</label>
+                    </div>
+                  </div>
+
+                  <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                    Líneas de Ayuda de Desarrollo Rural (Extremadura)
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    (Sección simplificada. Añadir checkboxes específicos según sea
+                    necesario basados en la página 4 del PDF)
+                  </p>
+                  <div class="flex items-center">
+                    <input type="checkbox" id="dr_ex_prod_integrada_frutales_hueso_2019"
+                      name="dr_ex_prod_integrada_frutales_hueso_2019" checked />
+                    <label for="dr_ex_prod_integrada_frutales_hueso_2019" class="ml-2 mb-0">Operación 10.1.1. Producción
+                      Integrada de frutales de hueso.
+                      Convocatoria 2019</label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Declaraciones, Compromisos y Autorizaciones</legend>
+                  <p class="text-gray-600 mb-4">
+                    (Sección simplificada. Añadir checkboxes específicos según sea
+                    necesario basados en las páginas 5 a 9 del PDF)
+                  </p>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="declara_datos_verdaderos" name="declara_datos_verdaderos" checked />
+                      <label for="declara_datos_verdaderos" class="ml-2 mb-0">Declara que todos los datos contenidos en
+                        esta
+                        solicitud...
+                        son verdaderos.</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="declara_conoce_sigpac" name="declara_conoce_sigpac" checked />
+                      <label for="declara_conoce_sigpac" class="ml-2 mb-0">Declara que conoce los usos y delimitaciones
+                        que
+                        figuran en
+                        la base de datos SIGPAC...</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="autoriza_consulta_aeat" name="autoriza_consulta_aeat" checked />
+                      <label for="autoriza_consulta_aeat" class="ml-2 mb-0">Autoriza consulta de datos de estar al
+                        corriente
+                        con
+                        AEAT/Agencia Tributaria Autonómica.</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="autoriza_consulta_tgss" name="autoriza_consulta_tgss" checked />
+                      <label for="autoriza_consulta_tgss" class="ml-2 mb-0">Autoriza consulta de datos de estar al
+                        corriente
+                        con
+                        TGSS.</label>
                     </div>
                   </div>
                 </fieldset>
@@ -890,6 +1725,14 @@
 
   <div id="historyPanel"
     class="fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 p-6 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-gray-700">Historial de Cambios</h2>
+      <button id="closeHistoryPanel" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+    <div id="historyList" class="space-y-4">
+    </div>
   </div>
 
   <div id="validationsPanel"
@@ -923,13 +1766,251 @@
     <div id="validationsList" class="space-y-3">
     </div>
   </div>
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 
-  <script>
-    // --- INICIO: LÓGICA DE VALIDACIONES ---
+  <script src="../js/script.js" defer></script>
 
+  <script>
+    // Form base
+    function getBaseFormData() {
+      // Esta función debería idealmente leer los valores actuales del formulario
+      // O, para este mockup, devolver un objeto con todos los valores por defecto del HTML.
+      // Es VITAL que esta función devuelva un objeto con TODOS los campos y sus valores iniciales.
+      return {
+        campana: "2025",
+        num_solicitud: "367389",
+        estado_actual: "Finalizada",
+        fecha_registro: "",
+        num_registro: "2024000000154555",
+        ambito_grabacion: "AGROAL GESTIÓN INTEGRAL, S.L.U.",
+        tipo_registro: "",
+        codigo_regepa: "1106030141",
+        cod_explotacion: "",
+        comunidad_autonoma: "Extremadura",
+        num_expediente: "11039695",
+        sol_cif_nif: "B06258511",
+        sol_nombre_razon: "FRUTICOLA CASTELNOVO SL",
+        sol_apellido1: "",
+        sol_apellido2: "",
+        sol_fecha_nac: "",
+        sol_genero: "",
+        sol_estado_civil: "",
+        sol_telefono: "924856096",
+        sol_movil: "649092918",
+        sol_email: "torrado@tany.es",
+        sol_titularidad_compartida: false,
+        com_sms: false,
+        com_email: true,
+        not_tipo_via: "Carretera",
+        not_nombre_via: "NAC 430",
+        not_numero: "115",
+        not_bloque: "",
+        not_portal: "",
+        not_escalera: "",
+        not_planta: "",
+        not_puerta: "IZ",
+        not_km: "115",
+        not_provincia: "Badajoz",
+        not_municipio: "Villanueva de la Serena",
+        not_cp: "06700",
+        not_localidad: "VILLANUEVA DE LA SERENA",
+        not_apartado: "",
+        not_oficina: "",
+        res_igual_not: true, // Este controla la visibilidad de otra sección
+        // Campos de dirección residencia (se rellenarán si res_igual_not es false, pero deben existir en el modelo)
+        res_tipo_via: "Carretera",
+        res_nombre_via: "NAC 430",
+        res_numero: "115",
+        res_bloque: "",
+        res_portal: "",
+        res_escalera: "",
+        res_planta: "",
+        res_puerta: "IZ",
+        res_km: "115",
+        res_provincia: "Badajoz",
+        res_municipio: "Villanueva de la Serena",
+        res_cp: "06700",
+        res_localidad: "VILLANUEVA DE LA SERENA",
+        iban: "ES6221002027690200037255",
+        entidad: "2100",
+        sucursal: "2027",
+        dc: "69",
+        num_cuenta: "0200037255",
+        fiscal_incorpora: false,
+        fiscal_forma_juridica: "Otras personas jurídicas",
+        fiscal_cif_integradora: "",
+        fiscal_ingresos_integradora_2023: null, // usar null o "" para números vacíos
+        fiscal_ingresos_agrarios_2023: 13624150.7,
+        fiscal_ingresos_agrarios_2022: 15564544.25,
+        fiscal_ingresos_agrarios_2021: 13665204.58,
+        fiscal_ingresos_totales_2023: 7069803.74,
+        fiscal_costes_laborales: null,
+        rep_cif_nif: "76226750N",
+        rep_nombre: "ATANASIO",
+        rep_apellido1: "NARANJO",
+        rep_apellido2: "HIDALGO",
+        rep_fecha_nac: "1956-07-22",
+        rep_genero: "Hombre",
+        rep_telefono: "",
+        rep_movil: "",
+        rep_email: "",
+        responsabilidad_tipo: "juridica", // Radio button
+        resp_gerente_titular: "no",
+        resp_gerente_familiar: "no",
+        resp_comparte_familiar: "no",
+        resp_comparte_conyuge: "no",
+        resp_gerente_conyuge: "no",
+        resp_grupo_empresarial: "no",
+        gerente_nif: "76226750N",
+        gerente_nombre: "ATANASIO",
+        gerente_apellido1: "NARANJO",
+        gerente_apellido2: "HIDALGO",
+        gerente_fecha_nac: "1956-07-22",
+        gerente_genero: "Hombre",
+        gerente_email: "",
+        gerente_telefono: "",
+        gerente_movil: "",
+        gerente_jornadas: "-50%",
+        gerente_ano_inicio: 1997,
+        gerente_formacion: "Cursos de formación agraria",
+        gerente_cursos_perfeccionamiento: "no",
+        gerente_cif_matriz: "",
+        gerente_razon_matriz: "",
+        ayuda_abrs: true,
+        ayuda_redistributiva: true,
+        ayuda_jovenes: false,
+        ayuda_proteinas: false,
+        ayuda_arroz: false,
+        ayuda_remolacha: false,
+        ayuda_tomate: false,
+        ayuda_frutos_secos: false,
+        ayuda_uva_pasa: false,
+        ayuda_olivar: false,
+        ayuda_algodon: false,
+        ayuda_gan_vacuno_carne: false,
+        ayuda_gan_terneros_nacimiento: false,
+        ayuda_gan_terneros_sostenible: false,
+        ayuda_gan_leche_vaca: false,
+        ayuda_gan_ovino_caprino_carne: false,
+        ayuda_gan_leche_oveja_cabra: false,
+        ayuda_gan_ovino_caprino_sin_pastos: false,
+        eco_pastoreo_siega_biodiversidad: false,
+        eco_pastoreo_extensivo: false,
+        eco_siega_sostenible: false,
+        eco_islas_biodiversidad: false,
+        eco_rotaciones_siembra_directa: true,
+        eco_rotacion_mejorantes: true,
+        eco_siembra_directa: false,
+        eco_cubiertas_lenosos: true,
+        eco_cubierta_vegetal: true,
+        eco_cubierta_inerte: false,
+        eco_espacios_biodiversidad: false,
+        eco_espacios_biodiversidad_sub: false,
+        eco_lamina_nivelacion: false,
+        eco_lamina_siembra_seco: false,
+        eco_lamina_secas: false,
+        eco_lamina_caballones: false,
+        dr_andalucia: false,
+        dr_aragon: false,
+        dr_asturias: false,
+        dr_baleares: false,
+        dr_canarias: false,
+        dr_cantabria: false,
+        dr_castilla_mancha: false,
+        dr_castilla_leon: false,
+        dr_cataluna: false,
+        dr_extremadura: true,
+        dr_galicia: false,
+        dr_madrid: false,
+        dr_murcia: false,
+        dr_navarra: false,
+        dr_pais_vasco: false,
+        dr_rioja: false,
+        dr_valenciana: false,
+        dr_ex_prod_integrada_frutales_hueso_2019: true,
+        declara_datos_verdaderos: true,
+        declara_conoce_sigpac: true,
+        autoriza_consulta_aeat: true,
+        autoriza_consulta_tgss: true,
+        // Para la tabla de recintos, necesitaríamos una estructura más compleja, ej: un array de objetos.
+        // recintos: [
+        //   { recinto_prov_0: "06", recinto_mun_0: "44", ... },
+        //   { recinto_prov_1: "06", recinto_mun_1: "44", ... }
+        // ]
+        // Por simplicidad, no lo implementamos completamente aquí, pero es para tenerlo en cuenta.
+      };
+    }
+
+    // Function to toggle visibility of residencia details based on checkbox
+    function toggleResidencia() {
+      const checkbox = document.getElementById("res_igual_not");
+      const detailsDiv = document.getElementById("residencia-details");
+      if (checkbox && detailsDiv) {
+        detailsDiv.classList.toggle("hidden", checkbox.checked);
+      }
+    }
+
+    // --- LÓGICA HISTORIAL (simplificada, asumiendo que está aquí o en un .js importado) ---
+    function toggleHistoryPanel() {
+      const historyPanel = document.getElementById("historyPanel");
+      if (historyPanel) historyPanel.classList.toggle("translate-x-full");
+    }
+
+    function clearFormHighlights() {
+      if (!pacForm) return;
+      const highlightedFields = pacForm.querySelectorAll(".campo-modificado-historial");
+      highlightedFields.forEach(field => field.classList.remove("campo-modificado-historial"));
+    }
+
+    function applyHistoryEntry(historyEntry, highlight = true) {
+      if (!pacForm) return;
+      clearFormHighlights(); // Limpia destacados de historial
+      clearValidationHighlights(); // Limpia también destacados de validaciones
+      const formDataFromHistory = historyEntry.formData;
+      for (const fieldId in formDataFromHistory) {
+        if (formDataFromHistory.hasOwnProperty(fieldId)) {
+          const field = pacForm.elements[fieldId];
+          if (field) {
+            if (field.length && field[0] && field[0].type === "radio") {
+              field.forEach(radio => radio.checked = radio.value === formDataFromHistory[fieldId]);
+            } else if (field.type === "checkbox") {
+              field.checked = formDataFromHistory[fieldId];
+            } else {
+              field.value = formDataFromHistory[fieldId];
+            }
+          }
+        }
+      }
+      if (highlight && historyEntry.changedFields) {
+        historyEntry.changedFields.forEach(fieldId => {
+          const field = pacForm.elements[fieldId];
+          if (field) {
+            if (field.length && field[0].type === "radio") {
+              field.forEach(radio => { if (radio.checked) radio.classList.add("campo-modificado-historial") });
+            } else {
+              field.classList.add("campo-modificado-historial");
+            }
+          }
+        });
+      }
+      if (typeof toggleResidencia === "function" && formDataFromHistory.hasOwnProperty('res_igual_not')) {
+        toggleResidencia();
+      }
+    }
+
+    function showSection(sectionIdToShow) {
+      const formSections = document.querySelectorAll(".form-section");
+      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
+      formSections.forEach(section => section.classList.toggle("active", section.id === "section-" + sectionIdToShow));
+      formNavigationLinks.forEach(link => link.classList.toggle("active-nav-link", link.dataset.section === sectionIdToShow));
+    }
+
+    // --- LÓGICA DE VALIDACIONES ---
     const mockValidationsData = [
       // Grupo: Campos del Formulario
       { group: 'fields', name: "Autorización comunicación por SMS", display_message: "Se recomienda autorizar la comunicación por SMS", severity: "info", failed: true, involved_fields: { field_data: [{ field_id: "com_sms", section_id: "datos-generales" }] } },
@@ -959,24 +2040,16 @@
       { group: 'BCAM', name: "Verificación BCAM 7", display_message: "CUMPLE BCAM 7 (por exención).", severity: "success", failed: false, involved_fields: { field_data: [] } }
     ];
 
-    // Objeto para mapear severidad a colores e iconos, como en React
     const typeToColor = {
       error: { border: "border-red-400", bg: "bg-red-50", text: "text-red-700", icon: "fas fa-times-circle text-red-500", label: "Error", highlightClass: "campo-validacion-error" },
       warning: { border: "border-yellow-400", bg: "bg-yellow-50", text: "text-yellow-700", icon: "fas fa-exclamation-triangle text-yellow-500", label: "Incidencia", highlightClass: "campo-validacion-incidencia" },
       info: { border: "border-blue-400", bg: "bg-blue-50", text: "text-blue-700", icon: "fas fa-info-circle text-blue-500", label: "Aviso", highlightClass: "campo-validacion-aviso" },
     };
 
-    let pacForm; // Variable global para el formulario
 
     function toggleValidationsPanel() {
       const validationsPanel = document.getElementById("validationsPanel");
       if (validationsPanel) validationsPanel.classList.toggle("translate-x-full");
-    }
-
-    function clearValidationHighlights() {
-      if (!pacForm) return;
-      const highlightedFields = pacForm.querySelectorAll('.campo-validacion-error, .campo-validacion-incidencia, .campo-validacion-aviso');
-      highlightedFields.forEach(el => el.classList.remove('campo-validacion-error', 'campo-validacion-incidencia', 'campo-validacion-aviso'));
     }
 
     function populateValidationsList() {
@@ -985,7 +2058,6 @@
 
       validationsListContainer.innerHTML = ''; // Limpiar lista anterior
 
-      // SOLO MOSTRAR VALIDACIONES FALLIDAS EN EL PANEL
       const failedValidations = mockValidationsData.filter(v => v.failed);
 
       if (failedValidations.length === 0) {
@@ -1018,6 +2090,19 @@
       });
     }
 
+
+    function clearValidationHighlights() {
+      if (!pacForm) return;
+      const errorFields = pacForm.querySelectorAll('.campo-validacion-error');
+      errorFields.forEach(el => el.classList.remove('campo-validacion-error'));
+
+      const incidenciaFields = pacForm.querySelectorAll('.campo-validacion-incidencia');
+      incidenciaFields.forEach(el => el.classList.remove('campo-validacion-incidencia'));
+
+      const avisoFields = pacForm.querySelectorAll('.campo-validacion-aviso');
+      avisoFields.forEach(el => el.classList.remove('campo-validacion-aviso'));
+    }
+
     function applyValidationFocus(validationEntry) {
       if (!pacForm) return;
       const fieldInfo = validationEntry.involved_fields?.field_data?.[0];
@@ -1041,71 +2126,65 @@
     function validateForm() {
       const validationsList = document.getElementById("validationsList");
       const loadingValidations = document.getElementById("loadingValidations");
-      const validationButton = document.getElementById("validateButton");
       const validationTimestamp = document.getElementById("validationTimestamp");
-      validationsList.innerHTML = "";
-      loadingValidations.classList.remove("hidden");
-      validationButton.disabled = true;
-      validationButton.innerHTML = `<i class='fas fa-spinner fa-spin me-2'></i> Validando...`;
-      validationTimestamp.classList.add('hidden');
+      const validationDate = document.getElementById("validationDate");
+      const validationButton = document.getElementById("validateButton");
+
+      if (validationsList) {
+        validationsList.classList.add("hidden");
+      }
+      if (loadingValidations) {
+        loadingValidations.classList.remove("hidden");
+      }
+      if (validationTimestamp) {
+        validationTimestamp.classList.add("hidden");
+      }
+      if (validationButton) {
+        validationButton.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Validando...";
+        validationButton.disabled = true;
+      }
+
+      // Tras un tiempo, volver a mostrar la información de validación
       setTimeout(() => {
-        loadingValidations.classList.add("hidden");
-        validationButton.disabled = false;
-        validationButton.innerHTML = "Validar";
-        const validationDate = document.getElementById("validationDate");
-        const now = new Date();
-        validationDate.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ", " + now.toLocaleDateString();
-        validationTimestamp.classList.remove('hidden');
-        populateValidationsList();
-      }, 1500);
+        if (validationsList) {
+          validationsList.classList.remove("hidden");
+        }
+        if (validationTimestamp) {
+          validationTimestamp.classList.remove("hidden");
+        }
+        if (validationDate) {
+          const now = new Date();
+          validationDate.innerHTML = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ", " + now.toLocaleDateString();
+        }
+        if (validationButton) {
+          validationButton.innerHTML = "Validar";
+          validationButton.disabled = false;
+        }
+      }, 2000);
     }
 
-    function showSection(sectionIdToShow) {
-      const formSections = document.querySelectorAll(".form-section");
-      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
-      formSections.forEach(section => section.classList.toggle("active", section.id === "section-" + sectionIdToShow));
-      formNavigationLinks.forEach(link => link.classList.toggle("active-nav-link", link.dataset.section === sectionIdToShow));
-    }
-
-
-    // --- FIN: LÓGICA DE VALIDACIONES ---
-
-
-    // --- LÓGICA GENERAL DEL FORMULARIO (Navegación, etc.) ---
-
-    // Función para cambiar de sección del formulario
-    function showSection(sectionIdToShow) {
-      const formSections = document.querySelectorAll(".form-section");
-      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
-
-      formSections.forEach(section => {
-        section.classList.toggle("active", section.id === "section-" + sectionIdToShow);
-      });
-
-      formNavigationLinks.forEach(link => {
-        link.classList.toggle("active-nav-link", link.dataset.section === sectionIdToShow);
-      });
-    }
-
+    // --- INICIALIZACIÓN GENERAL ---
     document.addEventListener("DOMContentLoaded", () => {
-      pacForm = document.getElementById("pac-form");
-
-      // Botones para abrir/cerrar paneles
-      const validationsButton = document.getElementById("validationsButton");
-      const closeValidationsPanelButton = document.getElementById("closeValidationsPanel");
-      const validateButton = document.getElementById("validateButton");
       const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
+      const formSections = document.querySelectorAll(".form-section");
+      pacForm = document.getElementById("pac-form"); // Asegúrate que pacForm está definido aquí o globalmente si es necesario
 
-      if (validationsButton) {
-        validationsButton.addEventListener("click", () => {
-          toggleValidationsPanel();
+      function showSection(sectionIdToShow) {
+        formSections.forEach(section => {
+          if (section.id === "section-" + sectionIdToShow) {
+            section.classList.add("active");
+          } else {
+            section.classList.remove("active");
+          }
         });
-      }
-      if (closeValidationsPanelButton) {
-        closeValidationsPanelButton.addEventListener("click", toggleValidationsPanel);
-      }
-      if (validateButton) {
-        validateButton.addEventListener("click", validateForm);
+
+        formNavigationLinks.forEach(link => {
+          if (link.dataset.section === sectionIdToShow) {
+            link.classList.add("active-nav-link");
+          } else {
+            link.classList.remove("active-nav-link");
+          }
+        });
       }
 
       formNavigationLinks.forEach(link => {
@@ -1118,9 +2197,1393 @@
         });
       });
 
-      // Carga inicial
+      // Mostrar la sección inicial (Datos Generales)
       showSection("datos-generales");
-      validateForm(); // Llama a la validación al cargar la página por primera vez
+      toggleResidencia(); // Llamada inicial
+
+      // Cargar el estado más reciente del historial si existe (sin resaltar)
+      if (formHistory.length > 0) {
+        applyHistoryEntry(formHistory[0], false);
+      }
+
+      // Botones Historial
+      const historyButton = document.getElementById("historyButton");
+      const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
+
+      if (historyButton) {
+        historyButton.addEventListener("click", () => {
+          populateHistoryList();
+          toggleHistoryPanel();
+        });
+      }
+      if (closeHistoryPanelButton) {
+        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel);
+      }
+
+      // Botones Validaciones
+      const validationsButton = document.getElementById("validationsButton");
+      const closeValidationsPanelButton = document.getElementById("closeValidationsPanel");
+
+      if (validationsButton) {
+        validationsButton.addEventListener("click", () => {
+          populateValidationsList();
+          toggleValidationsPanel();
+        });
+      }
+      if (closeValidationsPanelButton) {
+        closeValidationsPanelButton.addEventListener("click", toggleValidationsPanel);
+      }
+
+      // Submit del formulario
+      if (pacForm) {
+        pacForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert("Formulario guardado (simulación).");
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const documentsInfo = [
+        {
+          "document_name": "Alta Terceros",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a una Entidad Colaboradora para el acceso a los datos de sus solicitudes de la campaña anterior, y en su caso, para la firma y/o entrega en el Registro.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a Funcionario Público para cumplimentación de trámite telemático",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a un solicitante para recuperar la solicitud y tipo de otro solicitante en caso de Cambio de titularidad",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización a un solicitante para recuperar los datos de la solicitud del mismo tipo de la campaña anterior de otro solicitante en caso de Subrogaciones/Cesiones de compromiso de PDR",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "NIF del solicitante",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "CIF del solicitante",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "CIF/NIF del representante legal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Acreditación del representante legal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "CIF/NIF del tercero en caso de que se haya autorizado la firma a dicho tercero",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de estar al corriente de las obligaciones tributarias",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Declaración informativa anual de entidades en régimen de atribución de rentas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Certificado de estar al corriente en el pago en la Seguridad Social",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Declaración del Impuesto sobre la Renta de las Personas Físicas del solicitante y del cónyuge, en caso de declaración conjunta. Si no se ha hecho nunca declaración de renta, aportar el impreso de alta censal (Mod. 036 ó 037).",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Modelo 190 de la Agencia Tributaria último año",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia del contrato de suministro con la industria azucarera",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado oficial sobre rendimiento lechero vacuno",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de que realiza labores de mantenimiento de pastos en la superficie de pastos declarada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento de autorización en caso de que la solicitud la tenga que firmar un tercero",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Facturas de venta de la producción agraria",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que acredite poseer un nivel de capacitación agraria suficiente, acorde al exigido en los programas de DR de su C.A, mediante formación lectiva y/o experiencia profesional",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Copia de la sentencia o del acto administrativo firme.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la fecha de alta en la seguridad social, correspondiente a la actividad agraria que determinó su incorporación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": true
+        },
+        {
+          "document_name": "Análisis físico-químico de los suelos de las parcelas objeto de ayuda",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Libros de registro de explotación establecidos en base a la normativa sectorial",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la inscripción de los animales objeto de la ayuda en el Libro Oficial de la raza.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de disponer de asesoramiento técnico para líneas de ayudas de agroambiente y clima y/o apicultura Ecológica",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Modelo 50 de tasas en inscripción de operadores, titulares de fincas Agropecuarias de producción ecológica",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la Tesorería Territorial de la Seguridad Social (Vida laboral)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado empadronamiento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de retenciones e ingresos a cuenta de la sociedad",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contratos de trabajo",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento acreditativo de arrendamiento, aparcería o asignación de superficies",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "TC-2/8",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Entidades asociadas: Documentación acreditativa del objeto social (Estatutos...)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de la escritura pública de constitución de la sociedad o transformación de la anterior",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique la pertenencia de los socios al cebadero comunitario",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Etiquetas de forestación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que acredite la pertenencia un organismo técnico competente debidamente reconocido que registra y lleva el Libro Genealógico o Libro Zootécnico de la raza.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado oficial sobre rendimiento lechero ovino/caprino",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Otra documentación no definida en el reglamento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia del contrato suscrito con la industria que va a realizar la transformación (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización de la AEMPS (Cáñamo)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato con la industria transformadora (Cáñamo)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Etiquetas de envases de semilla del cáñamo",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Agroambientales - Compromiso en 2 Anualidades",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Agroambientales - Comunicación Rotación Total.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificación en Producción Integrada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Fotografías georreferenciadas",
+          "can_be_attached_to_form": false,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Informe de obligaciones de condicionalidad",
+          "can_be_attached_to_form": false,
+          "can_be_uploaded": false,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique la aplicación de la gestión sostenible de insumos",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias explotaciones ganaderas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias empresas fabricantes de productos para la alimentación animal",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Compromiso de entrega de alfalfa a figura asociativa",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de suministro de alfalfa con una o varias empresas deshidratadoras de forrajes",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable de la empresa deshidratadora de forrajes",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la empresa productora de semilla certificada",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la figura asociativa (tomate)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato suscrito con la industria transformadora (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato entre el agricultor y la figura asociativa (uva pasa)",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable del solicitante respecto al cumplimiento de la gestión y fertilización del suelo y/o gestión de plagas y malas hierbas conforme al REGLAMENTO (UE) 2018/848 DEL PARLAMENTO EUROPEO Y DEL CONSEJO de 30 de mayo de 2018 sobre producción ecológica y etiquetado de los productos ecológicos gestión",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado Asociación de cría de razas autóctonas en peligro de extinción",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Justificación exceso de rotación en Producción Integrada de Tabaco",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Acuerdo entre el titular y el joven agricultor según el cual este último compartirá las responsabilidades gerenciales, los resultados económicos de la explotación, los riesgos inherentes a su gestión y las inversiones que se realicen, en una proporción mínima del 50%",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento mediante el cual el titular transmita al joven agricultor, al menos, un tercio de su propiedad en los elementos que constituyen su explotación, uso y aprovechamiento en la que continuarán integrados.",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Informe de la vida laboral",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": true
+        },
+        {
+          "document_name": "Plan empresarial",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación acreditativa de haber iniciado el proceso de instalación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización del socio a la Administración para consultar sus datos de la SS",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización del socio a la Administración para consultar sus datos de la AEAT",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado emitido por técnico competente sobre cumplimiento de los requisitos de la Intervención Apicultura para la Biodiversidad y con el Real Decreto 209/2002 de 22 de febrero de 2002, sobre la Ordenación de las explotaciones apícolas",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de los Dni de todos los herederos en vigor",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que justifique el cumplimiento de los requisitos de Joven Agricultor o Resolución del servicio competente",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Copia de la Resolución judicial firme que declare su disolución",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Fallecimiento: Certificado de defunción o denuncia de la desaparición, declaración de ausencia o declaración de fallecimiento",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Testamento y declaración de herederos que demuestre el derecho de uso de la explotación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación de acuerdo de reparto entre los herederos que permita identificar el reparto de la explotación",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento de adjudicación o concesión para la realización del aprovechamiento de rastrojeras, barbechos y restos hortofrutícolas en pastos de uso común",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Incapacidad: Certificado del centro gestor de la Seguridad Social sobre incapacidad de larga duración",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Escritura pública de la compraventa de tierras",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable de disponer en la explotación las instalaciones adecuadas para la realización de transformación de la uva",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": true,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato de arrendamiento, aparcería o documento privado suscrito por el propietario que le otorgue la capacidad de uso y disfrute de su aprovechamiento, con referencia catastral, liquidado de impuesto y en vigor",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Escritura pública o documento privado liquidado de impuestos del arrendamiento de tierras",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documentación que acredite que la parcela está a disposición y existe derecho al uso del recinto",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración Responsable de procedencia del tomate",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "NIF del socio",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización de socios a la Administración para consultar sus datos de identidad en la Policía",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Comunicaciones al Registro de Explotaciones",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Declaración responsable que justifica la aplicación puntual de herbicidas al tercer año de realización de la práctica de cubiertas vegetales, por imposibilidad de erradicarla por medios mecánicos o mediante ganado",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Certificado de inscripción en el Registro de Operadores de Producción Integrada de Euskadi a fecha de finalización del plazo de modificación de la solicitud de ayuda",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Contrato firmado con un técnico asesor acreditado",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Autorización que permite el uso de montes de utilidad pública para actividades agropecuarias",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        },
+        {
+          "document_name": "Documento que detalla las actuaciones anuales a realizar para gestión sostenible de pastos",
+          "can_be_attached_to_form": true,
+          "can_be_uploaded": true,
+          "is_required": false,
+          "is_validated": false
+        }
+      ]
+
+      const documentListContainer = document.getElementById('documentListContainer');
+      const uploadModalElement = document.getElementById('uploadDocumentModal');
+      const uploadModal = new bootstrap.Modal(uploadModalElement);
+      const documentNameToUploadSpan = document.getElementById('documentNameToUpload');
+      const documentIdentifierInput = document.getElementById('documentIdentifier'); // Para saber qué documento se está subiendo
+
+      // --- Inicio: Lógica del Dropzone para el modal ---
+      const docDropZone = document.getElementById('documentDropZone');
+      const docFileInput = document.getElementById('documentFileInput');
+      const docPreviewContainer = document.getElementById('documentFilePreviewContainer');
+      const docDropZoneStatus = document.getElementById('documentDropZoneStatus');
+      let selectedFileForUpload = null;
+
+      if (docDropZone && docFileInput && docPreviewContainer) {
+        docDropZone.addEventListener('click', () => docFileInput.click());
+        docFileInput.addEventListener('change', (e) => handleDocFile(e.target.files[0]));
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false); // Evita que el navegador abra el archivo
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.add('border-[#1abc9c]', 'bg-gray-100'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          docDropZone.addEventListener(eventName, () => docDropZone.classList.remove('border-[#1abc9c]', 'bg-gray-100'), false);
+        });
+
+        docDropZone.addEventListener('drop', (e) => {
+          preventDefaults(e);
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            handleDocFile(files[0]); // Solo tomamos el primer archivo para este modal
+          }
+        }, false);
+      }
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      function getFileIconClass(fileName) {
+        if (!fileName) return 'fas fa-file';
+        const extension = fileName.split('.').pop().toLowerCase();
+        switch (extension) {
+          case 'pdf': return 'fas fa-file-pdf text-danger';
+          case 'doc': case 'docx': return 'fas fa-file-word text-primary';
+          case 'xls': case 'xlsx': return 'fas fa-file-excel text-success';
+          case 'ppt': case 'pptx': return 'fas fa-file-powerpoint text-warning';
+          case 'zip': case 'rar': return 'fas fa-file-archive text-secondary';
+          case 'txt': return 'fas fa-file-alt text-muted';
+          case 'jpg': case 'jpeg': case 'png': case 'gif': return 'fas fa-file-image text-info';
+          default: return 'fas fa-file text-secondary';
+        }
+      }
+
+      function handleDocFile(file) {
+        if (!file) return;
+        selectedFileForUpload = file; // Guardamos el archivo seleccionado
+        docDropZoneStatus.textContent = `Archivo seleccionado: ${file.name}`;
+        docDropZoneStatus.style.display = 'block';
+
+        docPreviewContainer.innerHTML = ''; // Limpiar vista previa anterior
+        const fileSize = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB";
+        const iconClass = getFileIconClass(file.name);
+        const itemHTML = `
+            <div class="file-preview-item d-flex align-items-center justify-content-between p-2 bg-light border rounded mb-2">
+                <div>
+                    <i class="${iconClass} me-2"></i>
+                    <span class="file-name">${file.name}</span>
+                    <small class="text-muted ms-2">(${fileSize})</small>
+                </div>
+                <button type="button" class="btn-close btn-sm remove-doc-preview" aria-label="Quitar"></button>
+            </div>`;
+        docPreviewContainer.insertAdjacentHTML('beforeend', itemHTML);
+
+        docPreviewContainer.querySelector('.remove-doc-preview').addEventListener('click', function () {
+          selectedFileForUpload = null;
+          docFileInput.value = ''; // Resetear el input file
+          docPreviewContainer.innerHTML = '';
+          docDropZoneStatus.style.display = 'none';
+          docDropZoneStatus.textContent = '';
+        });
+      }
+      // --- Fin: Lógica del Dropzone para el modal ---
+
+      function renderDocuments() {
+        if (!documentListContainer) return;
+        documentListContainer.innerHTML = ''; // Limpiar antes de renderizar
+
+        documentsInfo.forEach((doc, index) => {
+          const canBeAttached = doc.can_be_attached_to_form;
+          const isRequired = doc.is_required;
+          const isValidated = doc.is_validated;
+          const canBeUploaded = doc.can_be_uploaded;
+
+          let requiredHtml = isRequired ?
+            `<span><i class="fas fa-exclamation-circle text-warning me-1"></i> Requerido</span>` :
+            ``;
+
+          let validatedHtml = isValidated ?
+            `<i class="fas fa-check-circle text-success ms-2" title="Validado"></i>` :
+            ``;
+
+          // Botón de subida
+          let uploadButtonHtml = '';
+          if (canBeUploaded) {
+            uploadButtonHtml = `
+                    <button type="button" class="btn btn-outline-primary btn-sm open-upload-modal-btn" 
+                            title="Subir archivo para ${doc.document_name}"
+                            data-bs-toggle="modal" data-bs-target="#uploadDocumentModal"
+                            data-doc-name="${doc.document_name}"
+                            data-doc-id="doc_${index}">
+                        <i class="fas fa-upload"></i>
+                    </button>`;
+          }
+
+          const documentElement = `
+                <div class="d-flex align-items-center gap-3 border rounded-lg p-3 bg-gray-50">
+                    <div class="flex-grow-1">
+                        ${doc.document_name}
+                        ${validatedHtml}
+                        <div class="text-muted small mt-1">
+                            ${requiredHtml}
+                        </div>
+                    </div>
+                    ${uploadButtonHtml}
+                </div>`;
+          documentListContainer.insertAdjacentHTML('beforeend', documentElement);
+        });
+
+        // Añadir event listeners a los nuevos botones
+        document.querySelectorAll('.open-upload-modal-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const docName = this.dataset.docName;
+            const docId = this.dataset.docId; // Un identificador único si lo necesitas
+
+            documentNameToUploadSpan.textContent = docName;
+            documentIdentifierInput.value = docId; // Guardar el ID del documento en el form del modal
+
+            // Resetear el formulario del modal
+            document.getElementById('uploadDocumentForm').reset();
+            selectedFileForUpload = null;
+            docFileInput.value = '';
+            docPreviewContainer.innerHTML = '';
+            docDropZoneStatus.style.display = 'none';
+            docDropZoneStatus.textContent = '';
+
+            uploadModal.show();
+          });
+        });
+      }
+
+      // Inicializar la carga de documentos
+      if (documentsInfo.length > 0) {
+        renderDocuments();
+      } else {
+        if (documentListContainer) {
+          documentListContainer.innerHTML = '<p class="text-muted">No hay información de documentos disponible.</p>';
+        }
+      }
+
+      // Manejar el guardado del documento desde el modal
+      const saveDocumentButton = document.getElementById('saveDocumentButton');
+      if (saveDocumentButton) {
+        saveDocumentButton.addEventListener('click', function () {
+          const docId = documentIdentifierInput.value;
+          const description = document.getElementById('documentDescription').value;
+          const observations = document.getElementById('documentObservations').value;
+          const origin = document.querySelector('input[name="documentOrigin"]:checked').value;
+
+          if (!selectedFileForUpload) {
+            alert('Por favor, selecciona un archivo para subir.');
+            return;
+          }
+
+          // Aquí iría tu lógica para subir el archivo (selectedFileForUpload) y los datos del formulario
+          console.log("Guardando documento para:", docId);
+          console.log("Descripción:", description);
+          console.log("Observaciones:", observations);
+          console.log("Origen:", origin);
+          console.log("Archivo:", selectedFileForUpload.name, selectedFileForUpload.size, selectedFileForUpload.type);
+
+          // Simulación de subida exitosa:
+          alert(`Documento '${selectedFileForUpload.name}' para '${documentNameToUploadSpan.textContent}' guardado (simulación).`);
+
+          // Cambiar el botón de subida del documento
+          const buttonElement = document.querySelector(`[data-doc-id="${docId}"]`);
+          if (buttonElement) {
+            buttonElement.innerHTML = `
+                <i class="fas fa-check me-2" title="Subido"></i>Subido`;
+            buttonElement.classList.remove('btn-outline-primary');
+            buttonElement.classList.add('btn-outline-secondary');
+          }
+          uploadModal.hide();
+          // Resetear el formulario y el archivo seleccionado para la próxima vez
+          document.getElementById('uploadDocumentForm').reset();
+          selectedFileForUpload = null;
+          docFileInput.value = '';
+          docPreviewContainer.innerHTML = '';
+          docDropZoneStatus.style.display = 'none';
+        });
+      }
+    });
+  </script>
+  <script>
+    // Lógica para la búsqueda en formulario y respuesta de IA
+    document.addEventListener("DOMContentLoaded", function () {
+      const formSearchInput = document.getElementById('form-search-input');
+      const formSearchResultsDropdown = document.getElementById('form-search-results-dropdown');
+      const formSearchHelpText = document.getElementById('form-search-help-text');
+
+      const aiResponseAreaForm = document.getElementById('ai-response-area');
+      const aiResponseTextElementForm = document.getElementById('ai-response-text-form');
+      const closeAiResponseButtonForm = document.getElementById('close-ai-response-form');
+      const aiThinkingIndicatorForm = document.getElementById('ai-thinking-indicator-form');
+      const relevantFieldsContainerForm = document.getElementById('relevant-fields-container-form');
+      const relevantFieldsTitleForm = document.getElementById('relevant-fields-title-form');
+
+      const pacForm = document.getElementById('pac-form');
+      const formNavigationLinksSide = document.querySelectorAll("#form-navigation .nav-link");
+      const formSectionsAll = document.querySelectorAll(".form-section");
+
+      let typingTimeoutForm;
+      let allIndexedFormFields = [];
+
+      function indexPacFormFields() {
+        allIndexedFormFields = [];
+        if (!pacForm) return;
+
+        const elements = pacForm.elements;
+        for (let i = 0; i < elements.length; i++) {
+          const element = elements[i];
+          if (element.id || element.name) {
+            let labelText = '';
+            let labelElement = null;
+            if (element.id) {
+              labelElement = pacForm.querySelector(`label[for="${element.id}"]`);
+              if (labelElement) {
+                labelText = labelElement.textContent.trim();
+              }
+            }
+            // Si no hay label, intentar obtenerlo del legend del fieldset padre si es único
+            if (!labelText && element.closest('fieldset') && element.closest('fieldset').querySelectorAll('input, select, textarea').length === 1) {
+              const legend = element.closest('fieldset').querySelector('legend');
+              if (legend) labelText = legend.textContent.trim();
+            }
+            // Si aún no hay labelText y es un checkbox/radio, buscar label hermano o padre
+            if (!labelText && (element.type === 'checkbox' || element.type === 'radio')) {
+              let current = element.nextElementSibling;
+              if (current && current.tagName === 'LABEL') labelText = current.textContent.trim();
+              else if (element.parentElement && element.parentElement.tagName === 'LABEL') labelText = element.parentElement.textContent.trim();
+              else if (element.parentElement.closest('label')) labelText = element.parentElement.closest('label').textContent.trim();
+
+            }
+            if (!labelText) labelText = element.placeholder || element.name || element.id;
+
+
+            let parentSectionElement = element.closest('.form-section');
+            let sectionId = null;
+            if (parentSectionElement && parentSectionElement.id) {
+              sectionId = parentSectionElement.id.replace('section-', '');
+            }
+
+            allIndexedFormFields.push({
+              id: element.id,
+              name: element.name,
+              type: element.type,
+              labelText: labelText,
+              element: element,
+              labelElement: labelElement,
+              sectionId: sectionId
+            });
+          }
+        }
+      }
+      if (pacForm) {
+        indexPacFormFields(); // Indexar al cargar
+        // Considerar re-indexar si el formulario cambia dinámicamente (ej. añadir recintos)
+        // new MutationObserver(indexPacFormFields).observe(pacForm, { childList: true, subtree: true });
+      }
+
+
+      function showFormSearchDropdown() {
+        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.add('show');
+        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'true');
+        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
+      }
+
+      function hideFormSearchDropdown() {
+        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.remove('show');
+        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'false');
+        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
+        }
+      }
+
+      function typeWriterForForm(text, element, speed = 20, callback) {
+        clearTimeout(typingTimeoutForm);
+        if (!element) return;
+        element.innerHTML = '';
+        element.classList.add('typing');
+        let i = 0;
+        function type() {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            typingTimeoutForm = setTimeout(type, speed);
+          } else {
+            element.classList.remove('typing');
+            if (callback) callback();
+          }
+        }
+        type();
+      }
+
+      function clearAllAiHighlightsFromForm() {
+        if (!pacForm) return;
+        const highlightedFields = pacForm.querySelectorAll('.highlighted-by-ai-click-form-field');
+        highlightedFields.forEach(el => el.classList.remove('highlighted-by-ai-click-form-field'));
+
+        const highlightedLabels = pacForm.querySelectorAll('.highlighted-by-ai-click-form-label');
+        highlightedLabels.forEach(el => el.classList.remove('highlighted-by-ai-click-form-label'));
+      }
+
+      // Adaptación de la función showSection de pac-edit.html
+      function navigateToFormSection(sectionIdToShow) {
+        let sectionFound = false;
+        formSectionsAll.forEach(section => {
+          if (section.id === "section-" + sectionIdToShow) {
+            section.classList.add("active");
+            sectionFound = true;
+          } else {
+            section.classList.remove("active");
+          }
+        });
+
+        formNavigationLinksSide.forEach(link => {
+          if (link.dataset.section === sectionIdToShow) {
+            link.classList.add("active-nav-link"); // Usa la clase de tu app para el link activo
+            // Scroll al link en la navegación lateral si está fuera de vista
+            link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            link.classList.remove("active-nav-link");
+          }
+        });
+        if (sectionFound) {
+          const mainFormArea = document.querySelector('div.main-content main.w-full'); // Selector más específico para el panel principal del form
+          if (mainFormArea) mainFormArea.scrollTop = 0; // Scroll al inicio del panel del formulario
+        }
+        return sectionFound;
+      }
+
+      function findAndDisplayRelevantFormFields(query) {
+        if (!relevantFieldsContainerForm || !relevantFieldsTitleForm) return;
+        relevantFieldsContainerForm.innerHTML = '';
+        relevantFieldsTitleForm.classList.add('d-none');
+
+        const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        let foundFieldsCount = 0;
+        const MAX_FIELDS_TO_SHOW = 6;
+        const displayedFields = new Set();
+
+        allIndexedFormFields.forEach(fieldInfo => {
+          if (foundFieldsCount >= MAX_FIELDS_TO_SHOW || !fieldInfo.id) return; // Solo campos con ID para el target
+          if (displayedFields.has(fieldInfo.id)) return;
+
+
+          const fieldSearchableText = `${fieldInfo.labelText} ${fieldInfo.name} ${fieldInfo.id} ${fieldInfo.sectionId}`.toLowerCase();
+
+          let matchScore = 0;
+          queryWords.forEach(word => {
+            if (fieldInfo.labelText.toLowerCase().includes(word)) matchScore += 3; // Mayor peso a la etiqueta
+            if (fieldInfo.id.toLowerCase().includes(word)) matchScore += 2;
+            if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(word)) matchScore += 1;
+            if (fieldInfo.sectionId && fieldInfo.sectionId.replace('-', ' ').toLowerCase().includes(word)) matchScore += 1;
+          });
+
+
+          if (matchScore > 0) {
+            foundFieldsCount++;
+            displayedFields.add(fieldInfo.id);
+            const fieldExtractDiv = document.createElement('div');
+            fieldExtractDiv.classList.add('relevant-field-extract', 'p-3', 'mb-2', 'rounded', 'small'); // Aumentado padding
+            fieldExtractDiv.setAttribute('data-target-field-id', fieldInfo.id);
+            if (fieldInfo.sectionId) fieldExtractDiv.setAttribute('data-target-section-id', fieldInfo.sectionId);
+
+            let displayText = fieldInfo.labelText || fieldInfo.name || fieldInfo.id;
+            // Resaltar palabras de la query en el texto del extracto
+            queryWords.forEach(word => {
+              const regex = new RegExp('(' + word.replace(
+                '/[.*+?^<span class="math-inline">\{\}\(\)\|\[\\\]\\\\\]/g', '\\\\</span>&') + ')', 'gi');
+              displayText = displayText.replace(regex, '<mark>$1</mark>');
+            });
+
+            const sectionName = fieldInfo.sectionId ? fieldInfo.sectionId.replace(/-/g, ' ') : "Formulario Principal";
+            const capitalizedSectionName = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+
+
+            fieldExtractDiv.innerHTML = `
+                    <p class="mb-1 font-medium">${displayText}</p>
+                    <small class="text-muted"><i>Sección: ${capitalizedSectionName}</i></small>
+                `;
+
+            fieldExtractDiv.addEventListener('click', function () {
+              clearAllAiHighlightsFromForm();
+              const targetFieldId = this.getAttribute('data-target-field-id');
+              const targetSectionId = this.getAttribute('data-target-section-id');
+              const targetFieldObject = allIndexedFormFields.find(f => f.id === targetFieldId);
+
+
+              if (targetFieldObject && targetFieldObject.element) {
+                if (targetSectionId) {
+                  navigateToFormSection(targetSectionId);
+                }
+                // Pequeña demora para asegurar que la sección es visible, especialmente si se cambió
+                setTimeout(() => {
+                  targetFieldObject.element.classList.add('highlighted-by-ai-click-form-field');
+                  if (targetFieldObject.labelElement) {
+                    targetFieldObject.labelElement.classList.add('highlighted-by-ai-click-form-label');
+                  } else { // Intentar encontrar label de nuevo si no estaba en el index
+                    const label = pacForm.querySelector(`label[for="${targetFieldId}"]`);
+                    if (label) label.classList.add('highlighted-by-ai-click-form-label');
+                  }
+                  targetFieldObject.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  if (typeof targetFieldObject.element.focus === 'function' &&
+                    !['button', 'submit', 'reset'].includes(targetFieldObject.element.type)) { // No enfocar botones
+                    targetFieldObject.element.focus({ preventScroll: true });
+                  }
+                }, targetSectionId ? 150 : 50); // Mayor demora si se cambió de sección
+              }
+            });
+            relevantFieldsContainerForm.appendChild(fieldExtractDiv);
+          }
+        });
+
+        if (foundFieldsCount > 0) {
+          relevantFieldsTitleForm.classList.remove('d-none');
+        } else {
+          relevantFieldsContainerForm.innerHTML = '<p class="text-muted small fst-italic px-2">No se encontraron campos que coincidan directamente con tu consulta en el formulario.</p>';
+        }
+      }
+
+      function handleAiQueryForForm(query) {
+        hideFormSearchDropdown();
+        if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
+        if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
+        if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
+        if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
+        clearAllAiHighlightsFromForm();
+
+        if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.remove('d-none');
+        if (aiResponseAreaForm) aiResponseAreaForm.classList.remove('d-none');
+
+        aiResponseAreaForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // 'start' para que el área de IA quede arriba
+
+        console.log(`Simulando consulta a la IA sobre: "${query}" en el formulario PAC.`);
+        // Simulación de respuesta de IA
+        setTimeout(() => {
+          if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.add('d-none');
+          let simulatedResponse = `En relación a tu consulta sobre "${query}" para el formulario PAC, aquí tienes información relevante:`;
+
+          typeWriterForForm(simulatedResponse, aiResponseTextElementForm, 20, () => {
+            findAndDisplayRelevantFormFields(query); // Mostrar campos relevantes después de la respuesta
+          });
+        }, 1200); // Reducido tiempo de simulación
+      }
+
+      if (closeAiResponseButtonForm) {
+        closeAiResponseButtonForm.addEventListener('click', function () {
+          clearTimeout(typingTimeoutForm);
+          if (formSearchInput) formSearchInput.value = '';
+
+          if (aiResponseAreaForm) aiResponseAreaForm.classList.add('d-none');
+          if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
+          if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
+          if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
+          if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
+
+          clearAllAiHighlightsFromForm();
+          hideFormSearchDropdown();
+          if (formSearchHelpText && pacForm) formSearchHelpText.classList.remove('d-none');
+          if (formSearchInput) formSearchInput.focus();
+        });
+      }
+
+      function populateFormSearchDropdown(query) {
+        if (!formSearchResultsDropdown || !pacForm || (aiResponseAreaForm && !aiResponseAreaForm.classList.contains('d-none'))) {
+          hideFormSearchDropdown();
+          return;
+        }
+        formSearchResultsDropdown.innerHTML = '';
+        if (!query) {
+          hideFormSearchDropdown();
+          return;
+        }
+
+        let hasResults = false;
+        const queryLowerCase = query.toLowerCase();
+        const uniqueSuggestions = new Map(); // Usar Map para asociar sugerencia con info del campo
+        const MAX_SUGGESTIONS_DROPDOWN = 5;
+
+        allIndexedFormFields.forEach(fieldInfo => {
+          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
+          let suggestionText = null;
+          let match = false;
+
+          if (fieldInfo.labelText && fieldInfo.labelText.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText;
+            match = true;
+          } else if (fieldInfo.id && fieldInfo.id.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText || fieldInfo.id;
+            match = true;
+          } else if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(queryLowerCase)) {
+            suggestionText = fieldInfo.labelText || fieldInfo.name;
+            match = true;
+          }
+
+          if (match && suggestionText && !uniqueSuggestions.has(suggestionText.toLowerCase())) {
+            uniqueSuggestions.set(suggestionText.toLowerCase(), { text: suggestionText, field: fieldInfo });
+          }
+        });
+
+        // Palabras clave generales adicionales (no directamente ligadas a un campo, pero pueden iniciar una búsqueda IA)
+        const generalKeywords = [
+          "Ayuda jóvenes", "Ecorregímenes", "Datos Fiscales", "Representante Legal", "Condicionalidad", "SIGPAC"
+        ];
+        generalKeywords.forEach(keyword => {
+          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
+          if (keyword.toLowerCase().includes(queryLowerCase) && !uniqueSuggestions.has(keyword.toLowerCase())) {
+            uniqueSuggestions.set(keyword.toLowerCase(), { text: keyword, field: null }); // field: null para keywords generales
+          }
+        });
+
+
+        uniqueSuggestions.forEach(suggestion => {
+          hasResults = true;
+          const item = document.createElement('a');
+          item.classList.add('dropdown-item');
+          item.href = '#';
+          item.innerHTML = `<i class="fas fa-search me-2 text-muted"></i> "${suggestion.text.replace(new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<strong class="text-primary">$1</strong>')}"`;
+
+          item.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (formSearchInput) formSearchInput.value = suggestion.text;
+            clearAllAiHighlightsFromForm();
+
+            if (suggestion.field && suggestion.field.element) { // Si la sugerencia está ligada a un campo específico
+              const targetField = suggestion.field;
+              if (targetField.sectionId) {
+                navigateToFormSection(targetField.sectionId);
+              }
+              setTimeout(() => {
+                targetField.element.classList.add('highlighted-by-ai-click-form-field');
+                if (targetField.labelElement) targetField.labelElement.classList.add('highlighted-by-ai-click-form-label');
+                else { const label = pacForm.querySelector(`label[for="${targetField.id}"]`); if (label) label.classList.add('highlighted-by-ai-click-form-label'); }
+
+                targetField.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (typeof targetField.element.focus === 'function' && !['button', 'submit', 'reset'].includes(targetField.element.type)) {
+                  targetField.element.focus({ preventScroll: true });
+                }
+              }, targetField.sectionId ? 150 : 50);
+            } else {
+              // Si es una keyword general, podríamos directamente llamar a la IA, o dejar que el usuario pulse enter/botón IA
+              // Por ahora, solo rellena el input, el usuario decidirá si pregunta a la IA.
+            }
+            hideFormSearchDropdown();
+          });
+          if (formSearchResultsDropdown) formSearchResultsDropdown.appendChild(item);
+        });
+
+        if (formSearchResultsDropdown && formSearchResultsDropdown.children.length > 0) { // Solo añadir IA si hay alguna sugerencia
+          const divider = document.createElement('hr');
+          divider.classList.add('dropdown-divider', 'my-1');
+          formSearchResultsDropdown.appendChild(divider);
+
+          const aiOption = document.createElement('a');
+          aiOption.classList.add('dropdown-item', 'fw-bold'); // Más destacado
+          aiOption.href = '#';
+          aiOption.id = 'ai-ask-option-button-form';
+          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
+          aiOption.addEventListener('click', function (e) {
+            e.preventDefault();
+            handleAiQueryForForm(query); // Usar la query actual del input
+          });
+          formSearchResultsDropdown.appendChild(aiOption);
+          showFormSearchDropdown();
+        } else if (!hasResults) { // Si no hay ninguna sugerencia pero el usuario escribió algo
+          const aiOption = document.createElement('a');
+          aiOption.classList.add('dropdown-item', 'fw-bold');
+          aiOption.href = '#';
+          aiOption.id = 'ai-ask-option-button-form';
+          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
+          aiOption.addEventListener('click', function (e) {
+            e.preventDefault();
+            handleAiQueryForForm(query);
+          });
+          if (formSearchResultsDropdown) {
+            formSearchResultsDropdown.appendChild(aiOption);
+            showFormSearchDropdown();
+          }
+        } else {
+          hideFormSearchDropdown();
+        }
+      }
+
+      if (formSearchInput) {
+        formSearchInput.addEventListener('input', function () {
+          const query = formSearchInput.value.trim();
+          if (query.length > 1) { // Empezar a buscar con al menos 2 caracteres
+            populateFormSearchDropdown(query);
+          } else {
+            hideFormSearchDropdown();
+            if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+              clearAllAiHighlightsFromForm();
+            }
+          }
+        });
+
+        formSearchInput.addEventListener('focus', function () {
+          const query = formSearchInput.value.trim();
+          if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) { // Solo mostrar si la IA no está activa
+            if (query.length > 1) {
+              populateFormSearchDropdown(query);
+            } else if (formSearchHelpText && pacForm) {
+              formSearchHelpText.classList.remove('d-none');
+            }
+          }
+        });
+
+        formSearchInput.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault(); // Evitar submit del formulario si la búsqueda está dentro de <form>
+            const query = formSearchInput.value.trim();
+            if (query) {
+              // Si hay un dropdown visible y un item "Preguntar a la IA" podríamos simular su click
+              // o directamente llamar a handleAiQueryForForm
+              const aiButton = formSearchResultsDropdown.querySelector('#ai-ask-option-button-form');
+              if (formSearchResultsDropdown.classList.contains('show') && aiButton) {
+                aiButton.click();
+              } else {
+                handleAiQueryForForm(query);
+              }
+            }
+          }
+        });
+      }
+
+      document.addEventListener('click', function (event) {
+        const searchContainer = document.querySelector('.search-bar-container');
+        const isClickInsideSearchContainer = searchContainer ? searchContainer.contains(event.target) : false;
+        // No cerramos el panel de IA al hacer clic fuera, solo el dropdown
+        if (!isClickInsideSearchContainer) {
+          hideFormSearchDropdown();
+        }
+      });
+
+      // Inicialización de visibilidad del texto de ayuda
+      if (!pacForm) {
+        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
+        if (formSearchInput) formSearchInput.disabled = true;
+      } else {
+        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
+          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
+        } else if (formSearchHelpText) {
+          formSearchHelpText.classList.add('d-none');
+        }
+      }
     });
   </script>
 </body>
