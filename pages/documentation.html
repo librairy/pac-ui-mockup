@@ -244,19 +244,110 @@
         console.log(`Consultando a la IA sobre: "${query}"`);
         setTimeout(() => {
           aiThinkingIndicator.classList.add('d-none');
-          const simulatedResponse = `Respuesta sobre "${query}":\n\nLa Política Agrícola Común (PAC) establece varios mecanismos de apoyo para los agricultores. En relación con '${query}', es importante considerar los siguientes aspectos:\n\n1.  **Elegibilidad:** Verificar los criterios específicos definidos en los Reales Decretos y Reglamentos de la UE aplicables.\n2.  **Plazos de Solicitud:** Suelen ser estrictos y varían según la ayuda o intervención. Consulte el calendario oficial.\n3.  **Documentación Requerida:** Preparar toda la documentación necesaria, como identificaciones, registros de parcelas (SIGPAC), y planes de explotación si aplica.\n\nPara 'jóvenes agricultores', existen ayudas complementarias que buscan fomentar el relevo generacional en el campo. Estas ayudas pueden incluir un pago adicional por hectárea o primas de instalación.\n\nLe recomiendo consultar el Real Decreto 1048/2022 y la Guía sobre Ecorregímenes para obtener información detallada y actualizada. Puede encontrar estos documentos en la sección de normativa.`;
 
-          typeWriter(simulatedResponse, aiResponseTextElement, 25, () => {
+          // set different responses based on the query
+          let simulatedResponse = '';
+          if (query.toLowerCase().includes('bcam 7')) {
+            simulatedResponse = `Para cumplir con la BCAM 7, un agricultor debe primero verificar si su explotación está exenta. Si no lo está, debe elegir y cumplir una de las dos prácticas siguientes: rotación de cultivos o diversificación de cultivos.
+                1. Comprobar si la Explotación está Exenta
+                Antes de aplicar cualquier práctica, se debe verificar si la explotación o sus superficies están exentas de la obligación.
+                Explotaciones exentas:
+                Si la superficie de tierra de cultivo es inferior o igual a 10 hectáreas.
+                Si más del 75% de las tierras de cultivo se dedica a hierbas, forrajes herbáceos, leguminosas, barbecho o una combinación de estos.
+                Si más del 75% de la superficie agrícola admisible son pastos permanentes, se usa para hierbas, forrajes herbáceos o cultivos bajo agua.
+                Superficies exentas:
+                Las superficies certificadas en producción ecológica.
+                Las superficies de hortícolas y patata en las Islas Canarias.
+                2. Elegir una Práctica de Cumplimiento (si no está exento)
+                Si la explotación no está exenta, el agricultor debe optar por una de estas dos vías:
+                Opción A: Práctica de Rotación de Cultivos
+                Esta opción exige cumplir dos requisitos a la vez:
+                Rotación Anual: Cada año, al menos el 33% de la superficie de tierra de cultivo debe tener un cultivo principal diferente al del año anterior.
+                Rotación del Ciclo Completo: Todas las parcelas de la explotación deben cambiar de cultivo al menos una vez en un periodo de tres años (por ejemplo, en el ciclo 2025-2027).
+                Opción B: Práctica de Diversificación de Cultivos
+                Esta opción se basa en la superficie de tierra de cultivo de la explotación:
+                Si la tierra de cultivo es > 10 ha y ≤ 30 ha:
+                Debe haber al menos dos cultivos diferentes.
+                El cultivo principal no puede ocupar más del 75% de la tierra de cultivo.
+                Si la tierra de cultivo es > 30 ha:
+                Debe haber al menos tres cultivos diferentes.
+                El cultivo principal no puede ocupar más del 75%.
+                Los dos cultivos principales juntos no pueden superar el 95% de la tierra de cultivo.
+                Definiciones Clave a Considerar
+                Para aplicar correctamente estos requisitos, es fundamental saber qué se considera un "cultivo" diferente:
+                Regla general: Un cultivo de un género botánico distinto (ej. el trigo y la cebada son cultivos diferentes).
+                Excepciones: Para las familias Brassicaceae (coles), Solanaceae (tomates, patatas) y Cucurbitaceae (calabacines, melones), y para el género Vicia (vezas), se considera la especie.
+                También cuentan como cultivo:La tierra en barbecho.
+                La hierba u otros forrajes herbáceos.
+                Una mezcla de semillas (ej. veza-avena) cuenta como un único "cultivo mixto".`
+          } else if (query.toLowerCase().includes('ayuda del arroz')) {
+            simulatedResponse = `¡Claro! Aquí tienes todos los requisitos, condiciones y datos relevantes sobre la **Ayuda asociada a la producción sostenible de arroz**.
+---
+#### **1. Objeto de la Ayuda**
+*   **Finalidad:** "garantizar la viabilidad económica del cultivo del arroz, que permita obtener una producción sostenible y competitiva y mantener las superficies cultivadas en las zonas de producción tradicional, que cuentan con escasas alternativas de cultivo y donde el cultivo del arroz juega un importante papel en el tejido rural e industrial asociado." (Artículo 52.2)
+*   **Forma de la ayuda:** "un pago anual por hectárea de superficie cultivada que cumpla estos requisitos generales, así como los específicos establecidos en cada caso." (Artículo 46.2)
+---
+#### **2. Requisitos Generales para Todas las Ayudas Asociadas**
+Estos requisitos son aplicables a cualquier solicitante de una ayuda asociada, incluida la del arroz.
+*   **Beneficiario:** Debe ser un "agricultor activo". (Artículo 46.1)
+*   **Superficie mínima subvencionable:** "0,5 hectáreas para las superficies de regadío, salvo que en los requisitos específicos de la ayuda se disponga otra cosa." (Artículo 46.4)
+*   **Definición de superficie de regadío:** "aquella para la que el sistema de explotación declarado por el agricultor, conforme al artículo 8.2, sea regadío y que además esté definida como tal en el SIGPAC." (Artículo 46.5)
+*   **Obligación de justificación:** "Los agricultores pondrán a disposición de las autoridades competentes cuantos justificantes permitan acreditar el cumplimiento de los requisitos generales y específicos para el cobro de las ayudas asociadas, cuando así les sea requerido." (Artículo 46.6)
+---
+#### **3. Beneficiarios y Requisitos Específicos para la Ayuda al Arroz (Artículo 53)**
+Para ser beneficiario, el agricultor debe producir arroz, solicitar la ayuda anualmente a través de la solicitud única y cumplir los siguientes requisitos:
+*   **a) Historial del recinto:** "Cultivar arroz en recintos agrícolas de regadío en los que se haya sembrado arroz, según la solicitud única de la PAC o según el Registro General de la Producción agrícola, durante los años 2018, 2019 o 2020." (Artículo 53.1.a)
+*   **b) Semilla certificada:** "Emplear semilla de alguna de las variedades recogidas en el Catálogo común de variedades de especies de plantas agrícolas de la Unión Europea, en el Registro español de variedades comerciales, en el Registro de otro Estado miembro, o que tengan concedida una autorización de comercialización conforme a la Decisión 2004/842/CE, de la Comisión, de 1 de diciembre de 2004, a fecha de fin de plazo de presentación de la solicitud única de la campaña." (Artículo 53.1.b)
+*   **c) Fecha límite de siembra:** "Llevar a cabo la siembra del arroz antes de la fecha límite del 30 de junio." (Artículo 53.1.c)
+*   **d) Prácticas de cultivo:** "Efectuar todas las prácticas y labores agrícolas que aseguren el normal desarrollo agronómico del cultivo hasta la madurez agrícola completa (finalización de su ciclo productivo), salvo causas de fuerza mayor y circunstancias excepcionales." (Artículo 53.1.d)
+*   **e) Gestión de insumos:** "Se exigirá a los beneficiarios la aplicación de la gestión sostenible de insumos conforme a las disposiciones normativas vigentes en materia de nutrición sostenible de los suelos agrarios." (Artículo 53.1.e)
+---
+#### **4. Declaraciones Anuales Obligatorias (Artículo 53.2)**
+Los productores de arroz deben presentar las siguientes declaraciones ante la autoridad competente **antes del 30 de noviembre** de cada año:
+*   **a) Declaración de existencias:** "Declaración de existencias en su poder a 31 de agosto del año en curso."
+*   **b) Declaración de cosecha:** "Declaración de cosecha que especifique la producción obtenida y la superficie utilizada."
+**Detalle de las declaraciones:** "Ambas declaraciones se desglosarán por tipos y variedades de arroz, de acuerdo con lo establecido en el artículo 12.b) del Reglamento de Ejecución (UE) 2017/1185 de la Comisión, de 20 de abril de 2017".
+---
+#### **5. Ámbito de Aplicación y Regiones**
+*   **Creación de regiones:** "Para recibir la ayuda prevista en esta subsección, se crean dos regiones, Peninsular e Insular." (Artículo 52.3)
+*   **Apoyo adicional a la región insular:** "Las explotaciones ubicadas en la región insular de Islas Baleares recibirán un mayor apoyo atendiendo a las dificultades adicionales y los mayores costes de producción y comercialización derivados de la insularidad." (Artículo 52.3)
+*   **Diferencia de importe:** "El importe de las ayudas de la región insular será un 16 por ciento superior al importe unitario de la península." (Artículo 54.2)
+---
+#### **6. Dotación Financiera e Importes de la Ayuda**
+*   **Asignación Financiera Total (Anexo XIX):** La dotación presupuestaria total para la "Ayuda asociada a la producción sostenible de arroz" es de **14.200.000 euros** para cada uno de los años 2023, 2024, 2025, 2026 y 2027.
+*   **Importes Unitarios Mínimos y Máximos por Hectárea (Anexo XX):**
+| Concepto | 2023 | 2024 | 2025 | 2026 | 2027 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Mínimo Peninsular** | 128,91 € | 128,91 € | 128,91 € | 128,91 € | 128,91 € |
+| **Máximo Peninsular** | 237,47 € | 237,47 € | 237,47 € | 237,47 € | 237,47 € |
+| **Mínimo Baleares** | 149,54 € | 149,54 € | 149,54 € | 149,54 € | 149,54 € |
+| **Máximo Baleares** | 275,47 € | 275,47 € | 275,47 € | 275,47 € | 275,47 € |
+*   **Fijación y publicación del importe final:**
+    *   El Ministerio de Agricultura, Pesca y Alimentación establecerá anualmente los importes unitarios. (Artículo 54.1)
+    *   El importe calculado se publicará anualmente en la página web del Fondo Español de Garantía Agraria O.A. (FEGA). (Artículo 54.3)
+*   **Condición en caso de insuficiencia de fondos:** "En el caso de que la dotación financiera anual resultara insuficiente, para atender los importes mínimos correspondientes, se reducirá proporcionalmente el número de hectáreas de cada beneficiario en la cuantía que resulte necesaria para ajustar el gasto a la dotación financiera anual." (Artículo 54.5)`
+          } else {
+            simulatedResponse = `Respuesta sobre "${query}": \n\nLa Política Agrícola Común(PAC) establece varios mecanismos de apoyo para los agricultores.En relación con '${query}', es importante considerar los siguientes aspectos: \n\n1.  ** Elegibilidad:** Verificar los criterios específicos definidos en los Reales Decretos y Reglamentos de la UE aplicables.\n2.  ** Plazos de Solicitud:** Suelen ser estrictos y varían según la ayuda o intervención.Consulte el calendario oficial.\n3.  ** Documentación Requerida:** Preparar toda la documentación necesaria, como identificaciones, registros de parcelas(SIGPAC), y planes de explotación si aplica.\n\nPara 'jóvenes agricultores', existen ayudas complementarias que buscan fomentar el relevo generacional en el campo.Estas ayudas pueden incluir un pago adicional por hectárea o primas de instalación.\n\nLe recomiendo consultar el Real Decreto 1048 / 2022 y la Guía sobre Ecorregímenes para obtener información detallada y actualizada.Puede encontrar estos documentos en la sección de normativa.`;
+          }
+
+          typeWriter(simulatedResponse, aiResponseTextElement, 5, () => {
             console.log("Respuesta de IA completada.");
           });
 
+          let relevantDocs = [];
           // Mostrar documentos relevantes de la consulta
-          const relevantDocs = documentsData.filter(doc => doc.searchableContent.includes(query.toLowerCase()));
+          if (query.toLowerCase().includes('bcam 7')) {
+            relevantDocs = documentsData.filter(doc => doc.searchableContent.toLowerCase().includes('ecorregímenes'));
+          } else if (query.toLowerCase().includes('ayuda del arroz')) {
+            relevantDocs = documentsData.filter(doc => doc.searchableContent.toLowerCase().includes('real decreto'));
+          } else {
+            relevantDocs = documentsData.filter(doc => doc.searchableContent.toLowerCase().includes(query.toLowerCase()));
+          }
           if (relevantDocs.length > 0) {
             relevantDocs.forEach(doc => {
               doc.element.classList.remove('d-none');
             });
-            documentResultsTitle.textContent = `Documentos relevantes (${relevantDocs.length})`;
+            documentResultsTitle.textContent = `Documentos relevantes(${relevantDocs.length})`;
             documentResultsTitle.classList.remove('d-none');
             documentCardsContainer.classList.remove('d-none');
           } else {
@@ -290,7 +381,7 @@
             }
           });
           if (foundDocs) {
-            documentResultsTitle.textContent = `Documentos encontrados (${documentsData.filter(d => !d.element.classList.contains('d-none')).length})`;
+            documentResultsTitle.textContent = `Documentos encontrados(${documentsData.filter(d => !d.element.classList.contains('d-none')).length})`;
             documentResultsTitle.classList.remove('d-none');
             documentCardsContainer.classList.remove('d-none');
           } else {
@@ -338,7 +429,7 @@
 
         if (query) {
           if (filteredDocumentCount > 0) {
-            documentResultsTitle.textContent = `Documentos encontrados (${filteredDocumentCount})`;
+            documentResultsTitle.textContent = `Documentos encontrados(${filteredDocumentCount})`;
             documentResultsTitle.classList.remove('d-none');
             noDocumentsInitialMessage.classList.add('d-none');
           } else {
