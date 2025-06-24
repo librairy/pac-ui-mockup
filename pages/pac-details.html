@@ -351,12 +351,12 @@
   <script>
     const clientsData = {
       "USR001": {
-        id: "USR001", nombreCompleto: "Juan Pérez Gómez",
+        id: "USR001", nombreCompleto: "FRUTICOLA CASTELNOVO S.L.",
         documentos: [ // Lista maestra de documentos del cliente
-          { id: "CLIDOC001", nombre: "DNI Juan Perez.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
+          { id: "CLIDOC001", nombre: "Escrituras_Castelnovo.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
           { id: "CLIDOC002", nombre: "Contrato Arrendamiento Finca_ElRobledal.pdf", tipo: "Contrato", fechaSubida: "2023-01-20", tamano: "800KB", url: "#" },
           // Este documento podría haber sido subido desde PAC2025-001 originalmente
-          { id: "PACDOC001", nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
+          { id: "PACDOC001", nombre: "Solicitud_PAC2025_FruticolaCastelnovo.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
           { id: "PACDOC002", nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
         ]
         // ...otros datos del cliente
@@ -383,21 +383,21 @@
 
     const pacsData = {
       "PAC2025-001": {
-        idPac: "PAC2025-001", campana: "2025", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
+        idPac: "PAC2025-001", campana: "2025", idClienteAsociado: "USR001", nombreSolicitante: "FRUTICOLA CASTELNOVO S.L.",
         fechaCreacion: "2025-01-20", fechaUltimaModificacion: "2025-05-08", estado: "Enviada",
-        descripcionBreve: "Solicitud PAC para explotación de secano y regadío en Badajoz.", importeSolicitado: "15,250.75€",
+        descripcionBreve: "Solicitud PAC para sociedad limitada de gran extensión en Badajoz.", importeSolicitado: "15,250.75€",
         // NO hay 'documentosAdjuntosPAC'
         linkedClientDocKeys: [ // Claves/Nombres de documentos de clientsData["USR001"].documentos que están vinculados aquí
-          "DNI Juan Perez.pdf",
-          "Solicitud_PAC2025_JuanPerez.pdf", // Vinculado (posiblemente subido desde aquí)
-          "Anexo_Ayudas_Agroambientales.pdf" // Vinculado (posiblemente subido desde aquí)
+          "Escrituras_Castelnovo.pdf",
+          "Contrato Arrendamiento Finca_ElRobledal.pdf",
+          "Anexo_Ayudas_Agroambientales.pdf"
         ],
       },
       "PAC2024-005": {
-        idPac: "PAC2024-005", campana: "2024", idClienteAsociado: "USR001", nombreSolicitante: "Juan Pérez Gómez",
+        idPac: "PAC2024-005", campana: "2024", idClienteAsociado: "USR001", nombreSolicitante: "FRUTICOLA CASTELNOVO S.L.",
         fechaCreacion: "2024-01-15", fechaUltimaModificacion: "2024-03-10", estado: "Completada",
         descripcionBreve: "PAC 2024 para cultivos de cereal.", importeSolicitado: "12,800.00€",
-        linkedClientDocKeys: ["DNI Juan Perez.pdf"], // Solo el DNI vinculado aquí
+        linkedClientDocKeys: ["Escrituras_Castelnovo.pdf", "Contrato Arrendamiento Finca_ElRobledal.pdf"],
       },
       "PAC2025-002": {
         idPac: "PAC2025-002", campana: "2025", idClienteAsociado: "USR002", nombreSolicitante: "Agropecuaria La Esperanza S.L.",

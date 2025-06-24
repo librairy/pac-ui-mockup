@@ -380,15 +380,15 @@
 
     const clientsData = {
       "USR001": {
-        id: "USR001", nombreCompleto: "Juan Pérez Gómez", nifCif: "12345678A", email: "juan.perez@example.com", telefono: "600123456", direccion: "Calle Falsa, 123", localidad: "Pueblo Nuevo", provincia: "Badajoz", codigoPostal: "06001", tipoCliente: "Agricultor Individual", fechaAlta: "2023-01-15", estado: "Activo", descripcion: "Juan es un agricultor experimentado en cultivos de secano y regadío en Badajoz. Participa en la PAC desde 2015.",
+        id: "USR001", nombreCompleto: "FRUTICOLA CASTELNOVO S.L.", nifCif: "B12345678", email: "fruticolacastelnovo@example.com", telefono: "600123456", direccion: "Calle Falsa, 123", localidad: "Pueblo Nuevo", provincia: "Badajoz", codigoPostal: "06001", tipoCliente: "Agricultor Individual", fechaAlta: "2023-01-15", estado: "Activo", descripcion: "FRUTÍCOLA CASTELNOVO SL es una sociedad limitada de gran dimensión, con una actividad económica agraria consolidada y un enfoque productivo mixto que combina la ganadería extensiva (bovino y ovino/caprino de carne) con cultivos herbáceos (avena) y leñosos (almendro).",
         pacs: [
           { idPac: "PAC2025-001", campana: "2025", fechaCreacion: "2025-01-20", estado: "Enviada" },
           { idPac: "PAC2024-005", campana: "2024", fechaCreacion: "2024-01-15", estado: "Completada" },
         ],
-        documentos: [ // Lista maestra de documentos del cliente
-          { id: "CLIDOC001", nombre: "DNI Juan Perez.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
+        documentos: [
+          { id: "CLIDOC001", nombre: "Escrituras_Castelnovo.pdf", tipo: "Identificación", fechaSubida: "2023-01-15", tamano: "1.2MB", url: "#" },
           { id: "CLIDOC002", nombre: "Contrato Arrendamiento Finca_ElRobledal.pdf", tipo: "Contrato", fechaSubida: "2023-01-20", tamano: "800KB", url: "#" },
-          { id: "PACDOC001", nombre: "Solicitud_PAC2025_JuanPerez.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
+          { id: "PACDOC001", nombre: "Solicitud_PAC2025_FruticolaCastelnovo.pdf", tipo: "Solicitud Firmada", fechaSubida: "2025-01-20", tamano: "2.5MB", url: "#" },
           { id: "PACDOC002", nombre: "Anexo_Ayudas_Agroambientales.pdf", tipo: "Anexo", fechaSubida: "2025-01-20", tamano: "1.8MB", url: "#" },
         ],
         recomendaciones: [
@@ -437,8 +437,8 @@
 
     // Datos PAC necesarios para comprobar vinculaciones al borrar documentos de cliente
     const pacsData = {
-      "PAC2025-001": { idPac: "PAC2025-001", idClienteAsociado: "USR001", linkedClientDocKeys: ["DNI Juan Perez.pdf", "Solicitud_PAC2025_JuanPerez.pdf", "Anexo_Ayudas_Agroambientales.pdf"] },
-      "PAC2024-005": { idPac: "PAC2024-005", idClienteAsociado: "USR001", linkedClientDocKeys: ["DNI Juan Perez.pdf"] },
+      "PAC2025-001": { idPac: "PAC2025-001", idClienteAsociado: "USR001", linkedClientDocKeys: ["Escrituras_Castelnovo.pdf", "Solicitud_PAC2025_FruticolaCastelnovo.pdf", "Anexo_Ayudas_Agroambientales.pdf"] },
+      "PAC2024-005": { idPac: "PAC2024-005", idClienteAsociado: "USR001", linkedClientDocKeys: ["Escrituras_Castelnovo.pdf"] },
       "PAC2025-002": { idPac: "PAC2025-002", idClienteAsociado: "USR002", linkedClientDocKeys: ["Escrituras_Agroesperanza.pdf", "Memoria_Tecnica_Cultivos_2025.pdf"] },
       "PAC2025-003": { idPac: "PAC2025-003", idClienteAsociado: "USR003", linkedClientDocKeys: ["DNI Gonzalo Hernando Arcal.pdf", "Solicitud_PAC2025_Talarrubias.pdf"] },
     };
