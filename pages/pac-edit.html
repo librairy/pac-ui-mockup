@@ -330,9 +330,9 @@
           <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center lg:text-left"> Solicitud Única PAC 2025
           </h1>
           <div id="formActions" class="absolute right-0 top-0 bottom-0 flex items-center pr-4">
-            <!-- <button id="aiGenerationButton" title="Cumplimentar con IA" class="ai-button rounded-full">
+            <button id="aiGenerationButton" title="Cumplimentar con IA" class="ai-button rounded-full">
               <i class="fas fa-star"></i>
-            </button> -->
+            </button>
             <button id="validationsButton" title="Ver Validaciones"
               class="ml-2 p-2 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500">
               <i class="fas fa-check-circle"></i>
@@ -356,7 +356,7 @@
               <div id="form-search-results-dropdown" class="dropdown-menu w-100 mt-1">
               </div>
               <small class="form-text text-muted mt-2 d-block px-2" id="form-search-help-text">
-                Ej: "IBAN", "¿Qué es el código REGEPA?", "Ayuda para jóvenes agricultores"
+                Ej: "IBAN", "¿Qué es el código REGEPA?", "Perfilado de este agricultor"
               </small>
             </div>
           </div>
@@ -3194,7 +3194,7 @@
         }
       }
 
-      function typeWriterForForm(text, element, speed = 20, callback) {
+      function typeWriterForForm(text, element, speed = 5, callback) {
         clearTimeout(typingTimeoutForm);
         if (!element) return;
         element.innerHTML = '';
@@ -3202,7 +3202,13 @@
         let i = 0;
         function type() {
           if (i < text.length) {
-            element.innerHTML += text.charAt(i);
+            if (text.charAt(i) === '\n') {
+              element.innerHTML += '<br>';
+            } else if (text.charAt(i) === ' ') {
+              element.innerHTML += '&nbsp;';
+            } else {
+              element.innerHTML += text.charAt(i);
+            }
             i++;
             typingTimeoutForm = setTimeout(type, speed);
           } else {
@@ -3357,9 +3363,53 @@
         // Simulación de respuesta de IA
         setTimeout(() => {
           if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.add('d-none');
-          let simulatedResponse = `En relación a tu consulta sobre "${query}" para el formulario PAC, aquí tienes información relevante:`;
 
-          typeWriterForForm(simulatedResponse, aiResponseTextElementForm, 20, () => {
+          let simulatedResponse = ''
+          if (query.toLowerCase().includes('perfil')) {
+            simulatedResponse = `Perfil de la Explotación Agraria: FRUTÍCOLA CASTELNOVO SL\n
+1. Resumen Ejecutivo
+FRUTÍCOLA CASTELNOVO SL es una sociedad limitada de gran dimensión, con una actividad económica agraria consolidada y un enfoque productivo mixto que combina la ganadería extensiva (bovino y ovino/caprino de carne) con cultivos herbáceos (avena) y leñosos (almendro). La explotación, gestionada por un gerente con amplia experiencia práctica desde 2018, muestra un claro compromiso con la sostenibilidad medioambiental a través de la solicitud de ecoregímenes como el pastoreo extensivo y las cubiertas vegetales. A pesar de su tamaño y volumen de ingresos, mantiene un enfoque administrativo tradicional, prefiriendo no utilizar herramientas digitales de gestión de la explotación ni la comunicación electrónica con la Administración.\n
+2. Identificación y Estructura
+- Razón Social: FRUTÍCOLA CASTELNOVO SL
+- CIF: B28209658
+- Tipo de Entidad: Persona jurídica (Sociedad Limitada).
+- Ubicación de la Gestión: Zona de Badajoz, Extremadura. Las parcelas se distribuyen principalmente en los municipios de Casas de Don Pedro y Navalvillar de Pela.
+- Gestión: La explotación es gestionada por Gonzalo Hernando Arcal desde el año 2018, quien cuenta con experiencia práctica agraria y ha realizado cursos de perfeccionamiento recientes.\n
+3. Dimensión y Orientación Productiva
+La explotación gestiona una superficie total declarada de 512,14 hectáreas, distribuidas de la siguiente manera:
+- Cultivos Herbáceos (Secano y Regadío): 117,14 ha
+  - Avena: 105,74 ha. Es el cultivo herbáceo principal, destinado a la producción de semilla certificada y procesamiento industrial. Combina parcelas de secano y regadío.
+  - Barbecho Tradicional: 11,4 ha. Se localizan principalmente en parcelas de regadío.
+- Cultivos Leñosos (Frutos Secos): 40,61 ha
+  - Almendro (var. Avijor): 40,61 ha. Se trata de plantaciones establecidas mayoritariamente en 2022, tanto en secano como en regadío, lo que indica una inversión y diversificación reciente.
+- Pastos: 354,39 ha
+  - Pastos Permanentes (>5 años): 333,51 ha. Base principal para la ganadería extensiva.
+  - Pastos Temporales (<5 años): 20,88 ha.
+La mayoría de la superficie es en propiedad (437,31 ha), complementada con una parte significativa en arrendamiento (74,83 ha).\n
+4. Perfil Económico y Financiero
+La empresa presenta una sólida salud financiera con un volumen de ingresos agrarios notable y creciente:
+- Ingresos Agrarios 2023: 300.993,39 €
+- Ingresos Agrarios 2022: 101.346,40 €
+- Ingresos Agrarios 2021: 276.385,50 €
+Los costes laborales en 2023 ascendieron a 77.364,00 €, lo que refleja una actividad que requiere una importante mano de obra. La empresa está al corriente de sus obligaciones con la AEAT y la Seguridad Social.\n
+5. Estrategia de Ayudas y Prácticas Agrarias (Ecoregímenes PAC 2025)
+La estrategia de solicitud de ayudas revela una orientación hacia la sostenibilidad y el aprovechamiento de los recursos naturales:
+- Ayudas Básicas y Ganaderas:
+  - Solicita la Ayuda Básica a la Renta (ABRS) y la Ayuda Redistributiva, estándar para la mayoría de las explotaciones.
+  - Confirma su vocación ganadera solicitando las ayudas para ganaderos extensivos de vacuno de carne y para ganaderos extensivos y semiextensivos de ovino y caprino de carne.
+- Ecoregímenes (Prácticas Sostenibles):
+  - Pastoreo Extensivo: Solicita la ayuda, coherente con su gran base de pastos y su actividad ganadera declarada.
+  - Cubiertas Vegetales en Cultivos Leñosos: Solicita esta ayuda para sus parcelas de almendro, demostrando un enfoque en la conservación del suelo y la biodiversidad.
+  - Espacios de Biodiversidad: La solicitud de esta ayuda indica que dedica parte de sus tierras de cultivo y cultivos permanentes a la conservación del entorno.
+- Declaraciones Adicionales de Sostenibilidad:
+  - Declara realizar venta directa y/o en canal corto.
+  - Afirma no utilizar productos fitosanitarios sobre las cubiertas vegetales, reforzando su compromiso con las prácticas sostenibles.
+  - Parte de su producción se destina al autoconsumo del ganado de la propia explotación.`
+          } else {
+            simulatedResponse = `En relación a tu consulta sobre "${query}" para el formulario PAC, aquí tienes información relevante:`;
+          }
+
+          typeWriterForForm(simulatedResponse, aiResponseTextElementForm, 5, () => {
             findAndDisplayRelevantFormFields(query); // Mostrar campos relevantes después de la respuesta
           });
         }, 1200); // Reducido tiempo de simulación
