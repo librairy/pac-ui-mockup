@@ -3081,26 +3081,28 @@ function reviewAiChanges() {
 // Mock optimization results
 const mockOptimizationResults = {
   optimization_report: {
-    total_improvement: 1500.5,
+    total_improvement: 377.32,
     total_plots_optimized: 2,
     plot_improvements: {
       1: {
-        original_grants: ["Ayuda ABRS", "Ayuda redistributiva"],
-        optimized_grants: [
-          "Ayuda ABRS",
-          "Ayuda redistributiva",
-          "Rotación mejorantes",
+        original_grants: [
+          "Ayuda Básica Renta Sostenibilidad",
+          "Rotación Cultivos Especies Mejorantes",
         ],
-        original_amount: 1000,
-        optimized_amount: 1200,
-        improvement: 200,
+        optimized_grants: [
+          "Siembra Directa",
+          "Rotación Cultivos Especies Mejorantes",
+        ],
+        original_amount: 99.3,
+        optimized_amount: 374.82,
+        improvement: 275.52,
       },
       2: {
         original_grants: ["Cubiertas vegetales"],
         optimized_grants: ["Cubiertas vegetales", "Rotación siembra directa"],
-        original_amount: 800,
-        optimized_amount: 1100.5,
-        improvement: 300.5,
+        original_amount: 153.2,
+        optimized_amount: 255.0,
+        improvement: 101.8,
       },
     },
   },
