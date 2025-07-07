@@ -250,6 +250,189 @@
         opacity: 0;
       }
     }
+
+    /* Estilos para el panel de IA */
+    .ai-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 400px;
+      background-color: #fff;
+      box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ai-panel.open {
+      transform: translateX(0);
+    }
+
+    .ai-panel-header {
+      padding: 1rem;
+      background-color: #1abc9c;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .ai-panel-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-panel-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .ai-panel-content {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .ai-functions-nav {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 1rem;
+    }
+
+    .ai-function-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      background-color: transparent;
+      color: #374151;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ai-function-btn.active {
+      background-color: #1abc9c;
+      color: #fff;
+    }
+
+    .ai-function-content {
+      display: none;
+    }
+
+    .ai-function-content.active {
+      display: block;
+    }
+
+    .ai-drop-zone {
+      border: 2px dashed #1abc9c;
+      border-radius: 0.375rem;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .ai-drop-zone:hover {
+      background-color: #f0f9f9;
+    }
+
+    .ai-drop-text {
+      font-size: 1rem;
+      color: #374151;
+      margin: 0.5rem 0;
+    }
+
+    .ai-drop-subtext {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .ai-upload-status {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .ai-status-content {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #374151;
+      margin-right: 0.5rem;
+    }
+
+    .ai-progress-bar {
+      flex: 1;
+      height: 0.375rem;
+      background-color: #e5e7eb;
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    .ai-progress-fill {
+      height: 100%;
+      background-color: #1abc9c;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .ai-upload-results {
+      background-color: #f9fff9;
+      border: 1px solid #d1e7dd;
+      border-radius: 0.375rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .ai-results-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .ai-results-header h5 {
+      margin: 0;
+      font-size: 1.125rem;
+      color: #155724;
+    }
+
+    .ai-detected-fields {
+      margin-bottom: 1rem;
+    }
+
+    .ai-results-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Estilos para el overlay del panel de IA */
+    .ai-panel-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1040;
+      display: none;
+    }
+
+    .ai-panel-overlay.show {
+      display: block;
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1766,1857 +1949,293 @@
     </div>
   </div>
 
+  <!-- AI Panel -->
+  <div id="aiPanel"
+    class="fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-40 p-6 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-gray-700">
+        Asistente IA
+      </h2>
+      <button id="closeAiPanel" class="text-gray-500 hover:text-gray-700 focus:outline-none" title="Cerrar panel">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
 
+    <div class="ai-panel-content">
+      <!-- AI Functions Navigation -->
+      <div class="ai-functions-nav">
+        <button class="ai-function-btn active" data-function="upload">
+          <i class="fas fa-file-upload me-2"></i>
+          Actualizar con documento
+        </button>
+        <button class="ai-function-btn" data-function="optimize">
+          <i class="fas fa-magic me-2"></i>
+          Optimizar Ayudas
+        </button>
+      </div>
+
+      <!-- Upload Document Function -->
+      <div id="aiFunction-upload" class="ai-function-content active">
+        <div class="ai-function-header">
+          <h4>Actualizar PAC con Documento</h4>
+          <p class="text-sm text-gray-600">
+            Selecciona un documento existente o sube uno nuevo. La IA analizará el contenido y actualizará los campos
+            del
+            formulario automáticamente.
+          </p>
+        </div>
+
+        <!-- Document Selection Tabs -->
+        <div class="ai-document-tabs mb-3">
+          <button class="ai-tab-btn active" data-tab="upload">
+            <i class="fas fa-cloud-upload-alt me-2"></i>
+            Subir Nuevo
+          </button>
+          <button class="ai-tab-btn" data-tab="existing">
+            <i class="fas fa-folder-open me-2"></i>
+            Documentos del cliente
+          </button>
+        </div>
+
+        <!-- Existing Documents Tab -->
+        <div id="aiExistingDocuments" class="ai-tab-content">
+          <div class="ai-document-list">
+            <div class="ai-document-item" data-document-id="CLIDOC001">
+              <div class="ai-document-info">
+                <div class="ai-document-name">Escrituras_Castelnovo.pdf</div>
+                <div class="ai-document-meta">
+                  <span class="ai-document-type">Identificación</span>
+                  <span class="ai-document-date">15/01/2023</span>
+                  <span class="ai-document-size">1.2MB</span>
+                </div>
+              </div>
+              <button class="ai-document-analyze-btn">
+                <i class="fas fa-magic"></i>
+                Analizar
+              </button>
+            </div>
+            <div class="ai-document-item" data-document-id="CLIDOC002">
+              <div class="ai-document-info">
+                <div class="ai-document-name">Contrato Arrendamiento Finca_ElRobledal.pdf</div>
+                <div class="ai-document-meta">
+                  <span class="ai-document-type">Contrato</span>
+                  <span class="ai-document-date">20/01/2023</span>
+                  <span class="ai-document-size">800KB</span>
+                </div>
+              </div>
+              <button class="ai-document-analyze-btn">
+                <i class="fas fa-magic"></i>
+                Analizar
+              </button>
+            </div>
+            <div class="ai-document-item" data-document-id="PACDOC001">
+              <div class="ai-document-info">
+                <div class="ai-document-name">Solicitud_PAC2025_FruticolaCastelnovo.pdf</div>
+                <div class="ai-document-meta">
+                  <span class="ai-document-type">Solicitud Firmada</span>
+                  <span class="ai-document-date">20/01/2025</span>
+                  <span class="ai-document-size">2.5MB</span>
+                </div>
+              </div>
+              <button class="ai-document-analyze-btn">
+                <i class="fas fa-magic"></i>
+                Analizar
+              </button>
+            </div>
+            <div class="ai-document-item" data-document-id="PACDOC002">
+              <div class="ai-document-info">
+                <div class="ai-document-name">Anexo_Ayudas_Agroambientales.pdf</div>
+                <div class="ai-document-meta">
+                  <span class="ai-document-type">Anexo</span>
+                  <span class="ai-document-date">20/01/2025</span>
+                  <span class="ai-document-size">1.8MB</span>
+                </div>
+              </div>
+              <button class="ai-document-analyze-btn">
+                <i class="fas fa-magic"></i>
+                Analizar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload New Document Tab -->
+        <div id="aiUploadNewDocument" class="ai-tab-content active">
+          <div id="aiDropZone" class="ai-drop-zone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p class="ai-drop-text">Arrastra archivos aquí o haz clic para seleccionar</p>
+            <p class="ai-drop-subtext">PDF, Word, Excel, Imagen (máx. 10MB)</p>
+            <input type="file" id="aiFileInput" class="ai-file-input" multiple
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+          </div>
+
+          <!-- New Document Added Notification -->
+          <div id="newDocumentNotification" class="ai-new-document-notification" style="display: none;">
+            <div class="ai-notification-content">
+              <i class="fas fa-check-circle text-success"></i>
+              <div class="ai-notification-text">
+                <div class="ai-notification-title">Documento añadido al cliente</div>
+                <div class="ai-notification-subtitle" id="newDocumentName">documento.pdf</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="aiUploadStatus" class="ai-upload-status" style="display: none;">
+          <div class="ai-status-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span class="ai-status-text">Subiendo y analizando documento...</span>
+          </div>
+          <div class="ai-progress-bar">
+            <div class="ai-progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Results will be shown in modal -->
+      </div>
+
+      <!-- Optimize Grants Function -->
+      <div id="aiFunction-optimize" class="ai-function-content">
+        <div class="ai-function-header">
+          <h4>Optimizar Selección de Ayudas</h4>
+          <p class="text-sm text-gray-600">
+            La IA analizará tu formulario actual y te sugerirá la mejor combinación de ayudas para maximizar los
+            beneficios económicos.
+          </p>
+        </div>
+
+        <div class="ai-optimize-content">
+          <div class="ai-optimize-info">
+            <div class="info-card mb-3">
+              <i class="fas fa-info-circle text-blue-500 me-2"></i>
+              <div>
+                <h5 class="font-semibold">¿Cómo funciona?</h5>
+                <p class="text-sm text-gray-600">
+                  El sistema analizará todos los recintos declarados, cultivos y condiciones actuales para encontrar la
+                  combinación óptima de ayudas disponibles.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-optimize-action">
+            <button id="startOptimization" class="btn btn-primary w-full mb-3">
+              <i class="fas fa-magic me-2"></i>
+              Iniciar Optimización
+            </button>
+          </div>
+        </div>
+
+        <div id="aiOptimizeStatus" class="ai-optimize-status" style="display: none;">
+          <div class="ai-status-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span class="ai-status-text">Optimizando selección de ayudas...</span>
+          </div>
+          <div class="ai-progress-bar">
+            <div class="ai-progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Results will be shown in modal -->
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Panel Overlay -->
+  <div id="aiPanelOverlay" class="ai-panel-overlay"></div>
+
+  <!-- AI Upload Results Modal -->
+  <div class="modal fade" id="aiUploadResultsModal" tabindex="-1" aria-labelledby="aiUploadResultsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aiUploadResultsModalLabel">
+            <i class="fas fa-check-circle text-success me-2"></i>Análisis Completado
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="ai-results-header mb-4">
+            <p class="text-gray-600">
+              La IA ha analizado el documento y ha detectado los siguientes campos que pueden ser actualizados en el
+              formulario:
+            </p>
+          </div>
+          <div id="aiDetectedFieldsModal" class="ai-detected-fields">
+            <!-- Campos detectados se mostrarán aquí -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>
+            Cancelar
+          </button>
+          <!-- <button id="aiReviewChangesModal" class="btn btn-outline-primary">
+            <i class="fas fa-eye me-2"></i>
+            Revisar Cambios
+          </button> -->
+          <button id="aiApplyChangesModal" class="btn btn-success">
+            <i class="fas fa-check me-2"></i>
+            Aplicar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Optimize Results Modal -->
+  <div class="modal fade" id="aiOptimizeResultsModal" tabindex="-1" aria-labelledby="aiOptimizeResultsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aiOptimizeResultsModalLabel">
+            <i class="fas fa-check-circle text-success me-2"></i>Optimización Completada
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="optimization-summary mb-4">
+            <div class="summary-card bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+              <h6 class="font-semibold text-green-800 mb-2">Mejora Total</h6>
+              <p class="text-2xl font-bold text-green-600" id="totalImprovementModal">
+                +0.00€
+              </p>
+              <p class="text-sm text-green-700" id="optimizedPlotsCountModal">
+                0 parcelas optimizadas
+              </p>
+            </div>
+          </div>
+
+          <div class="optimization-details">
+            <h6 class="font-semibold text-gray-800 mb-3">Detalles por Parcela</h6>
+            <div class="max-h-64 overflow-y-auto" id="plotImprovementsModal">
+              <!-- Plot improvements will be populated here -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>
+            Cancelar
+          </button>
+          <button id="confirmOptimizationModal" class="btn btn-success">
+            <i class="fas fa-check me-2"></i>
+            Confirmar Optimización
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 
   <script src="../js/script.js" defer></script>
+  <script src="../js/pac-edit.js" defer></script>
 
-  <script>
-    // Form base
-    function getBaseFormData() {
-      // Esta función debería idealmente leer los valores actuales del formulario
-      // O, para este mockup, devolver un objeto con todos los valores por defecto del HTML.
-      // Es VITAL que esta función devuelva un objeto con TODOS los campos y sus valores iniciales.
-      return {
-        campana: "2025",
-        num_solicitud: "367389",
-        estado_actual: "Finalizada",
-        fecha_registro: "",
-        num_registro: "2024000000154555",
-        ambito_grabacion: "GESTIÓN DE PACs, S.L.",
-        tipo_registro: "",
-        codigo_regepa: "1106030141",
-        cod_explotacion: "",
-        comunidad_autonoma: "Extremadura",
-        num_expediente: "11039695",
-        sol_cif_nif: "B06258511",
-        sol_nombre_razon: "FRUTICOLA CASTELNOVO SL",
-        sol_apellido1: "",
-        sol_apellido2: "",
-        sol_fecha_nac: "",
-        sol_genero: "",
-        sol_estado_civil: "",
-        sol_telefono: "924856096",
-        sol_movil: "649092918",
-        sol_email: "torrado@tany.es",
-        sol_titularidad_compartida: false,
-        com_sms: false,
-        com_email: true,
-        not_tipo_via: "Carretera",
-        not_nombre_via: "NAC 430",
-        not_numero: "115",
-        not_bloque: "",
-        not_portal: "",
-        not_escalera: "",
-        not_planta: "",
-        not_puerta: "IZ",
-        not_km: "115",
-        not_provincia: "Badajoz",
-        not_municipio: "Villanueva de la Serena",
-        not_cp: "06700",
-        not_localidad: "VILLANUEVA DE LA SERENA",
-        not_apartado: "",
-        not_oficina: "",
-        res_igual_not: true, // Este controla la visibilidad de otra sección
-        // Campos de dirección residencia (se rellenarán si res_igual_not es false, pero deben existir en el modelo)
-        res_tipo_via: "Carretera",
-        res_nombre_via: "NAC 430",
-        res_numero: "115",
-        res_bloque: "",
-        res_portal: "",
-        res_escalera: "",
-        res_planta: "",
-        res_puerta: "IZ",
-        res_km: "115",
-        res_provincia: "Badajoz",
-        res_municipio: "Villanueva de la Serena",
-        res_cp: "06700",
-        res_localidad: "VILLANUEVA DE LA SERENA",
-        iban: "ES6221002027690200037255",
-        entidad: "2100",
-        sucursal: "2027",
-        dc: "69",
-        num_cuenta: "0200037255",
-        fiscal_incorpora: false,
-        fiscal_forma_juridica: "Otras personas jurídicas",
-        fiscal_cif_integradora: "",
-        fiscal_ingresos_integradora_2023: null, // usar null o "" para números vacíos
-        fiscal_ingresos_agrarios_2023: 13624150.7,
-        fiscal_ingresos_agrarios_2022: 15564544.25,
-        fiscal_ingresos_agrarios_2021: 13665204.58,
-        fiscal_ingresos_totales_2023: 7069803.74,
-        fiscal_costes_laborales: null,
-        rep_cif_nif: "76226750N",
-        rep_nombre: "ATANASIO",
-        rep_apellido1: "NARANJO",
-        rep_apellido2: "HIDALGO",
-        rep_fecha_nac: "1956-07-22",
-        rep_genero: "Hombre",
-        rep_telefono: "",
-        rep_movil: "",
-        rep_email: "",
-        responsabilidad_tipo: "juridica", // Radio button
-        resp_gerente_titular: "no",
-        resp_gerente_familiar: "no",
-        resp_comparte_familiar: "no",
-        resp_comparte_conyuge: "no",
-        resp_gerente_conyuge: "no",
-        resp_grupo_empresarial: "no",
-        gerente_nif: "76226750N",
-        gerente_nombre: "ATANASIO",
-        gerente_apellido1: "NARANJO",
-        gerente_apellido2: "HIDALGO",
-        gerente_fecha_nac: "1956-07-22",
-        gerente_genero: "Hombre",
-        gerente_email: "",
-        gerente_telefono: "",
-        gerente_movil: "",
-        gerente_jornadas: "-50%",
-        gerente_ano_inicio: 1997,
-        gerente_formacion: "Cursos de formación agraria",
-        gerente_cursos_perfeccionamiento: "no",
-        gerente_cif_matriz: "",
-        gerente_razon_matriz: "",
-        ayuda_abrs: true,
-        ayuda_redistributiva: true,
-        ayuda_jovenes: false,
-        ayuda_proteinas: false,
-        ayuda_arroz: false,
-        ayuda_remolacha: false,
-        ayuda_tomate: false,
-        ayuda_frutos_secos: false,
-        ayuda_uva_pasa: false,
-        ayuda_olivar: false,
-        ayuda_algodon: false,
-        ayuda_gan_vacuno_carne: false,
-        ayuda_gan_terneros_nacimiento: false,
-        ayuda_gan_terneros_sostenible: false,
-        ayuda_gan_leche_vaca: false,
-        ayuda_gan_ovino_caprino_carne: false,
-        ayuda_gan_leche_oveja_cabra: false,
-        ayuda_gan_ovino_caprino_sin_pastos: false,
-        eco_pastoreo_siega_biodiversidad: false,
-        eco_pastoreo_extensivo: false,
-        eco_siega_sostenible: false,
-        eco_islas_biodiversidad: false,
-        eco_rotaciones_siembra_directa: true,
-        eco_rotacion_mejorantes: true,
-        eco_siembra_directa: false,
-        eco_cubiertas_lenosos: true,
-        eco_cubierta_vegetal: true,
-        eco_cubierta_inerte: false,
-        eco_espacios_biodiversidad: false,
-        eco_espacios_biodiversidad_sub: false,
-        eco_lamina_nivelacion: false,
-        eco_lamina_siembra_seco: false,
-        eco_lamina_secas: false,
-        eco_lamina_caballones: false,
-        dr_andalucia: false,
-        dr_aragon: false,
-        dr_asturias: false,
-        dr_baleares: false,
-        dr_canarias: false,
-        dr_cantabria: false,
-        dr_castilla_mancha: false,
-        dr_castilla_leon: false,
-        dr_cataluna: false,
-        dr_extremadura: true,
-        dr_galicia: false,
-        dr_madrid: false,
-        dr_murcia: false,
-        dr_navarra: false,
-        dr_pais_vasco: false,
-        dr_rioja: false,
-        dr_valenciana: false,
-        dr_ex_prod_integrada_frutales_hueso_2019: true,
-        declara_datos_verdaderos: true,
-        declara_conoce_sigpac: true,
-        autoriza_consulta_aeat: true,
-        autoriza_consulta_tgss: true,
-        // Para la tabla de recintos, necesitaríamos una estructura más compleja, ej: un array de objetos.
-        // recintos: [
-        //   { recinto_prov_0: "06", recinto_mun_0: "44", ... },
-        //   { recinto_prov_1: "06", recinto_mun_1: "44", ... }
-        // ]
-        // Por simplicidad, no lo implementamos completamente aquí, pero es para tenerlo en cuenta.
-      };
-    }
-
-    // Function to toggle visibility of residencia details based on checkbox
-    function toggleResidencia() {
-      const checkbox = document.getElementById("res_igual_not");
-      const detailsDiv = document.getElementById("residencia-details");
-      if (checkbox && detailsDiv) {
-        detailsDiv.classList.toggle("hidden", checkbox.checked);
-      }
-    }
-
-    // --- LÓGICA HISTORIAL (simplificada, asumiendo que está aquí o en un .js importado) ---
-    function toggleHistoryPanel() {
-      const historyPanel = document.getElementById("historyPanel");
-      if (historyPanel) historyPanel.classList.toggle("translate-x-full");
-    }
-
-    function clearFormHighlights() {
-      if (!pacForm) return;
-      const highlightedFields = pacForm.querySelectorAll(".campo-modificado-historial");
-      highlightedFields.forEach(field => field.classList.remove("campo-modificado-historial"));
-    }
-
-    function applyHistoryEntry(historyEntry, highlight = true) {
-      if (!pacForm) return;
-      clearFormHighlights(); // Limpia destacados de historial
-      clearValidationHighlights(); // Limpia también destacados de validaciones
-      const formDataFromHistory = historyEntry.formData;
-      for (const fieldId in formDataFromHistory) {
-        if (formDataFromHistory.hasOwnProperty(fieldId)) {
-          const field = pacForm.elements[fieldId];
-          if (field) {
-            if (field.length && field[0] && field[0].type === "radio") {
-              field.forEach(radio => radio.checked = radio.value === formDataFromHistory[fieldId]);
-            } else if (field.type === "checkbox") {
-              field.checked = formDataFromHistory[fieldId];
-            } else {
-              field.value = formDataFromHistory[fieldId];
-            }
-          }
-        }
-      }
-      if (highlight && historyEntry.changedFields) {
-        historyEntry.changedFields.forEach(fieldId => {
-          const field = pacForm.elements[fieldId];
-          if (field) {
-            if (field.length && field[0].type === "radio") {
-              field.forEach(radio => { if (radio.checked) radio.classList.add("campo-modificado-historial") });
-            } else {
-              field.classList.add("campo-modificado-historial");
-            }
-          }
-        });
-      }
-      if (typeof toggleResidencia === "function" && formDataFromHistory.hasOwnProperty('res_igual_not')) {
-        toggleResidencia();
-      }
-    }
-
-    function showSection(sectionIdToShow) {
-      const formSections = document.querySelectorAll(".form-section");
-      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
-      formSections.forEach(section => section.classList.toggle("active", section.id === "section-" + sectionIdToShow));
-      formNavigationLinks.forEach(link => link.classList.toggle("active-nav-link", link.dataset.section === sectionIdToShow));
-    }
-
-    // --- LÓGICA DE VALIDACIONES ---
-    const mockValidationsData = [
-      // Grupo: Campos del Formulario
-      { group: 'fields', name: "Autorización comunicación por SMS", display_message: "Se recomienda autorizar la comunicación por SMS", severity: "info", failed: true, involved_fields: { field_data: [{ field_id: "com_sms", section_id: "datos-generales" }] } },
-      { group: 'fields', name: "Autorización comunicación por correo", display_message: "Se recomienda autorizar la comunicación por correo electrónico", severity: "info", failed: true, involved_fields: { field_data: [{ field_id: "com_email", section_id: "datos-generales" }] } },
-      { group: 'fields', name: "El teléfono móvil debe tener 9 dígitos", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Completitud de datos básicos del solicitante", display_message: "Domicilio de notificaciones es un campo obligatorio.", severity: "error", failed: true, involved_fields: { field_data: [{ field_id: "not_nombre_via", section_id: "datos-generales" }] } },
-      { group: 'fields', name: "IBAN del solicitante válido", display_message: "El formato del IBAN (ES123456789) no es válido.", severity: "error", failed: true, involved_fields: { field_data: [{ field_id: "iban", section_id: "datos-generales" }] } },
-      { group: 'fields', name: "Tipo de persona (física/jurídica) es obligatorio", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Validación de Código de Explotación Agraria (CEA) y REA", display_message: "Código de Explotación Agraria (CEA) no informado. Verificar si es obligatorio para este caso.", severity: "warning", failed: true, involved_fields: { field_data: [{ field_id: "cod_explotacion", section_id: "datos-generales" }] } },
-      { group: 'fields', name: "Validación de ayuda a jóvenes agricultores", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Datos de entidad colaboradora", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Verificación de Agricultor Activo (RD 1048/2022)", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Verificación de requisitos de ayudas asociadas agrícolas", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'fields', name: "Validación de NIF/CIF del solicitante", display_message: "Validación correcta", severity: "success", failed: false, involved_fields: { field_data: [] } },
-
-      // Grupo: Subvenciones Solicitadas
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de pastoreo extensivo", display_message: "PASTOREO EXTENSIVO - INCUMPLE. Recintos con pastos válidos: 0 | Carga ganadera: Sin superficie de pastos. ERRORES: No se han declarado recintos válidos para pastoreo extensivo.", severity: "error", failed: true, involved_fields: { field_data: [{ field_id: "eco_pastoreo_extensivo", section_id: "datos-generales" }] } },
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de siega sostenible", display_message: "SIEGA SOSTENIBLE - No solicitada - NO ELEGIBLE.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Islas de biodiversidad en pastos", display_message: "ISLAS DE BIODIVERSIDAD EN PASTOS - No solicitada - NO ELEGIBLE.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Siembra directa", display_message: "SIEMBRA DIRECTA - No solicitada - NO ELEGIBLE.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Espacios de biodiversidad en cultivos", display_message: "ESPACIOS DE BIODIVERSIDAD - INCUMPLE. ERRORES: No se han declarado recintos válidos.", severity: "error", failed: true, involved_fields: { field_data: [{ field_id: "eco_espacios_biodiversidad", section_id: "datos-generales" }] } },
-      { group: 'grants_solicita', name: "Verificación de requisitos para la ayuda de Rotación de cultivos con especies mejorantes", display_message: "ROTACIÓN ESPECIES MEJORANTES - INCUMPLE: No se han declarado recintos compatibles.", severity: "error", failed: true, involved_fields: { field_data: [{ field_id: "eco_rotacion_mejorantes", section_id: "datos-generales" }] } },
-
-      // Grupo: BCAM
-      { group: 'BCAM', name: "Verificación BCAM 2", display_message: "BCAM 2: No aplica.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'BCAM', name: "Verificación BCAM 9", display_message: "BCAM 9: Sin recintos declarados.", severity: "success", failed: false, involved_fields: { field_data: [] } },
-      { group: 'BCAM', name: "Verificación BCAM 7", display_message: "CUMPLE BCAM 7 (por exención).", severity: "success", failed: false, involved_fields: { field_data: [] } }
-    ];
-
-    const typeToColor = {
-      error: { border: "border-red-400", bg: "bg-red-50", text: "text-red-700", icon: "fas fa-times-circle text-red-500", label: "Error", highlightClass: "campo-validacion-error" },
-      warning: { border: "border-yellow-400", bg: "bg-yellow-50", text: "text-yellow-700", icon: "fas fa-exclamation-triangle text-yellow-500", label: "Incidencia", highlightClass: "campo-validacion-incidencia" },
-      info: { border: "border-blue-400", bg: "bg-blue-50", text: "text-blue-700", icon: "fas fa-info-circle text-blue-500", label: "Aviso", highlightClass: "campo-validacion-aviso" },
-    };
-
-
-    function toggleValidationsPanel() {
-      const validationsPanel = document.getElementById("validationsPanel");
-      if (validationsPanel) validationsPanel.classList.toggle("translate-x-full");
-    }
-
-    function populateValidationsList() {
-      const validationsListContainer = document.getElementById("validationsList");
-      if (!validationsListContainer) return;
-
-      validationsListContainer.innerHTML = ''; // Limpiar lista anterior
-
-      const failedValidations = mockValidationsData.filter(v => v.failed);
-
-      if (failedValidations.length === 0) {
-        validationsListContainer.innerHTML = '<div class="text-center p-4 bg-green-50 text-green-700 rounded-lg border border-green-300"><i class="fas fa-check-circle mr-2"></i>¡Todas las validaciones son correctas!</div>';
-        return;
-      }
-
-      failedValidations.forEach(val => {
-        const color = typeToColor[val.severity] || typeToColor.info;
-        const firstField = val.involved_fields?.field_data?.[0];
-
-        let goToFieldButton = '';
-        if (firstField?.field_id) {
-          goToFieldButton = `<button class="ml-auto text-blue-600 underline text-xs" onclick='applyValidationFocus(${JSON.stringify(val)})'>Ir al campo</button>`;
-        }
-
-        const validationCardHTML = `
-      <div class="flex items-start gap-3 p-3 rounded border ${color.border} ${color.bg}">
-        <i class="${color.icon} mt-1 text-lg"></i>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-xs font-semibold uppercase ${color.text}">${color.label}</span>
-            ${goToFieldButton}
-          </div>
-          <span class="block ${color.text}">${val.name}</span>
-          <small class="block text-gray-600">${val.display_message}</small>
-        </div>
-      </div>`;
-        validationsListContainer.insertAdjacentHTML('beforeend', validationCardHTML);
-      });
-    }
-
-
-    function clearValidationHighlights() {
-      if (!pacForm) return;
-      const errorFields = pacForm.querySelectorAll('.campo-validacion-error');
-      errorFields.forEach(el => el.classList.remove('campo-validacion-error'));
-
-      const incidenciaFields = pacForm.querySelectorAll('.campo-validacion-incidencia');
-      incidenciaFields.forEach(el => el.classList.remove('campo-validacion-incidencia'));
-
-      const avisoFields = pacForm.querySelectorAll('.campo-validacion-aviso');
-      avisoFields.forEach(el => el.classList.remove('campo-validacion-aviso'));
-    }
-
-    function applyValidationFocus(validationEntry) {
-      if (!pacForm) return;
-      const fieldInfo = validationEntry.involved_fields?.field_data?.[0];
-      if (!fieldInfo || !fieldInfo.field_id) return;
-      toggleValidationsPanel();
-      setTimeout(() => {
-        clearValidationHighlights();
-        const fieldElement = document.getElementById(fieldInfo.field_id);
-        const styleInfo = typeToColor[validationEntry.severity] || typeToColor.info;
-        if (fieldElement) {
-          if (fieldInfo.section_id) showSection(fieldInfo.section_id);
-          fieldElement.classList.add(styleInfo.highlightClass);
-          fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(() => fieldElement.focus({ preventScroll: true }), 300);
-        } else {
-          console.warn(`Elemento con ID '${fieldInfo.field_id}' no encontrado.`);
-        }
-      }, 150);
-    }
-
-    function validateForm() {
-      const validationsList = document.getElementById("validationsList");
-      const loadingValidations = document.getElementById("loadingValidations");
-      const validationButton = document.getElementById("validateButton");
-      const validationTimestamp = document.getElementById("validationTimestamp");
-      validationsList.innerHTML = "";
-      loadingValidations.classList.remove("hidden");
-      validationButton.disabled = true;
-      validationButton.innerHTML = `<i class='fas fa-spinner fa-spin me-2'></i> Validando...`;
-      validationTimestamp.classList.add('hidden');
-      setTimeout(() => {
-        loadingValidations.classList.add("hidden");
-        validationButton.disabled = false;
-        validationButton.innerHTML = "Validar";
-        const validationDate = document.getElementById("validationDate");
-        const now = new Date();
-        validationDate.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ", " + now.toLocaleDateString();
-        validationTimestamp.classList.remove('hidden');
-        populateValidationsList();
-      }, 1500);
-    }
-
-    // --- INICIALIZACIÓN GENERAL ---
-    document.addEventListener("DOMContentLoaded", () => {
-      const formNavigationLinks = document.querySelectorAll("#form-navigation .nav-link");
-      const formSections = document.querySelectorAll(".form-section");
-      pacForm = document.getElementById("pac-form"); // Asegúrate que pacForm está definido aquí o globalmente si es necesario
-
-      function showSection(sectionIdToShow) {
-        formSections.forEach(section => {
-          if (section.id === "section-" + sectionIdToShow) {
-            section.classList.add("active");
-          } else {
-            section.classList.remove("active");
-          }
-        });
-
-        formNavigationLinks.forEach(link => {
-          if (link.dataset.section === sectionIdToShow) {
-            link.classList.add("active-nav-link");
-          } else {
-            link.classList.remove("active-nav-link");
-          }
-        });
-      }
-
-      formNavigationLinks.forEach(link => {
-        link.addEventListener("click", function (event) {
-          event.preventDefault();
-          const sectionId = this.dataset.section;
-          if (sectionId) {
-            showSection(sectionId);
-          }
-        });
-      });
-
-      // Mostrar la sección inicial (Datos Generales)
-      showSection("datos-generales");
-      toggleResidencia(); // Llamada inicial
-
-      // Cargar el estado más reciente del historial si existe (sin resaltar)
-      if (formHistory.length > 0) {
-        applyHistoryEntry(formHistory[0], false);
-      }
-
-      // Botones Historial
-      const historyButton = document.getElementById("historyButton");
-      const closeHistoryPanelButton = document.getElementById("closeHistoryPanel");
-
-      if (historyButton) {
-        historyButton.addEventListener("click", () => {
-          populateHistoryList();
-          toggleHistoryPanel();
-        });
-      }
-      if (closeHistoryPanelButton) {
-        closeHistoryPanelButton.addEventListener("click", toggleHistoryPanel);
-      }
-
-      // Botones Validaciones
-      const validationsButton = document.getElementById("validationsButton");
-      const closeValidationsPanelButton = document.getElementById("closeValidationsPanel");
-
-      if (validationsButton) {
-        validationsButton.addEventListener("click", () => {
-          populateValidationsList();
-          toggleValidationsPanel();
-        });
-      }
-      if (closeValidationsPanelButton) {
-        closeValidationsPanelButton.addEventListener("click", toggleValidationsPanel);
-      }
-
-      // Submit del formulario
-      if (pacForm) {
-        pacForm.addEventListener("submit", function (event) {
-          event.preventDefault();
-          alert("Formulario guardado (simulación).");
-        });
-      }
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const documentsInfo = [
-        {
-          "document_name": "Alta Terceros",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización a una Entidad Colaboradora para el acceso a los datos de sus solicitudes de la campaña anterior, y en su caso, para la firma y/o entrega en el Registro.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización a Funcionario Público para cumplimentación de trámite telemático",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización a un solicitante para recuperar la solicitud y tipo de otro solicitante en caso de Cambio de titularidad",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización a un solicitante para recuperar los datos de la solicitud del mismo tipo de la campaña anterior de otro solicitante en caso de Subrogaciones/Cesiones de compromiso de PDR",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "NIF del solicitante",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": true
-        },
-        {
-          "document_name": "CIF del solicitante",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "CIF/NIF del representante legal",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Acreditación del representante legal",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "CIF/NIF del tercero en caso de que se haya autorizado la firma a dicho tercero",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de estar al corriente de las obligaciones tributarias",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": true
-        },
-        {
-          "document_name": "Declaración informativa anual de entidades en régimen de atribución de rentas",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": true
-        },
-        {
-          "document_name": "Certificado de estar al corriente en el pago en la Seguridad Social",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": true
-        },
-        {
-          "document_name": "Declaración del Impuesto sobre la Renta de las Personas Físicas del solicitante y del cónyuge, en caso de declaración conjunta. Si no se ha hecho nunca declaración de renta, aportar el impreso de alta censal (Mod. 036 ó 037).",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": true
-        },
-        {
-          "document_name": "Modelo 190 de la Agencia Tributaria último año",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Copia del contrato de suministro con la industria azucarera",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado oficial sobre rendimiento lechero vacuno",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación acreditativa de que realiza labores de mantenimiento de pastos en la superficie de pastos declarada",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento de autorización en caso de que la solicitud la tenga que firmar un tercero",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Facturas de venta de la producción agraria",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación que acredite poseer un nivel de capacitación agraria suficiente, acorde al exigido en los programas de DR de su C.A, mediante formación lectiva y/o experiencia profesional",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": true
-        },
-        {
-          "document_name": "Copia de la sentencia o del acto administrativo firme.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento que acredite la fecha de alta en la seguridad social, correspondiente a la actividad agraria que determinó su incorporación",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": true
-        },
-        {
-          "document_name": "Análisis físico-químico de los suelos de las parcelas objeto de ayuda",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Libros de registro de explotación establecidos en base a la normativa sectorial",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento que acredite la inscripción de los animales objeto de la ayuda en el Libro Oficial de la raza.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación acreditativa de disponer de asesoramiento técnico para líneas de ayudas de agroambiente y clima y/o apicultura Ecológica",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Modelo 50 de tasas en inscripción de operadores, titulares de fincas Agropecuarias de producción ecológica",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de la Tesorería Territorial de la Seguridad Social (Vida laboral)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado empadronamiento",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de retenciones e ingresos a cuenta de la sociedad",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contratos de trabajo",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento acreditativo de arrendamiento, aparcería o asignación de superficies",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "TC-2/8",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Entidades asociadas: Documentación acreditativa del objeto social (Estatutos...)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Copia de la escritura pública de constitución de la sociedad o transformación de la anterior",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación que justifique la pertenencia de los socios al cebadero comunitario",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Etiquetas de forestación",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento que acredite la pertenencia un organismo técnico competente debidamente reconocido que registra y lleva el Libro Genealógico o Libro Zootécnico de la raza.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado oficial sobre rendimiento lechero ovino/caprino",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Otra documentación no definida en el reglamento",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Copia del contrato suscrito con la industria que va a realizar la transformación (tomate)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización de la AEMPS (Cáñamo)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato con la industria transformadora (Cáñamo)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Etiquetas de envases de semilla del cáñamo",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Agroambientales - Compromiso en 2 Anualidades",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Agroambientales - Comunicación Rotación Total.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificación en Producción Integrada",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Fotografías georreferenciadas",
-          "can_be_attached_to_form": false,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Informe de obligaciones de condicionalidad",
-          "can_be_attached_to_form": false,
-          "can_be_uploaded": false,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación que justifique la aplicación de la gestión sostenible de insumos",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato de suministro de alfalfa con una o varias explotaciones ganaderas",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato de suministro de alfalfa con una o varias empresas fabricantes de productos para la alimentación animal",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Compromiso de entrega de alfalfa a figura asociativa",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato de suministro de alfalfa con una o varias empresas deshidratadoras de forrajes",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Declaración responsable de la empresa deshidratadora de forrajes",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato entre el agricultor y la empresa productora de semilla certificada",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (tomate)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato entre el agricultor y la figura asociativa (tomate)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato suscrito con la industria transformadora (uva pasa)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de la figura asociativa con indicación de los agricultores que comercializan como terceros (uva pasa)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato entre el agricultor y la figura asociativa (uva pasa)",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Declaración responsable del solicitante respecto al cumplimiento de la gestión y fertilización del suelo y/o gestión de plagas y malas hierbas conforme al REGLAMENTO (UE) 2018/848 DEL PARLAMENTO EUROPEO Y DEL CONSEJO de 30 de mayo de 2018 sobre producción ecológica y etiquetado de los productos ecológicos gestión",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado Asociación de cría de razas autóctonas en peligro de extinción",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Justificación exceso de rotación en Producción Integrada de Tabaco",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Acuerdo entre el titular y el joven agricultor según el cual este último compartirá las responsabilidades gerenciales, los resultados económicos de la explotación, los riesgos inherentes a su gestión y las inversiones que se realicen, en una proporción mínima del 50%",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento mediante el cual el titular transmita al joven agricultor, al menos, un tercio de su propiedad en los elementos que constituyen su explotación, uso y aprovechamiento en la que continuarán integrados.",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Informe de la vida laboral",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": true
-        },
-        {
-          "document_name": "Plan empresarial",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación acreditativa de haber iniciado el proceso de instalación",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización del socio a la Administración para consultar sus datos de la SS",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización del socio a la Administración para consultar sus datos de la AEAT",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado emitido por técnico competente sobre cumplimiento de los requisitos de la Intervención Apicultura para la Biodiversidad y con el Real Decreto 209/2002 de 22 de febrero de 2002, sobre la Ordenación de las explotaciones apícolas",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Copia de los Dni de todos los herederos en vigor",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación que justifique el cumplimiento de los requisitos de Joven Agricultor o Resolución del servicio competente",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Copia de la Resolución judicial firme que declare su disolución",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Fallecimiento: Certificado de defunción o denuncia de la desaparición, declaración de ausencia o declaración de fallecimiento",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Testamento y declaración de herederos que demuestre el derecho de uso de la explotación",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación de acuerdo de reparto entre los herederos que permita identificar el reparto de la explotación",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento de adjudicación o concesión para la realización del aprovechamiento de rastrojeras, barbechos y restos hortofrutícolas en pastos de uso común",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Incapacidad: Certificado del centro gestor de la Seguridad Social sobre incapacidad de larga duración",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Escritura pública de la compraventa de tierras",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Declaración responsable de disponer en la explotación las instalaciones adecuadas para la realización de transformación de la uva",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": true,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato de arrendamiento, aparcería o documento privado suscrito por el propietario que le otorgue la capacidad de uso y disfrute de su aprovechamiento, con referencia catastral, liquidado de impuesto y en vigor",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Escritura pública o documento privado liquidado de impuestos del arrendamiento de tierras",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documentación que acredite que la parcela está a disposición y existe derecho al uso del recinto",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Declaración Responsable de procedencia del tomate",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "NIF del socio",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización de socios a la Administración para consultar sus datos de identidad en la Policía",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Comunicaciones al Registro de Explotaciones",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Declaración responsable que justifica la aplicación puntual de herbicidas al tercer año de realización de la práctica de cubiertas vegetales, por imposibilidad de erradicarla por medios mecánicos o mediante ganado",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Certificado de inscripción en el Registro de Operadores de Producción Integrada de Euskadi a fecha de finalización del plazo de modificación de la solicitud de ayuda",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Contrato firmado con un técnico asesor acreditado",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Autorización que permite el uso de montes de utilidad pública para actividades agropecuarias",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        },
-        {
-          "document_name": "Documento que detalla las actuaciones anuales a realizar para gestión sostenible de pastos",
-          "can_be_attached_to_form": true,
-          "can_be_uploaded": true,
-          "is_required": false,
-          "is_validated": false
-        }
-      ]
-
-      const documentListContainer = document.getElementById('documentListContainer');
-      const uploadModalElement = document.getElementById('uploadDocumentModal');
-      const uploadModal = new bootstrap.Modal(uploadModalElement);
-      const documentNameToUploadSpan = document.getElementById('documentNameToUpload');
-      const documentIdentifierInput = document.getElementById('documentIdentifier'); // Para saber qué documento se está subiendo
-
-      // --- Inicio: Lógica del Dropzone para el modal ---
-      const docDropZone = document.getElementById('documentDropZone');
-      const docFileInput = document.getElementById('documentFileInput');
-      const docPreviewContainer = document.getElementById('documentFilePreviewContainer');
-      const docDropZoneStatus = document.getElementById('documentDropZoneStatus');
-      let selectedFileForUpload = null;
-
-      if (docDropZone && docFileInput && docPreviewContainer) {
-        docDropZone.addEventListener('click', () => docFileInput.click());
-        docFileInput.addEventListener('change', (e) => handleDocFile(e.target.files[0]));
-
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-          docDropZone.addEventListener(eventName, preventDefaults, false);
-          document.body.addEventListener(eventName, preventDefaults, false); // Evita que el navegador abra el archivo
-        });
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-          docDropZone.addEventListener(eventName, () => docDropZone.classList.add('border-[#1abc9c]', 'bg-gray-100'), false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-          docDropZone.addEventListener(eventName, () => docDropZone.classList.remove('border-[#1abc9c]', 'bg-gray-100'), false);
-        });
-
-        docDropZone.addEventListener('drop', (e) => {
-          preventDefaults(e);
-          const files = e.dataTransfer.files;
-          if (files.length > 0) {
-            handleDocFile(files[0]); // Solo tomamos el primer archivo para este modal
-          }
-        }, false);
-      }
-
-      function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-
-      function getFileIconClass(fileName) {
-        if (!fileName) return 'fas fa-file';
-        const extension = fileName.split('.').pop().toLowerCase();
-        switch (extension) {
-          case 'pdf': return 'fas fa-file-pdf text-danger';
-          case 'doc': case 'docx': return 'fas fa-file-word text-primary';
-          case 'xls': case 'xlsx': return 'fas fa-file-excel text-success';
-          case 'ppt': case 'pptx': return 'fas fa-file-powerpoint text-warning';
-          case 'zip': case 'rar': return 'fas fa-file-archive text-secondary';
-          case 'txt': return 'fas fa-file-alt text-muted';
-          case 'jpg': case 'jpeg': case 'png': case 'gif': return 'fas fa-file-image text-info';
-          default: return 'fas fa-file text-secondary';
-        }
-      }
-
-      function handleDocFile(file) {
-        if (!file) return;
-        selectedFileForUpload = file; // Guardamos el archivo seleccionado
-        docDropZoneStatus.textContent = `Archivo seleccionado: ${file.name}`;
-        docDropZoneStatus.style.display = 'block';
-
-        docPreviewContainer.innerHTML = ''; // Limpiar vista previa anterior
-        const fileSize = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB";
-        const iconClass = getFileIconClass(file.name);
-        const itemHTML = `
-            <div class="file-preview-item d-flex align-items-center justify-content-between p-2 bg-light border rounded mb-2">
-                <div>
-                    <i class="${iconClass} me-2"></i>
-                    <span class="file-name">${file.name}</span>
-                    <small class="text-muted ms-2">(${fileSize})</small>
-                </div>
-                <button type="button" class="btn-close btn-sm remove-doc-preview" aria-label="Quitar"></button>
-            </div>`;
-        docPreviewContainer.insertAdjacentHTML('beforeend', itemHTML);
-
-        docPreviewContainer.querySelector('.remove-doc-preview').addEventListener('click', function () {
-          selectedFileForUpload = null;
-          docFileInput.value = ''; // Resetear el input file
-          docPreviewContainer.innerHTML = '';
-          docDropZoneStatus.style.display = 'none';
-          docDropZoneStatus.textContent = '';
-        });
-      }
-      // --- Fin: Lógica del Dropzone para el modal ---
-
-      function renderDocuments() {
-        if (!documentListContainer) return;
-        documentListContainer.innerHTML = ''; // Limpiar antes de renderizar
-
-        documentsInfo.forEach((doc, index) => {
-          const canBeAttached = doc.can_be_attached_to_form;
-          const isRequired = doc.is_required;
-          const isValidated = doc.is_validated;
-          const canBeUploaded = doc.can_be_uploaded;
-
-          let requiredHtml = isRequired ?
-            `<span><i class="fas fa-exclamation-circle text-warning me-1"></i> Requerido</span>` :
-            ``;
-
-          let validatedHtml = isValidated ?
-            `<i class="fas fa-check-circle text-success ms-2" title="Validado"></i>` :
-            ``;
-
-          // Botón de subida
-          let uploadButtonHtml = '';
-          if (canBeUploaded) {
-            uploadButtonHtml = `
-                    <button type="button" class="btn btn-outline-primary btn-sm open-upload-modal-btn" 
-                            title="Subir archivo para ${doc.document_name}"
-                            data-bs-toggle="modal" data-bs-target="#uploadDocumentModal"
-                            data-doc-name="${doc.document_name}"
-                            data-doc-id="doc_${index}">
-                        <i class="fas fa-upload"></i>
-                    </button>`;
-          }
-
-          const documentElement = `
-                <div class="d-flex align-items-center gap-3 border rounded-lg p-3 bg-gray-50">
-                    <div class="flex-grow-1">
-                        ${doc.document_name}
-                        ${validatedHtml}
-                        <div class="text-muted small mt-1">
-                            ${requiredHtml}
-                        </div>
-                    </div>
-                    ${uploadButtonHtml}
-                </div>`;
-          documentListContainer.insertAdjacentHTML('beforeend', documentElement);
-        });
-
-        // Añadir event listeners a los nuevos botones
-        document.querySelectorAll('.open-upload-modal-btn').forEach(button => {
-          button.addEventListener('click', function () {
-            const docName = this.dataset.docName;
-            const docId = this.dataset.docId; // Un identificador único si lo necesitas
-
-            documentNameToUploadSpan.textContent = docName;
-            documentIdentifierInput.value = docId; // Guardar el ID del documento en el form del modal
-
-            // Resetear el formulario del modal
-            document.getElementById('uploadDocumentForm').reset();
-            selectedFileForUpload = null;
-            docFileInput.value = '';
-            docPreviewContainer.innerHTML = '';
-            docDropZoneStatus.style.display = 'none';
-            docDropZoneStatus.textContent = '';
-
-            uploadModal.show();
-          });
-        });
-      }
-
-      // Inicializar la carga de documentos
-      if (documentsInfo.length > 0) {
-        renderDocuments();
-      } else {
-        if (documentListContainer) {
-          documentListContainer.innerHTML = '<p class="text-muted">No hay información de documentos disponible.</p>';
-        }
-      }
-
-      // Manejar el guardado del documento desde el modal
-      const saveDocumentButton = document.getElementById('saveDocumentButton');
-      if (saveDocumentButton) {
-        saveDocumentButton.addEventListener('click', function () {
-          const docId = documentIdentifierInput.value;
-          const description = document.getElementById('documentDescription').value;
-          const observations = document.getElementById('documentObservations').value;
-          const origin = document.querySelector('input[name="documentOrigin"]:checked').value;
-
-          if (!selectedFileForUpload) {
-            alert('Por favor, selecciona un archivo para subir.');
-            return;
-          }
-
-          // Aquí iría tu lógica para subir el archivo (selectedFileForUpload) y los datos del formulario
-          console.log("Guardando documento para:", docId);
-          console.log("Descripción:", description);
-          console.log("Observaciones:", observations);
-          console.log("Origen:", origin);
-          console.log("Archivo:", selectedFileForUpload.name, selectedFileForUpload.size, selectedFileForUpload.type);
-
-          // Simulación de subida exitosa:
-          alert(`Documento '${selectedFileForUpload.name}' para '${documentNameToUploadSpan.textContent}' guardado (simulación).`);
-
-          // Cambiar el botón de subida del documento
-          const buttonElement = document.querySelector(`[data-doc-id="${docId}"]`);
-          if (buttonElement) {
-            buttonElement.innerHTML = `
-                <i class="fas fa-check me-2" title="Subido"></i>Subido`;
-            buttonElement.classList.remove('btn-outline-primary');
-            buttonElement.classList.add('btn-outline-secondary');
-          }
-          uploadModal.hide();
-          // Resetear el formulario y el archivo seleccionado para la próxima vez
-          document.getElementById('uploadDocumentForm').reset();
-          selectedFileForUpload = null;
-          docFileInput.value = '';
-          docPreviewContainer.innerHTML = '';
-          docDropZoneStatus.style.display = 'none';
-        });
-      }
-    });
-  </script>
-  <script>
-    // Lógica para la búsqueda en formulario y respuesta de IA
-    document.addEventListener("DOMContentLoaded", function () {
-      const formSearchInput = document.getElementById('form-search-input');
-      const formSearchResultsDropdown = document.getElementById('form-search-results-dropdown');
-      const formSearchHelpText = document.getElementById('form-search-help-text');
-
-      const aiResponseAreaForm = document.getElementById('ai-response-area');
-      const aiResponseTextElementForm = document.getElementById('ai-response-text-form');
-      const closeAiResponseButtonForm = document.getElementById('close-ai-response-form');
-      const aiThinkingIndicatorForm = document.getElementById('ai-thinking-indicator-form');
-      const relevantFieldsContainerForm = document.getElementById('relevant-fields-container-form');
-      const relevantFieldsTitleForm = document.getElementById('relevant-fields-title-form');
-
-      const pacForm = document.getElementById('pac-form');
-      const formNavigationLinksSide = document.querySelectorAll("#form-navigation .nav-link");
-      const formSectionsAll = document.querySelectorAll(".form-section");
-
-      let typingTimeoutForm;
-      let allIndexedFormFields = [];
-
-      function indexPacFormFields() {
-        allIndexedFormFields = [];
-        if (!pacForm) return;
-
-        const elements = pacForm.elements;
-        for (let i = 0; i < elements.length; i++) {
-          const element = elements[i];
-          if (element.id || element.name) {
-            let labelText = '';
-            let labelElement = null;
-            if (element.id) {
-              labelElement = pacForm.querySelector(`label[for="${element.id}"]`);
-              if (labelElement) {
-                labelText = labelElement.textContent.trim();
-              }
-            }
-            // Si no hay label, intentar obtenerlo del legend del fieldset padre si es único
-            if (!labelText && element.closest('fieldset') && element.closest('fieldset').querySelectorAll('input, select, textarea').length === 1) {
-              const legend = element.closest('fieldset').querySelector('legend');
-              if (legend) labelText = legend.textContent.trim();
-            }
-            // Si aún no hay labelText y es un checkbox/radio, buscar label hermano o padre
-            if (!labelText && (element.type === 'checkbox' || element.type === 'radio')) {
-              let current = element.nextElementSibling;
-              if (current && current.tagName === 'LABEL') labelText = current.textContent.trim();
-              else if (element.parentElement && element.parentElement.tagName === 'LABEL') labelText = element.parentElement.textContent.trim();
-              else if (element.parentElement.closest('label')) labelText = element.parentElement.closest('label').textContent.trim();
-
-            }
-            if (!labelText) labelText = element.placeholder || element.name || element.id;
-
-
-            let parentSectionElement = element.closest('.form-section');
-            let sectionId = null;
-            if (parentSectionElement && parentSectionElement.id) {
-              sectionId = parentSectionElement.id.replace('section-', '');
-            }
-
-            allIndexedFormFields.push({
-              id: element.id,
-              name: element.name,
-              type: element.type,
-              labelText: labelText,
-              element: element,
-              labelElement: labelElement,
-              sectionId: sectionId
-            });
-          }
-        }
-      }
-      if (pacForm) {
-        indexPacFormFields(); // Indexar al cargar
-        // Considerar re-indexar si el formulario cambia dinámicamente (ej. añadir recintos)
-        // new MutationObserver(indexPacFormFields).observe(pacForm, { childList: true, subtree: true });
-      }
-
-
-      function showFormSearchDropdown() {
-        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.add('show');
-        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'true');
-        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
-      }
-
-      function hideFormSearchDropdown() {
-        if (formSearchResultsDropdown) formSearchResultsDropdown.classList.remove('show');
-        if (formSearchInput) formSearchInput.setAttribute('aria-expanded', 'false');
-        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
-          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
-        }
-      }
-
-      function typeWriterForForm(text, element, speed = 5, callback) {
-        clearTimeout(typingTimeoutForm);
-        if (!element) return;
-        element.innerHTML = '';
-        element.classList.add('typing');
-        let i = 0;
-        function type() {
-          if (i < text.length) {
-            if (text.charAt(i) === '\n') {
-              element.innerHTML += '<br>';
-            } else if (text.charAt(i) === ' ') {
-              element.innerHTML += '&nbsp;';
-            } else {
-              element.innerHTML += text.charAt(i);
-            }
-            i++;
-            typingTimeoutForm = setTimeout(type, speed);
-          } else {
-            element.classList.remove('typing');
-            if (callback) callback();
-          }
-        }
-        type();
-      }
-
-      function clearAllAiHighlightsFromForm() {
-        if (!pacForm) return;
-        const highlightedFields = pacForm.querySelectorAll('.highlighted-by-ai-click-form-field');
-        highlightedFields.forEach(el => el.classList.remove('highlighted-by-ai-click-form-field'));
-
-        const highlightedLabels = pacForm.querySelectorAll('.highlighted-by-ai-click-form-label');
-        highlightedLabels.forEach(el => el.classList.remove('highlighted-by-ai-click-form-label'));
-      }
-
-      // Adaptación de la función showSection de pac-edit.html
-      function navigateToFormSection(sectionIdToShow) {
-        let sectionFound = false;
-        formSectionsAll.forEach(section => {
-          if (section.id === "section-" + sectionIdToShow) {
-            section.classList.add("active");
-            sectionFound = true;
-          } else {
-            section.classList.remove("active");
-          }
-        });
-
-        formNavigationLinksSide.forEach(link => {
-          if (link.dataset.section === sectionIdToShow) {
-            link.classList.add("active-nav-link"); // Usa la clase de tu app para el link activo
-            // Scroll al link en la navegación lateral si está fuera de vista
-            link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          } else {
-            link.classList.remove("active-nav-link");
-          }
-        });
-        if (sectionFound) {
-          const mainFormArea = document.querySelector('div.main-content main.w-full'); // Selector más específico para el panel principal del form
-          if (mainFormArea) mainFormArea.scrollTop = 0; // Scroll al inicio del panel del formulario
-        }
-        return sectionFound;
-      }
-
-      function findAndDisplayRelevantFormFields(query) {
-        if (!relevantFieldsContainerForm || !relevantFieldsTitleForm) return;
-        relevantFieldsContainerForm.innerHTML = '';
-        relevantFieldsTitleForm.classList.add('d-none');
-
-        const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
-        let foundFieldsCount = 0;
-        const MAX_FIELDS_TO_SHOW = 6;
-        const displayedFields = new Set();
-
-        allIndexedFormFields.forEach(fieldInfo => {
-          if (foundFieldsCount >= MAX_FIELDS_TO_SHOW || !fieldInfo.id) return; // Solo campos con ID para el target
-          if (displayedFields.has(fieldInfo.id)) return;
-
-
-          const fieldSearchableText = `${fieldInfo.labelText} ${fieldInfo.name} ${fieldInfo.id} ${fieldInfo.sectionId}`.toLowerCase();
-
-          let matchScore = 0;
-          queryWords.forEach(word => {
-            if (fieldInfo.labelText.toLowerCase().includes(word)) matchScore += 3; // Mayor peso a la etiqueta
-            if (fieldInfo.id.toLowerCase().includes(word)) matchScore += 2;
-            if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(word)) matchScore += 1;
-            if (fieldInfo.sectionId && fieldInfo.sectionId.replace('-', ' ').toLowerCase().includes(word)) matchScore += 1;
-          });
-
-
-          if (matchScore > 0) {
-            foundFieldsCount++;
-            displayedFields.add(fieldInfo.id);
-            const fieldExtractDiv = document.createElement('div');
-            fieldExtractDiv.classList.add('relevant-field-extract', 'p-3', 'mb-2', 'rounded', 'small'); // Aumentado padding
-            fieldExtractDiv.setAttribute('data-target-field-id', fieldInfo.id);
-            if (fieldInfo.sectionId) fieldExtractDiv.setAttribute('data-target-section-id', fieldInfo.sectionId);
-
-            let displayText = fieldInfo.labelText || fieldInfo.name || fieldInfo.id;
-            // Resaltar palabras de la query en el texto del extracto
-            queryWords.forEach(word => {
-              const regex = new RegExp('(' + word.replace(
-                '/[.*+?^<span class="math-inline">\{\}\(\)\|\[\\\]\\\\\]/g', '\\\\</span>&') + ')', 'gi');
-              displayText = displayText.replace(regex, '<mark>$1</mark>');
-            });
-
-            const sectionName = fieldInfo.sectionId ? fieldInfo.sectionId.replace(/-/g, ' ') : "Formulario Principal";
-            const capitalizedSectionName = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
-
-
-            fieldExtractDiv.innerHTML = `
-                    <p class="mb-1 font-medium">${displayText}</p>
-                    <small class="text-muted"><i>Sección: ${capitalizedSectionName}</i></small>
-                `;
-
-            fieldExtractDiv.addEventListener('click', function () {
-              clearAllAiHighlightsFromForm();
-              const targetFieldId = this.getAttribute('data-target-field-id');
-              const targetSectionId = this.getAttribute('data-target-section-id');
-              const targetFieldObject = allIndexedFormFields.find(f => f.id === targetFieldId);
-
-
-              if (targetFieldObject && targetFieldObject.element) {
-                if (targetSectionId) {
-                  navigateToFormSection(targetSectionId);
-                }
-                // Pequeña demora para asegurar que la sección es visible, especialmente si se cambió
-                setTimeout(() => {
-                  targetFieldObject.element.classList.add('highlighted-by-ai-click-form-field');
-                  if (targetFieldObject.labelElement) {
-                    targetFieldObject.labelElement.classList.add('highlighted-by-ai-click-form-label');
-                  } else { // Intentar encontrar label de nuevo si no estaba en el index
-                    const label = pacForm.querySelector(`label[for="${targetFieldId}"]`);
-                    if (label) label.classList.add('highlighted-by-ai-click-form-label');
-                  }
-                  targetFieldObject.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  if (typeof targetFieldObject.element.focus === 'function' &&
-                    !['button', 'submit', 'reset'].includes(targetFieldObject.element.type)) { // No enfocar botones
-                    targetFieldObject.element.focus({ preventScroll: true });
-                  }
-                }, targetSectionId ? 150 : 50); // Mayor demora si se cambió de sección
-              }
-            });
-            relevantFieldsContainerForm.appendChild(fieldExtractDiv);
-          }
-        });
-
-        if (foundFieldsCount > 0) {
-          relevantFieldsTitleForm.classList.remove('d-none');
-        } else {
-          relevantFieldsContainerForm.innerHTML = '<p class="text-muted small fst-italic px-2">No se encontraron campos que coincidan directamente con tu consulta en el formulario.</p>';
-        }
-      }
-
-      function handleAiQueryForForm(query) {
-        hideFormSearchDropdown();
-        if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
-        if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
-        if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
-        if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
-        clearAllAiHighlightsFromForm();
-
-        if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.remove('d-none');
-        if (aiResponseAreaForm) aiResponseAreaForm.classList.remove('d-none');
-
-        aiResponseAreaForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // 'start' para que el área de IA quede arriba
-
-        console.log(`Simulando consulta a la IA sobre: "${query}" en el formulario PAC.`);
-        // Simulación de respuesta de IA
-        setTimeout(() => {
-          if (aiThinkingIndicatorForm) aiThinkingIndicatorForm.classList.add('d-none');
-
-          let simulatedResponse = ''
-          if (query.toLowerCase().includes('perfil')) {
-            simulatedResponse = `Perfil de la Explotación Agraria: FRUTÍCOLA CASTELNOVO SL\n
-1. Resumen Ejecutivo
-FRUTÍCOLA CASTELNOVO SL es una sociedad limitada de gran dimensión, con una actividad económica agraria consolidada y un enfoque productivo mixto que combina la ganadería extensiva (bovino y ovino/caprino de carne) con cultivos herbáceos (avena) y leñosos (almendro). La explotación, gestionada por un gerente con amplia experiencia práctica desde 2018, muestra un claro compromiso con la sostenibilidad medioambiental a través de la solicitud de ecoregímenes como el pastoreo extensivo y las cubiertas vegetales. A pesar de su tamaño y volumen de ingresos, mantiene un enfoque administrativo tradicional, prefiriendo no utilizar herramientas digitales de gestión de la explotación ni la comunicación electrónica con la Administración.\n
-2. Identificación y Estructura
-- Razón Social: FRUTÍCOLA CASTELNOVO SL
-- CIF: B28209658
-- Tipo de Entidad: Persona jurídica (Sociedad Limitada).
-- Ubicación de la Gestión: Zona de Badajoz, Extremadura. Las parcelas se distribuyen principalmente en los municipios de Casas de Don Pedro y Navalvillar de Pela.
-- Gestión: La explotación es gestionada por Gonzalo Hernando Arcal desde el año 2018, quien cuenta con experiencia práctica agraria y ha realizado cursos de perfeccionamiento recientes.\n
-3. Dimensión y Orientación Productiva
-La explotación gestiona una superficie total declarada de 512,14 hectáreas, distribuidas de la siguiente manera:
-- Cultivos Herbáceos (Secano y Regadío): 117,14 ha
-  - Avena: 105,74 ha. Es el cultivo herbáceo principal, destinado a la producción de semilla certificada y procesamiento industrial. Combina parcelas de secano y regadío.
-  - Barbecho Tradicional: 11,4 ha. Se localizan principalmente en parcelas de regadío.
-- Cultivos Leñosos (Frutos Secos): 40,61 ha
-  - Almendro (var. Avijor): 40,61 ha. Se trata de plantaciones establecidas mayoritariamente en 2022, tanto en secano como en regadío, lo que indica una inversión y diversificación reciente.
-- Pastos: 354,39 ha
-  - Pastos Permanentes (>5 años): 333,51 ha. Base principal para la ganadería extensiva.
-  - Pastos Temporales (<5 años): 20,88 ha.
-La mayoría de la superficie es en propiedad (437,31 ha), complementada con una parte significativa en arrendamiento (74,83 ha).\n
-4. Perfil Económico y Financiero
-La empresa presenta una sólida salud financiera con un volumen de ingresos agrarios notable y creciente:
-- Ingresos Agrarios 2023: 300.993,39 €
-- Ingresos Agrarios 2022: 101.346,40 €
-- Ingresos Agrarios 2021: 276.385,50 €
-Los costes laborales en 2023 ascendieron a 77.364,00 €, lo que refleja una actividad que requiere una importante mano de obra. La empresa está al corriente de sus obligaciones con la AEAT y la Seguridad Social.\n
-5. Estrategia de Ayudas y Prácticas Agrarias (Ecoregímenes PAC 2025)
-La estrategia de solicitud de ayudas revela una orientación hacia la sostenibilidad y el aprovechamiento de los recursos naturales:
-- Ayudas Básicas y Ganaderas:
-  - Solicita la Ayuda Básica a la Renta (ABRS) y la Ayuda Redistributiva, estándar para la mayoría de las explotaciones.
-  - Confirma su vocación ganadera solicitando las ayudas para ganaderos extensivos de vacuno de carne y para ganaderos extensivos y semiextensivos de ovino y caprino de carne.
-- Ecoregímenes (Prácticas Sostenibles):
-  - Pastoreo Extensivo: Solicita la ayuda, coherente con su gran base de pastos y su actividad ganadera declarada.
-  - Cubiertas Vegetales en Cultivos Leñosos: Solicita esta ayuda para sus parcelas de almendro, demostrando un enfoque en la conservación del suelo y la biodiversidad.
-  - Espacios de Biodiversidad: La solicitud de esta ayuda indica que dedica parte de sus tierras de cultivo y cultivos permanentes a la conservación del entorno.
-- Declaraciones Adicionales de Sostenibilidad:
-  - Declara realizar venta directa y/o en canal corto.
-  - Afirma no utilizar productos fitosanitarios sobre las cubiertas vegetales, reforzando su compromiso con las prácticas sostenibles.
-  - Parte de su producción se destina al autoconsumo del ganado de la propia explotación.`
-          } else {
-            simulatedResponse = `En relación a tu consulta sobre "${query}" para el formulario PAC, aquí tienes información relevante:`;
-          }
-
-          typeWriterForForm(simulatedResponse, aiResponseTextElementForm, 5, () => {
-            findAndDisplayRelevantFormFields(query); // Mostrar campos relevantes después de la respuesta
-          });
-        }, 1200); // Reducido tiempo de simulación
-      }
-
-      if (closeAiResponseButtonForm) {
-        closeAiResponseButtonForm.addEventListener('click', function () {
-          clearTimeout(typingTimeoutForm);
-          if (formSearchInput) formSearchInput.value = '';
-
-          if (aiResponseAreaForm) aiResponseAreaForm.classList.add('d-none');
-          if (aiResponseTextElementForm) aiResponseTextElementForm.innerHTML = '';
-          if (aiResponseTextElementForm) aiResponseTextElementForm.classList.remove('typing');
-          if (relevantFieldsContainerForm) relevantFieldsContainerForm.innerHTML = '';
-          if (relevantFieldsTitleForm) relevantFieldsTitleForm.classList.add('d-none');
-
-          clearAllAiHighlightsFromForm();
-          hideFormSearchDropdown();
-          if (formSearchHelpText && pacForm) formSearchHelpText.classList.remove('d-none');
-          if (formSearchInput) formSearchInput.focus();
-        });
-      }
-
-      function populateFormSearchDropdown(query) {
-        if (!formSearchResultsDropdown || !pacForm || (aiResponseAreaForm && !aiResponseAreaForm.classList.contains('d-none'))) {
-          hideFormSearchDropdown();
-          return;
-        }
-        formSearchResultsDropdown.innerHTML = '';
-        if (!query) {
-          hideFormSearchDropdown();
-          return;
-        }
-
-        let hasResults = false;
-        const queryLowerCase = query.toLowerCase();
-        const uniqueSuggestions = new Map(); // Usar Map para asociar sugerencia con info del campo
-        const MAX_SUGGESTIONS_DROPDOWN = 5;
-
-        allIndexedFormFields.forEach(fieldInfo => {
-          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
-          let suggestionText = null;
-          let match = false;
-
-          if (fieldInfo.labelText && fieldInfo.labelText.toLowerCase().includes(queryLowerCase)) {
-            suggestionText = fieldInfo.labelText;
-            match = true;
-          } else if (fieldInfo.id && fieldInfo.id.toLowerCase().includes(queryLowerCase)) {
-            suggestionText = fieldInfo.labelText || fieldInfo.id;
-            match = true;
-          } else if (fieldInfo.name && fieldInfo.name.toLowerCase().includes(queryLowerCase)) {
-            suggestionText = fieldInfo.labelText || fieldInfo.name;
-            match = true;
-          }
-
-          if (match && suggestionText && !uniqueSuggestions.has(suggestionText.toLowerCase())) {
-            uniqueSuggestions.set(suggestionText.toLowerCase(), { text: suggestionText, field: fieldInfo });
-          }
-        });
-
-        // Palabras clave generales adicionales (no directamente ligadas a un campo, pero pueden iniciar una búsqueda IA)
-        const generalKeywords = [
-          "Ayuda jóvenes", "Ecorregímenes", "Datos Fiscales", "Representante Legal", "Condicionalidad", "SIGPAC"
-        ];
-        generalKeywords.forEach(keyword => {
-          if (uniqueSuggestions.size >= MAX_SUGGESTIONS_DROPDOWN) return;
-          if (keyword.toLowerCase().includes(queryLowerCase) && !uniqueSuggestions.has(keyword.toLowerCase())) {
-            uniqueSuggestions.set(keyword.toLowerCase(), { text: keyword, field: null }); // field: null para keywords generales
-          }
-        });
-
-
-        uniqueSuggestions.forEach(suggestion => {
-          hasResults = true;
-          const item = document.createElement('a');
-          item.classList.add('dropdown-item');
-          item.href = '#';
-          item.innerHTML = `<i class="fas fa-search me-2 text-muted"></i> "${suggestion.text.replace(new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<strong class="text-primary">$1</strong>')}"`;
-
-          item.addEventListener('click', function (e) {
-            e.preventDefault();
-            if (formSearchInput) formSearchInput.value = suggestion.text;
-            clearAllAiHighlightsFromForm();
-
-            if (suggestion.field && suggestion.field.element) { // Si la sugerencia está ligada a un campo específico
-              const targetField = suggestion.field;
-              if (targetField.sectionId) {
-                navigateToFormSection(targetField.sectionId);
-              }
-              setTimeout(() => {
-                targetField.element.classList.add('highlighted-by-ai-click-form-field');
-                if (targetField.labelElement) targetField.labelElement.classList.add('highlighted-by-ai-click-form-label');
-                else { const label = pacForm.querySelector(`label[for="${targetField.id}"]`); if (label) label.classList.add('highlighted-by-ai-click-form-label'); }
-
-                targetField.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                if (typeof targetField.element.focus === 'function' && !['button', 'submit', 'reset'].includes(targetField.element.type)) {
-                  targetField.element.focus({ preventScroll: true });
-                }
-              }, targetField.sectionId ? 150 : 50);
-            } else {
-              // Si es una keyword general, podríamos directamente llamar a la IA, o dejar que el usuario pulse enter/botón IA
-              // Por ahora, solo rellena el input, el usuario decidirá si pregunta a la IA.
-            }
-            hideFormSearchDropdown();
-          });
-          if (formSearchResultsDropdown) formSearchResultsDropdown.appendChild(item);
-        });
-
-        if (formSearchResultsDropdown && formSearchResultsDropdown.children.length > 0) { // Solo añadir IA si hay alguna sugerencia
-          const divider = document.createElement('hr');
-          divider.classList.add('dropdown-divider', 'my-1');
-          formSearchResultsDropdown.appendChild(divider);
-
-          const aiOption = document.createElement('a');
-          aiOption.classList.add('dropdown-item', 'fw-bold'); // Más destacado
-          aiOption.href = '#';
-          aiOption.id = 'ai-ask-option-button-form';
-          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
-          aiOption.addEventListener('click', function (e) {
-            e.preventDefault();
-            handleAiQueryForForm(query); // Usar la query actual del input
-          });
-          formSearchResultsDropdown.appendChild(aiOption);
-          showFormSearchDropdown();
-        } else if (!hasResults) { // Si no hay ninguna sugerencia pero el usuario escribió algo
-          const aiOption = document.createElement('a');
-          aiOption.classList.add('dropdown-item', 'fw-bold');
-          aiOption.href = '#';
-          aiOption.id = 'ai-ask-option-button-form';
-          aiOption.innerHTML = `<i class="fas fa-magic me-2 text-info"></i> Preguntar a la IA sobre: "<strong>${query}</strong>"`;
-          aiOption.addEventListener('click', function (e) {
-            e.preventDefault();
-            handleAiQueryForForm(query);
-          });
-          if (formSearchResultsDropdown) {
-            formSearchResultsDropdown.appendChild(aiOption);
-            showFormSearchDropdown();
-          }
-        } else {
-          hideFormSearchDropdown();
-        }
-      }
-
-      if (formSearchInput) {
-        formSearchInput.addEventListener('input', function () {
-          const query = formSearchInput.value.trim();
-          if (query.length > 1) { // Empezar a buscar con al menos 2 caracteres
-            populateFormSearchDropdown(query);
-          } else {
-            hideFormSearchDropdown();
-            if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
-              clearAllAiHighlightsFromForm();
-            }
-          }
-        });
-
-        formSearchInput.addEventListener('focus', function () {
-          const query = formSearchInput.value.trim();
-          if (aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) { // Solo mostrar si la IA no está activa
-            if (query.length > 1) {
-              populateFormSearchDropdown(query);
-            } else if (formSearchHelpText && pacForm) {
-              formSearchHelpText.classList.remove('d-none');
-            }
-          }
-        });
-
-        formSearchInput.addEventListener('keydown', function (event) {
-          if (event.key === 'Enter') {
-            event.preventDefault(); // Evitar submit del formulario si la búsqueda está dentro de <form>
-            const query = formSearchInput.value.trim();
-            if (query) {
-              // Si hay un dropdown visible y un item "Preguntar a la IA" podríamos simular su click
-              // o directamente llamar a handleAiQueryForForm
-              const aiButton = formSearchResultsDropdown.querySelector('#ai-ask-option-button-form');
-              if (formSearchResultsDropdown.classList.contains('show') && aiButton) {
-                aiButton.click();
-              } else {
-                handleAiQueryForForm(query);
-              }
-            }
-          }
-        });
-      }
-
-      document.addEventListener('click', function (event) {
-        const searchContainer = document.querySelector('.search-bar-container');
-        const isClickInsideSearchContainer = searchContainer ? searchContainer.contains(event.target) : false;
-        // No cerramos el panel de IA al hacer clic fuera, solo el dropdown
-        if (!isClickInsideSearchContainer) {
-          hideFormSearchDropdown();
-        }
-      });
-
-      // Inicialización de visibilidad del texto de ayuda
-      if (!pacForm) {
-        if (formSearchHelpText) formSearchHelpText.classList.add('d-none');
-        if (formSearchInput) formSearchInput.disabled = true;
-      } else {
-        if (formSearchInput && !formSearchInput.value.trim() && aiResponseAreaForm && aiResponseAreaForm.classList.contains('d-none')) {
-          if (formSearchHelpText) formSearchHelpText.classList.remove('d-none');
-        } else if (formSearchHelpText) {
-          formSearchHelpText.classList.add('d-none');
-        }
-      }
-    });
-  </script>
 </body>
 
 </html>
