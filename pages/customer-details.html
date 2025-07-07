@@ -585,7 +585,7 @@
         document.getElementById("topNavUserName").textContent = `Cliente: ${currentClientData.nombreCompleto}`;
         document.getElementById("detailUserName").textContent = currentClientData.nombreCompleto;
         document.getElementById("detailUserNifCif").textContent = `NIF/CIF: ${currentClientData.nifCif || 'No especificado'}`;
-        document.getElementById("goToLastPacBtn").href = `pac-details.html?id=${currentClientData.pacs[0]?.idPac || ''}`;
+        document.getElementById("goToLastPacBtn").href = `pac-edit.html?id=${currentClientData.pacs[0]?.idPac || ''}`;
         const statusBadge = document.getElementById("detailUserStatus");
         statusBadge.textContent = currentClientData.estado || 'No especificado';
         statusBadge.className = `badge fs-6 me-2 ${getStatusBadgeClass(currentClientData.estado)}`;
@@ -616,12 +616,11 @@
           currentClientData.pacs.forEach(pac => {
             const pacState = formatPacState(pac.estado);
             const row = `<tr>
-              <td><a href="pac-details.html?id=${pac.idPac}">${pac.idPac}</a></td>
+              <td><a href="pac-edit.html?id=${pac.idPac}">${pac.idPac}</a></td>
               <td>${pac.campana}</td>
               <td>${pac.fechaCreacion}</td>
               <td class="text-center"><span class="badge rounded-pill ${pacState.badgeClass}">${pacState.text}</span></td>
               <td class="text-center">
-                <a href="pac-details.html?id=${pac.idPac}" class="btn btn-sm btn-outline-primary" title="Ver PAC"><i class="fas fa-eye"></i></a>
                 <a href="pac-edit.html?id=${pac.idPac}" class="btn btn-sm btn-outline-secondary ms-1" title="Editar PAC"><i class="fas fa-edit"></i></a>
               </td>
             </tr>`;
