@@ -2800,69 +2800,7 @@ function analyzeExistingDocument(documentId, documentName) {
     }
 
     // Get mock results based on document type
-    let mockResults;
-    if (documentId === "PACDOC001") {
-      // Results for the main PAC document
-      mockResults = mockAiAnalysisResults["Solicitud_PAC2025_Ejemplo.pdf"];
-    } else if (documentId === "CLIDOC001") {
-      // Results for identification document
-      mockResults = {
-        detectedFields: [
-          {
-            fieldId: "sol_nombre_razon",
-            label: "Nombre/Razón Social",
-            currentValue: "FRUTICOLA CASTELNOVO SL",
-            detectedValue: "FRUTICOLA CASTELNOVO S.L.",
-            confidence: 98,
-            section: "datos-generales",
-          },
-          {
-            fieldId: "sol_cif_nif",
-            label: "CIF/NIF",
-            currentValue: "B06258511",
-            detectedValue: "B06258511",
-            confidence: 100,
-            section: "datos-generales",
-          },
-        ],
-      };
-    } else if (documentId === "CLIDOC002") {
-      // Results for contract document
-      mockResults = {
-        detectedFields: [
-          {
-            fieldId: "not_nombre_via",
-            label: "Nombre Vía",
-            currentValue: "NAC 430",
-            detectedValue: "Carretera Nacional 430",
-            confidence: 95,
-            section: "datos-generales",
-          },
-          {
-            fieldId: "not_numero",
-            label: "Número",
-            currentValue: "115",
-            detectedValue: "115",
-            confidence: 100,
-            section: "datos-generales",
-          },
-        ],
-      };
-    } else {
-      // Default results for other documents
-      mockResults = {
-        detectedFields: [
-          {
-            fieldId: "sol_email",
-            label: "Email",
-            currentValue: "torrado@tany.es",
-            detectedValue: "info@fruticolacastelnovo.es",
-            confidence: 92,
-            section: "datos-generales",
-          },
-        ],
-      };
-    }
+    let mockResults = mockAiAnalysisResults["Solicitud_PAC2025_Ejemplo.pdf"];
 
     if (mockResults) {
       // Show detected fields in modal
@@ -3081,8 +3019,6 @@ function reviewAiChanges() {
 // Mock optimization results
 const mockOptimizationResults = {
   optimization_report: {
-    total_improvement: 377.32,
-    total_plots_optimized: 2,
     plot_improvements: {
       1: {
         original_grants: [
@@ -3095,19 +3031,67 @@ const mockOptimizationResults = {
         ],
         original_amount: 99.3,
         optimized_amount: 374.82,
-        improvement: 275.52,
       },
       2: {
         original_grants: ["Cubiertas vegetales"],
         optimized_grants: ["Cubiertas vegetales", "Rotación siembra directa"],
         original_amount: 153.2,
         optimized_amount: 255.0,
-        improvement: 101.8,
+      },
+      3: {
+        original_grants: ["Ayuda Básica Renta Sostenibilidad"],
+        optimized_grants: [
+          "Ayuda Básica Renta Sostenibilidad",
+          "Siembra Directa",
+        ],
+        original_amount: 124.5,
+        optimized_amount: 200.0,
+      },
+      4: {
+        original_grants: ["Rotación Cultivos Especies Mejorantes"],
+        optimized_grants: [
+          "Rotación Cultivos Especies Mejorantes",
+          "Siembra Directa",
+        ],
+        original_amount: 80.0,
+        optimized_amount: 253.0,
+      },
+      5: {
+        original_grants: ["Cubiertas vegetales"],
+        optimized_grants: ["Cubiertas vegetales", "Siembra Directa"],
+        original_amount: 60.0,
+        optimized_amount: 180.0,
+      },
+      6: {
+        original_grants: ["Ayuda Básica Renta Sostenibilidad"],
+        optimized_grants: [
+          "Ayuda Básica Renta Sostenibilidad",
+          "Rotación Cultivos Especies Mejorantes",
+        ],
+        original_amount: 110.0,
+        optimized_amount: 220.0,
       },
     },
   },
   optimized_form_id: "optimized-form-123",
 };
+
+// Calculate improvements
+for (const plotId in mockOptimizationResults.optimization_report
+  .plot_improvements) {
+  const improvementData =
+    mockOptimizationResults.optimization_report.plot_improvements[plotId];
+  improvementData.improvement =
+    improvementData.optimized_amount - improvementData.original_amount;
+}
+
+mockOptimizationResults.optimization_report.total_improvement = Object.values(
+  mockOptimizationResults.optimization_report.plot_improvements
+).reduce((total, plot) => total + plot.improvement, 0);
+
+mockOptimizationResults.optimization_report.total_plots_optimized = Object.keys(
+  mockOptimizationResults.optimization_report.plot_improvements
+).length;
 
 // Optimization functionality
 function startOptimization() {

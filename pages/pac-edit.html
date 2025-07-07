@@ -303,17 +303,12 @@
       overflow-y: auto;
     }
 
-    .ai-functions-nav {
-      display: flex;
-      border-bottom: 1px solid #e5e7eb;
-      margin-bottom: 1rem;
-    }
 
     .ai-function-btn {
       flex: 1;
       padding: 0.75rem;
       border: none;
-      background-color: transparent;
+      background-color: #f0f2f5;
       color: #374151;
       font-size: 1rem;
       cursor: pointer;
@@ -321,11 +316,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 0.5rem;
+    }
+
+    .ai-function-btn:hover {
+      background-color: #e9ecef;
     }
 
     .ai-function-btn.active {
-      background-color: #1abc9c;
-      color: #fff;
+      background: linear-gradient(135deg, #28e1bd, #7e5cd4);
+      color: white;
+      border-color: transparent;
     }
 
     .ai-function-content {
@@ -1951,7 +1952,7 @@
 
     <div class="ai-panel-content">
       <!-- AI Functions Navigation -->
-      <div class="ai-functions-nav">
+      <div class="flex flex-col mb-4 gap-2">
         <button class="ai-function-btn active" data-function="upload">
           <i class="fas fa-file-upload me-2"></i>
           Actualizar con documento
